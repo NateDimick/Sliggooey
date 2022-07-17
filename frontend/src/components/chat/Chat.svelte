@@ -1,12 +1,14 @@
 <!-- a Chat component represents a PM chat with 1 user on the home pane-->
 <script lang="ts">
-import { pmChats } from "../store";
+import { pmChats } from "../../store";
 
-import { PmPayload, PmSource, tsPrint, UiEventTypes } from "../util";
+import { PmPayload, PmSource, tsPrint, UiEventTypes } from "../../util";
 import { onDestroy, onMount } from "svelte";
 import { get } from "svelte/store";
-import { AcceptBattleChallengeFromUser, CancelBattleChallengeToUser, RejectBattleChallengeFromUser, SendBattleChallengeToUser, SendPM } from "../../wailsjs/go/main/App";
-import { EventsEmit, EventsOff, EventsOn } from "../../wailsjs/runtime/runtime";
+import { AcceptBattleChallengeFromUser, CancelBattleChallengeToUser, RejectBattleChallengeFromUser, SendBattleChallengeToUser, SendPM } from "../../../wailsjs/go/main/App";
+import { EventsEmit, EventsOff, EventsOn } from "../../../wailsjs/runtime/runtime";
+import ChatCommandChin from "./ChatCommandChin.svelte";
+import ChatChallenge from "./ChatChallenge.svelte";
 
 export let chatWith: string
 
@@ -20,30 +22,6 @@ function sendMsg() {
 
 function closeThisChat() {
     EventsEmit(UiEventTypes.DeleteChat, chatWith)
-}
-
-function challengeToBattle() {
-    SendBattleChallengeToUser(chatWith, "gen8randombattle", "null")
-}
-
-function acceptChallenge() {
-    AcceptBattleChallengeFromUser(chatWith, "null")
-}
-
-function rejectChallenge() {
-    RejectBattleChallengeFromUser(chatWith)
-}
-
-function cancelChallenge() {
-    CancelBattleChallengeToUser(chatWith)
-}
-
-function blockUser() {
-
-}
-
-function reportUser() {
-    
 }
 
 EventsOn(chatWith, (data: PmPayload) => {
@@ -66,7 +44,7 @@ onDestroy(() => {
 
 <main>
     <h3>{chatWith}</h3>
-    <input type="button" value="X" on:click={closeThisChat}>
+    <input type="button" value="&#10006" on:click={closeThisChat}>
     {#each messages as pm}
         {#if pm.From === PmSource.Other}
             <p>{pm.With} {pm.Message}</p>
@@ -78,4 +56,6 @@ onDestroy(() => {
     {/each}
     <input type="text" bind:value={msgToSend}>
     <input type="button" value="Send" on:click={sendMsg}>
+    <ChatChallenge challengeWith={chatWith}/>
+    <ChatCommandChin {chatWith}/>
 </main>

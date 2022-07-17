@@ -18,6 +18,6 @@
 <main>
     <input type="button" value={info.name} on:click={seeThisPane}>
     {#if info.type !== PaneType.HomePane && info.type !== PaneType.ChatPane}
-        <input type="button" value="x" on:click={deleteThisPane}>
+        <input type="button" value="&#10006" on:click={deleteThisPane}>
     {/if}
 </main>

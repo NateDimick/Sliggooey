@@ -1,10 +1,9 @@
 <!-- the Chat Pane manages and contains Multiple Chat boxes -->
 <script lang="ts">
-import { PaneInfo, pmChats, PmRecord } from "../store";
-import { IPCEventTypes, PmPayload, tsPrint, UiEventTypes } from "../util";
+import { coldChallenges, PaneInfo, pmChats, PmRecord } from "../store";
+import { ChallengePayload, IPCEventTypes, PmPayload, tsPrint, UiEventTypes } from "../util";
 import { EventsEmit, EventsOn } from "../../wailsjs/runtime/runtime";
-import { get } from "svelte/store";
-import Chat from "./Chat.svelte";
+import Chat from "./chat/Chat.svelte";
 
 export let info: PaneInfo
 
@@ -27,11 +26,18 @@ EventsOn(UiEventTypes.PaneChange, (paneName: string) => {
     }
 })
 
+EventsOn(UiEventTypes.DeleteChat, (withUser: string) => {
+    tsPrint(`closing chat box with ${withUser}`)
+    pmChats.update((pms: PmRecord[]) => {
+        pms = pms.filter((p: PmRecord) => p.with !== withUser)
+        return pms
+    })
+})
+
 EventsOn(IPCEventTypes.PrivateMessage, (data: PmPayload) => {
     tsPrint(`received a new PM: ${JSON.stringify(data)}`)
-    let openChats = get(pmChats)
-    if (!openChats.find(p => p.with === data.With)) {
-        tsPrint(`new PM`)
+    if (!$pmChats.find(p => p.with === data.With)) {
+        tsPrint(`new PM thread started`)
         pmChats.update((pms: PmRecord[]) => {
             pms = [...pms, {with: data.With, first: data}]
             return pms
@@ -43,12 +49,25 @@ EventsOn(IPCEventTypes.PrivateMessage, (data: PmPayload) => {
     }  
 })
 
-EventsOn(UiEventTypes.DeleteChat, (withUser: string) => {
-    tsPrint(`closing chat box with ${withUser}`)
-    pmChats.update((pms: PmRecord[]) => {
-        pms = pms.filter((p: PmRecord) => p.with !== withUser)
-        return pms
-    })
+EventsOn(IPCEventTypes.Challenge, (data: ChallengePayload) => {
+    tsPrint(`received a new Challenge: ${JSON.stringify(data)}`)
+    // check if the other player is in the active pm list
+    if (!$pmChats.find(p => p.with === data.With)) {
+        // if place in the cold challenges store
+        tsPrint("storing challenge for when component is created")
+        coldChallenges.update((challenges: ChallengePayload[]) => {
+            challenges = [...challenges, data]
+            return challenges
+        })
+    } else {
+        // if yes, emit event to ChatChallenge component
+        tsPrint("immediately forwarding challenge to active chat")
+        EventsEmit(data.With + UiEventTypes.NewChallenge, data)
+    }
+})
+
+EventsOn(IPCEventTypes.ChallengeEnd, (challengeWith: string) => {
+    EventsEmit(`][${challengeWith}][`, "")
 })
 </script>
 

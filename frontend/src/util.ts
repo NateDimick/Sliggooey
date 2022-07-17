@@ -27,7 +27,8 @@ export enum UiEventTypes {
     ViewChange = "uiChangeView",
     PaneChange = "uiChangePane",
     DeletePane = "uiDeletePane",
-    DeleteChat = "uiDeleteChat"
+    DeleteChat = "uiDeleteChat",
+    NewChallenge = "uiBeenChallenged"
 }
 
 // event types that come from the Go backend (appTypes.go ShowdownEventTopic)
@@ -38,7 +39,8 @@ export enum IPCEventTypes {
     PrivateMessage = "pm",
     RoomMessage = "roomMsg",
     Popup = "popup",
-    Challenge = "challenged"
+    Challenge = "challenged",
+    ChallengeEnd = "challengeEnd"
 }
 
 export enum PmSource {
@@ -49,7 +51,14 @@ export enum PmSource {
 
 export type PmPayload = {
     With: string,
-    IAm: String,
+    IAm: string,
     Message: string,
     From: PmSource
+}
+
+export type ChallengePayload = {
+    With: string,
+    IAm: string,
+    Format: string,
+    Challenger: PmSource
 }

@@ -1,0 +1,60 @@
+[TS] new PM
+[TS] New Chat component with user Twinkle and Stink
+[GO] sending message: |/msg Twinkle and Stink, hi
+[GO] Message payload for the lobby or global room
+[GO] full pm |pm| CloudyNate| Twinkle and Stink|hi
+[GO] pm from  CloudyNate to  Twinkle and Stink hi and I am CloudyNate
+[TS] received a new PM: {"With":"Twinkle and Stink","IAm":"CloudyNate","Message":"hi","From":1}
+[TS] forward chat {"With":"Twinkle and Stink","IAm":"CloudyNate","Message":"hi","From":1} to chat component
+[TS] chat component with Twinkle and Stink received new message {"With":"Twinkle and Stink","IAm":"CloudyNate","Message":"hi","From":1}
+[TS] chat history: [{},{"With":"Twinkle and Stink","IAm":"CloudyNate","Message":"hi","From":1}]
+[GO] Message payload for the lobby or global room
+[GO] full pm |pm| Twinkle and Stink| CloudyNate|/challenge gen8randombattle|gen8randombattle|||
+[GO] is a chat command
+[GO] challenge issued by Twinkle and Stink with Twinkle and Stink to a gen8randombattle battle!
+[GO] sending challenge to frontend {Twinkle and Stink CloudyNate gen8randombattle 0}
+[TS] received a new Challenge: {"With":"Twinkle and Stink","IAm":"CloudyNate","Format":"gen8randombattle","Challenger":0}
+[GO] Message payload for the lobby or global room
+[GO] full pm |pm| Twinkle and Stink| CloudyNate|/log Twinkle and Stink wants to battle!
+[GO] is a chat command
+[TS] received a new PM: {"With":"Twinkle and Stink","IAm":"CloudyNate","Message":"Twinkle and Stink wants to battle!","From":2}
+[TS] forward chat {"With":"Twinkle and Stink","IAm":"CloudyNate","Message":"Twinkle and Stink wants to battle!","From":2} to chat component
+[TS] chat component with Twinkle and Stink received new message {"With":"Twinkle and Stink","IAm":"CloudyNate","Message":"Twinkle and Stink wants to battle!","From":2}
+[TS] chat history: [{},{"With":"Twinkle and Stink","IAm":"CloudyNate","Message":"hi","From":1},{"With":"Twinkle and Stink","IAm":"CloudyNate","Message":"Twinkle and Stink wants to battle!","From":2}]
+[GO] Message payload for the lobby or global room
+[GO] full pm |pm| Twinkle and Stink| CloudyNate|/log Twinkle and Stink cancelled the challenge.
+[GO] is a chat command
+[TS] received a new PM: {"With":"Twinkle and Stink","IAm":"CloudyNate","Message":"Twinkle and Stink cancelled the challenge.","From":2}
+[TS] forward chat {"With":"Twinkle and Stink","IAm":"CloudyNate","Message":"Twinkle and Stink cancelled the challenge.","From":2} to chat component
+[TS] chat component with Twinkle and Stink received new message {"With":"Twinkle and Stink","IAm":"CloudyNate","Message":"Twinkle and Stink cancelled the challenge.","From":2}
+[TS] chat history: [{},{"With":"Twinkle and Stink","IAm":"CloudyNate","Message":"hi","From":1},{"With":"Twinkle and Stink","IAm":"CloudyNate","Message":"Twinkle and Stink wants to battle!","From":2},{"With":"Twinkle and Stink","IAm":"CloudyNate","Message":"Twinkle and Stink cancelled the challenge.","From":2}]
+[GO] Message payload for the lobby or global room
+[GO] full pm |pm| CloudyNate| Twinkle and Stink|/challenge
+[GO] is a chat command
+[GO] Twinkle and Stink cancelled their challenge
+[GO] sending gen8randombattle challenge to Twinkle and Stink with team null
+[GO] sending message: |/utm null
+[GO] sending message: |/challenge Twinkle and Stink, gen8randombattle
+[GO] Message payload for the lobby or global room
+[GO] full pm |pm| CloudyNate| Twinkle and Stink|/challenge gen8randombattle|gen8randombattle|||
+[GO] is a chat command
+[GO] challenge issued by CloudyNate with Twinkle and Stink to a gen8randombattle battle!
+[GO] sending challenge to frontend {Twinkle and Stink CloudyNate gen8randombattle 1}
+[GO] Message payload for the lobby or global room
+[GO] full pm |pm| CloudyNate| Twinkle and Stink|/log CloudyNate wants to battle!
+[GO] is a chat command
+[TS] received a new Challenge: {"With":"Twinkle and Stink","IAm":"CloudyNate","Format":"gen8randombattle","Challenger":1}
+[TS] received a new PM: {"With":"CloudyNate","IAm":"Twinkle and Stink","Message":"CloudyNate wants to battle!","From":2}
+[TS] new PM
+[TS] New Chat component with user CloudyNate
+[GO] Message payload for the lobby or global room
+[GO] full pm |pm| Twinkle and Stink| CloudyNate|/nonotify Twinkle and Stink rejected the challenge.
+[GO] is a chat command
+[TS] received a new PM: {"With":"Twinkle and Stink","IAm":"CloudyNate","Message":"Twinkle and Stink rejected the challenge.","From":2}
+[TS] forward chat {"With":"Twinkle and Stink","IAm":"CloudyNate","Message":"Twinkle and Stink rejected the challenge.","From":2} to chat component
+[TS] chat component with Twinkle and Stink received new message {"With":"Twinkle and Stink","IAm":"CloudyNate","Message":"Twinkle and Stink rejected the challenge.","From":2}
+[TS] chat history: [{},{"With":"Twinkle and Stink","IAm":"CloudyNate","Message":"hi","From":1},{"With":"Twinkle and Stink","IAm":"CloudyNate","Message":"Twinkle and Stink wants to battle!","From":2},{"With":"Twinkle and Stink","IAm":"CloudyNate","Message":"Twinkle and Stink cancelled the challenge.","From":2},{"With":"Twinkle and Stink","IAm":"CloudyNate","Message":"Twinkle and Stink rejected the challenge.","From":2}]
+[GO] Message payload for the lobby or global room
+[GO] full pm |pm| Twinkle and Stink| CloudyNate|/challenge
+[GO] is a chat command
+[GO] CloudyNate cancelled their challenge

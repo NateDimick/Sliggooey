@@ -16,13 +16,14 @@ const (
 type ShowdownEventTopic string
 
 const (
-	LoginFail      ShowdownEventTopic = "loginFail"
-	LoginSuccess   ShowdownEventTopic = "loginSuccess"
-	FormatTopic    ShowdownEventTopic = "formats"
-	PMTopic        ShowdownEventTopic = "pm"
-	RoomMessage    ShowdownEventTopic = "roomMsg"
-	PopupTopic     ShowdownEventTopic = "popup"
-	ChallengeTopic ShowdownEventTopic = "challenged"
+	LoginFail         ShowdownEventTopic = "loginFail"
+	LoginSuccess      ShowdownEventTopic = "loginSuccess"
+	FormatTopic       ShowdownEventTopic = "formats"
+	PMTopic           ShowdownEventTopic = "pm"
+	RoomMessage       ShowdownEventTopic = "roomMsg"
+	PopupTopic        ShowdownEventTopic = "popup"
+	ChallengeTopic    ShowdownEventTopic = "challenged"
+	ChallengeEndTopic ShowdownEventTopic = "challengeEnd"
 )
 
 type AppSettings struct {
@@ -133,6 +134,13 @@ type RoomMessagePayload struct {
 	Message string
 }
 
+type ChallengePayload struct {
+	With       string
+	IAm        string
+	Format     string
+	Challenger PmSource
+}
+
 /*
 {"blockChallenges":false,"blockPMs":false,"ignoreTickets":false,"hideBattlesFromTrainerCard":false,"blockInvites":false,"doNotDisturb":false,"blockFriendRequests":false,"allowFriendNotifications":false,"displayBattlesToFriends":false,"hideLogins":false,"hiddenNextBattle":false,"inviteOnlyNextBattle":false,"language":null}
 */
@@ -205,5 +213,4 @@ func (s *SplitString) ReassembleMid(from int, to int) string {
 	} else {
 		return ""
 	}
-
 }

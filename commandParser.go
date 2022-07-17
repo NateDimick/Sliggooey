@@ -4,9 +4,14 @@ package main
 func (a *App) parseServerCommand(from string, to string, cmdMsg string) {
 	fromUser := NewUser(from)
 	toUser := NewUser(to)
-	if toUser.UserName != a.state.user.User.UserName {
-		fromUser = toUser
-		toUser = a.state.user.User
+	var withUser *User
+	var source PmSource
+	if fromUser.UserName == a.state.user.User.UserName {
+		withUser = toUser
+		source = Self
+	} else {
+		withUser = fromUser
+		source = Other
 	}
 	cmd := NewSplitString(cmdMsg, " ")
 	commandType := ChatCommand(cmd.Get(0))
@@ -18,13 +23,17 @@ func (a *App) parseServerCommand(from string, to string, cmdMsg string) {
 		// user has been challenged - or the challenge was cancelled. prompt them to accept or decline
 		challengeArgs := NewSplitServerMessage(cmd.ReassembleTail(1))
 		if challengeArgs.Get(0) != "" {
-			goPrint("challenged by", fromUser.UserName, "to a", challengeArgs.Get(0), "battle!")
+			goPrint("challenge issued by", fromUser.UserName, "with", withUser.UserName, "to a", challengeArgs.Get(0), "battle!")
+			payload := ChallengePayload{withUser.UserName, a.state.user.User.UserName, challengeArgs.Get(0), source}
+			goPrint("sending challenge to frontend", payload)
+			a.channels.frontendChan <- ShowdownEvent{ChallengeTopic, payload}
 		} else {
 			goPrint(toUser.UserName, "cancelled their challenge")
+			a.channels.frontendChan <- ShowdownEvent{ChallengeEndTopic, withUser.UserName}
 		}
 	case Log, CmdError, Text, NoNotify:
 		// message is going to the chat but as a special log message
-		pm := PrivateMessagePayload{fromUser.UserName, toUser.UserName, cmd.ReassembleTail(1), System}
+		pm := PrivateMessagePayload{withUser.UserName, a.state.user.User.UserName, cmd.ReassembleTail(1), System}
 		a.channels.frontendChan <- ShowdownEvent{PMTopic, pm}
 	default:
 		goPrint(cmd.ReassembleTail(0), "is not a special chat command")
