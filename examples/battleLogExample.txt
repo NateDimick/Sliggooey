@@ -1,0 +1,138 @@
+[GO] Message payload for the lobby or global room
+[GO] could not parse search status {"searching":[],"games":null}
+[GO] Message payload for the lobby or global room
+[GO] could not parse search status {"searching":[],"games":{"battle-gen8randombattle-1618577741":"[Gen 8] Random Battle"}}
+[GO] Message payload for the lobby or global room
+[GO] could not parse search status {"searching":[],"games":{"battle-gen8randombattle-1618577741":"[Gen 8] Random Battle"}}
+[GO] Message payload for roomId: battle-gen8randombattle-1618577741
+[GO] TODO: parse message |init|battle
+[GO] incoming battle message
+[GO] TODO: parse message |title|CloudyNate vs. Twinkle and Stink
+[GO] incoming battle message
+[GO] TODO: parse message |j|☆CloudyNate
+[GO] incoming battle message
+[GO] Message payload for roomId: battle-gen8randombattle-1618577741
+[GO] TODO: parse message |request|
+[GO] incoming battle message
+[GO] Message payload for roomId: battle-gen8randombattle-1618577741
+[GO] TODO: parse message |j|☆Twinkle and Stink
+[GO] incoming battle message
+[GO] Message payload for the lobby or global room
+[GO] full pm |pm| Twinkle and Stink| CloudyNate|/nonotify Twinkle and Stink accepted the challenge, starting &laquo;<a href="/battle-gen8randombattle-1618577741">battle-gen8randombattle-1618577741</a>&raquo;
+[GO] is a chat command
+[GO] Message payload for roomId: battle-gen8randombattle-1618577741
+[GO] TODO: parse message |t:|1657985974
+[GO] incoming battle message
+[GO] TODO: parse message |gametype|singles
+[GO] incoming battle message
+[GO] Message payload for roomId: battle-gen8randombattle-1618577741
+[GO] TODO: parse message |player|p1|CloudyNate|1|
+[GO] incoming battle message
+[GO] Message payload for roomId: battle-gen8randombattle-1618577741
+[GO] TODO: parse message |request|{"active":[{"moves":[{"move":"Double-Edge","id":"doubleedge","pp":24,"maxpp":24,"target":"normal","disabled":false},{"move":"Play Rough","id":"playrough","pp":16,"maxpp":16,"target":"normal","disabled":false},{"move":"Knock Off","id":"knockoff","pp":32,"maxpp":32,"target":"normal","disabled":false},{"move":"Fake Out","id":"fakeout","pp":16,"maxpp":16,"target":"normal","disabled":false}],"canDynamax":true,"maxMoves":{"maxMoves":[{"move":"maxstrike","target":"adjacentFoe"},{"move":"maxstarfall","target":"adjacentFoe"},{"move":"maxdarkness","target":"adjacentFoe"},{"move":"maxstrike","target":"adjacentFoe"}]}}],"side":{"name":"CloudyNate","id":"p1","pokemon":[{"ident":"p1: Persian","details":"Persian, L88, M","condition":"258/258","active":true,"stats":{"atk":173,"def":156,"spa":165,"spd":165,"spe":253},"moves":["doubleedge","playrough","knockoff","fakeout"],"baseAbility":"technician","item":"lifeorb","pokeball":"pokeball","ability":"technician"},{"ident":"p1: Lurantis","details":"Lurantis, L86, F","condition":"261/261","active":false,"stats":{"atk":230,"def":204,"spa":187,"spd":204,"spe":127},"moves":["knockoff","leafstorm","synthesis","superpower"],"baseAbility":"contrary","item":"lifeorb","pokeball":"pokeball","ability":"contrary"},{"ident":"p1: Weavile","details":"Weavile, L79, F","condition":"240/240","active":false,"stats":{"atk":235,"def":148,"spa":117,"spd":180,"spe":243},"moves":["tripleaxel","knockoff","iceshard","swordsdance"],"baseAbility":"pickpocket","item":"heavydutyboots","pokeball":"pokeball","ability":"pickpocket"},{"ident":"p1: Mesprit","details":"Mesprit, L84","condition":"272/272","active":false,"stats":{"atk":181,"def":225,"spa":225,"spd":225,"spe":183},"moves":["nastyplot","psychic","icebeam","energyball"],"baseAbility":"levitate","item":"leftovers","pokeball":"pokeball","ability":"levitate"},{"ident":"p1: Crawdaunt","details":"Crawdaunt, L84, M","condition":"243/243","active":false,"stats":{"atk":250,"def":191,"spa":199,"spd":141,"spe":141},"moves":["knockoff","closecombat","aquajet","dragondance"],"baseAbility":"adaptability","item":"lifeorb","pokeball":"pokeball","ability":"adaptability"},{"ident":"p1: Seismitoad","details":"Seismitoad, L84, F","condition":"314/314","active":false,"stats":{"atk":208,"def":174,"spa":191,"spd":174,"spe":173},"moves":["raindance","earthquake","stealthrock","liquidation"],"baseAbility":"swiftswim","item":"lifeorb","pokeball":"pokeball","ability":"swiftswim"}]},"rqid":2}
+[GO] incoming battle message
+[GO] Message payload for roomId: battle-gen8randombattle-1618577741
+[GO] TODO: parse message |player|p2|Twinkle and Stink|hilda|
+[GO] incoming battle message
+[GO] TODO: parse message |teamsize|p1|6
+[GO] incoming battle message
+[GO] TODO: parse message |teamsize|p2|6
+[GO] incoming battle message
+[GO] TODO: parse message |gen|8
+[GO] incoming battle message
+[GO] TODO: parse message |tier|[Gen 8] Random Battle
+[GO] incoming battle message
+[GO] TODO: parse message |rule|Species Clause: Limit one of each Pokémon
+[GO] incoming battle message
+[GO] TODO: parse message |rule|HP Percentage Mod: HP is shown in percentages
+[GO] incoming battle message
+[GO] TODO: parse message |rule|Sleep Clause Mod: Limit one foe put to sleep
+[GO] incoming battle message
+[GO] TODO: parse message |
+[GO] incoming battle message
+[GO] TODO: parse message |t:|1657985974
+[GO] incoming battle message
+[GO] TODO: parse message |start
+[GO] incoming battle message
+[GO] TODO: parse message |switch|p1a: Persian|Persian, L88, M|258/258
+[GO] incoming battle message
+[GO] TODO: parse message |switch|p2a: Slowbro|Slowbro, L84, F|100/100
+[GO] incoming battle message
+[GO] TODO: parse message |turn|1
+[GO] incoming battle message
+[TS] pm from backend: {"With":"Twinkle and Stink","IAm":"CloudyNate","Message":"Twinkle and Stink accepted the challenge, starting &laquo;<a href=\"/battle-gen8randombattle-1618577741\">battle-gen8randombattle-1618577741</a>&raquo;","From":3}
+[TS] updating pm list
+[TS] chat box received new chat {"With":"Twinkle and Stink","IAm":"CloudyNate","Message":"Twinkle and Stink accepted the challenge, starting &laquo;<a href=\"/battle-gen8randombattle-1618577741\">battle-gen8randombattle-1618577741</a>&raquo;","From":3}
+[TS] present pm list [{"With":"Twinkle and Stink","First":"Hello"}]
+[GO] Message payload for roomId: battle-gen8randombattle-1618577741
+[GO] TODO: parse message |inactive|Battle timer is ON: inactive players will automatically lose when time's up. (requested by Twinkle and Stink)
+[GO] incoming battle message
+[GO] Message payload for roomId: battle-gen8randombattle-1618577741
+[GO] TODO: parse message |inactive|Time left: 300 sec this turn | 300 sec total | 60 sec grace
+[GO] incoming battle message
+[GO] sending message: |/msg Twinkle and Stink, help
+[GO] Message payload for the lobby or global room
+[GO] full pm |pm| CloudyNate| Twinkle and Stink|help
+[GO] pm from  CloudyNate to  Twinkle and Stink help and I am CloudyNate
+[TS] pm from backend: {"With":"Twinkle and Stink","IAm":"CloudyNate","Message":"help","From":2}
+[TS] updating pm list
+[TS] present pm list [{"With":"Twinkle and Stink","First":"Hello"}]
+[TS] chat box received new chat {"With":"Twinkle and Stink","IAm":"CloudyNate","Message":"help","From":2}
+[GO] Message payload for roomId: battle-gen8randombattle-1618577741
+[GO] TODO: parse message |inactive|CloudyNate has 270 seconds left.
+[GO] incoming battle message
+[GO] TODO: parse message |inactive|Twinkle and Stink has 270 seconds left.
+[GO] incoming battle message
+[GO] Message payload for roomId: battle-gen8randombattle-1618577741
+[GO] TODO: parse message |inactive|CloudyNate has 240 seconds left.
+[GO] incoming battle message
+[GO] Message payload for roomId: battle-gen8randombattle-1618577741
+[GO] TODO: parse message |inactive|Twinkle and Stink disconnected and has 300 seconds to reconnect!
+[GO] incoming battle message
+[GO] Message payload for roomId: battle-gen8randombattle-1618577741
+[GO] TODO: parse message |player|p2|
+[GO] incoming battle message
+[GO] TODO: parse message |l|twinkleandstink
+[GO] incoming battle message
+[GO] Message payload for roomId: battle-gen8randombattle-1618577741
+[GO] TODO: parse message |inactive|CloudyNate has 210 seconds left.
+[GO] incoming battle message
+[GO] Message payload for roomId: battle-gen8randombattle-1618577741
+[GO] TODO: parse message |inactive|Twinkle and Stink reconnected.
+[GO] incoming battle message
+[GO] Message payload for roomId: battle-gen8randombattle-1618577741
+[GO] TODO: parse message |player|p2|Twinkle and Stink|hilda
+[GO] incoming battle message
+[GO] TODO: parse message |j|☆Twinkle and Stink
+[GO] incoming battle message
+[GO] Message payload for roomId: battle-gen8randombattle-1618577741
+[GO] TODO: parse message |request|{"active":[{"moves":[{"move":"Double-Edge","id":"doubleedge","pp":24,"maxpp":24,"target":"normal","disabled":false},{"move":"Play Rough","id":"playrough","pp":16,"maxpp":16,"target":"normal","disabled":false},{"move":"Knock Off","id":"knockoff","pp":31,"maxpp":32,"target":"normal","disabled":false},{"move":"Fake Out","id":"fakeout","pp":16,"maxpp":16,"target":"normal","disabled":false}],"canDynamax":true,"maxMoves":{"maxMoves":[{"move":"maxstrike","target":"adjacentFoe"},{"move":"maxstarfall","target":"adjacentFoe"},{"move":"maxdarkness","target":"adjacentFoe"},{"move":"maxstrike","target":"adjacentFoe"}]}}],"side":{"name":"CloudyNate","id":"p1","pokemon":[{"ident":"p1: Persian","details":"Persian, L88, M","condition":"233/258 par","active":true,"stats":{"atk":173,"def":156,"spa":165,"spd":165,"spe":253},"moves":["doubleedge","playrough","knockoff","fakeout"],"baseAbility":"technician","item":"lifeorb","pokeball":"pokeball","ability":"technician"},{"ident":"p1: Lurantis","details":"Lurantis, L86, F","condition":"261/261","active":false,"stats":{"atk":230,"def":204,"spa":187,"spd":204,"spe":127},"moves":["knockoff","leafstorm","synthesis","superpower"],"baseAbility":"contrary","item":"lifeorb","pokeball":"pokeball","ability":"contrary"},{"ident":"p1: Weavile","details":"Weavile, L79, F","condition":"240/240","active":false,"stats":{"atk":235,"def":148,"spa":117,"spd":180,"spe":243},"moves":["tripleaxel","knockoff","iceshard","swordsdance"],"baseAbility":"pickpocket","item":"heavydutyboots","pokeball":"pokeball","ability":"pickpocket"},{"ident":"p1: Mesprit","details":"Mesprit, L84","condition":"272/272","active":false,"stats":{"atk":181,"def":225,"spa":225,"spd":225,"spe":183},"moves":["nastyplot","psychic","icebeam","energyball"],"baseAbility":"levitate","item":"leftovers","pokeball":"pokeball","ability":"levitate"},{"ident":"p1: Crawdaunt","details":"Crawdaunt, L84, M","condition":"243/243","active":false,"stats":{"atk":250,"def":191,"spa":199,"spd":141,"spe":141},"moves":["knockoff","closecombat","aquajet","dragondance"],"baseAbility":"adaptability","item":"lifeorb","pokeball":"pokeball","ability":"adaptability"},{"ident":"p1: Seismitoad","details":"Seismitoad, L84, F","condition":"314/314","active":false,"stats":{"atk":208,"def":174,"spa":191,"spd":174,"spe":173},"moves":["raindance","earthquake","stealthrock","liquidation"],"baseAbility":"swiftswim","item":"lifeorb","pokeball":"pokeball","ability":"swiftswim"}]},"rqid":4}
+[GO] incoming battle message
+[GO] Message payload for roomId: battle-gen8randombattle-1618577741
+[GO] TODO: parse message |
+[GO] incoming battle message
+[GO] TODO: parse message |t:|1657986163
+[GO] incoming battle message
+[GO] TODO: parse message |move|p1a: Persian|Knock Off|p2a: Slowbro
+[GO] incoming battle message
+[GO] TODO: parse message |-supereffective|p2a: Slowbro
+[GO] incoming battle message
+[GO] TODO: parse message |-damage|p2a: Slowbro|57/100
+[GO] incoming battle message
+[GO] TODO: parse message |-enditem|p2a: Slowbro|Leftovers|[from] move: Knock Off|[of] p1a: Persian
+[GO] incoming battle message
+[GO] TODO: parse message |-damage|p1a: Persian|233/258|[from] item: Life Orb
+[GO] incoming battle message
+[GO] TODO: parse message |move|p2a: Slowbro|Thunder Wave|p1a: Persian
+[GO] incoming battle message
+[GO] TODO: parse message |-status|p1a: Persian|par
+[GO] incoming battle message
+[GO] TODO: parse message |
+[GO] incoming battle message
+[GO] TODO: parse message |upkeep
+[GO] incoming battle message
+[GO] TODO: parse message |turn|2
+[GO] incoming battle message
+[GO] Message payload for roomId: battle-gen8randombattle-1618577741
+[GO] TODO: parse message |inactive|Time left: 260 sec this turn | 260 sec total
+[GO] incoming battle message

@@ -1,0 +1,206 @@
+{
+    "active": [
+        {
+            "moves": [
+                {
+                    "move": "Double-Edge",
+                    "id": "doubleedge",
+                    "pp": 24,
+                    "maxpp": 24,
+                    "target": "normal",
+                    "disabled": false
+                },
+                {
+                    "move": "Play Rough",
+                    "id": "playrough",
+                    "pp": 16,
+                    "maxpp": 16,
+                    "target": "normal",
+                    "disabled": false
+                },
+                {
+                    "move": "Knock Off",
+                    "id": "knockoff",
+                    "pp": 32,
+                    "maxpp": 32,
+                    "target": "normal",
+                    "disabled": false
+                },
+                {
+                    "move": "Fake Out",
+                    "id": "fakeout",
+                    "pp": 16,
+                    "maxpp": 16,
+                    "target": "normal",
+                    "disabled": false
+                }
+            ],
+            "canDynamax": true,
+            "maxMoves": {
+                "maxMoves": [
+                    {
+                        "move": "maxstrike",
+                        "target": "adjacentFoe"
+                    },
+                    {
+                        "move": "maxstarfall",
+                        "target": "adjacentFoe"
+                    },
+                    {
+                        "move": "maxdarkness",
+                        "target": "adjacentFoe"
+                    },
+                    {
+                        "move": "maxstrike",
+                        "target": "adjacentFoe"
+                    }
+                ]
+            }
+        }
+    ],
+    "side": {
+        "name": "CloudyNate",
+        "id": "p1",
+        "pokemon": [
+            {
+                "ident": "p1: Persian",
+                "details": "Persian, L88, M",
+                "condition": "258/258",
+                "active": true,
+                "stats": {
+                    "atk": 173,
+                    "def": 156,
+                    "spa": 165,
+                    "spd": 165,
+                    "spe": 253
+                },
+                "moves": [
+                    "doubleedge",
+                    "playrough",
+                    "knockoff",
+                    "fakeout"
+                ],
+                "baseAbility": "technician",
+                "item": "lifeorb",
+                "pokeball": "pokeball",
+                "ability": "technician"
+            },
+            {
+                "ident": "p1: Lurantis",
+                "details": "Lurantis, L86, F",
+                "condition": "261/261",
+                "active": false,
+                "stats": {
+                    "atk": 230,
+                    "def": 204,
+                    "spa": 187,
+                    "spd": 204,
+                    "spe": 127
+                },
+                "moves": [
+                    "knockoff",
+                    "leafstorm",
+                    "synthesis",
+                    "superpower"
+                ],
+                "baseAbility": "contrary",
+                "item": "lifeorb",
+                "pokeball": "pokeball",
+                "ability": "contrary"
+            },
+            {
+                "ident": "p1: Weavile",
+                "details": "Weavile, L79, F",
+                "condition": "240/240",
+                "active": false,
+                "stats": {
+                    "atk": 235,
+                    "def": 148,
+                    "spa": 117,
+                    "spd": 180,
+                    "spe": 243
+                },
+                "moves": [
+                    "tripleaxel",
+                    "knockoff",
+                    "iceshard",
+                    "swordsdance"
+                ],
+                "baseAbility": "pickpocket",
+                "item": "heavydutyboots",
+                "pokeball": "pokeball",
+                "ability": "pickpocket"
+            },
+            {
+                "ident": "p1: Mesprit",
+                "details": "Mesprit, L84",
+                "condition": "272/272",
+                "active": false,
+                "stats": {
+                    "atk": 181,
+                    "def": 225,
+                    "spa": 225,
+                    "spd": 225,
+                    "spe": 183
+                },
+                "moves": [
+                    "nastyplot",
+                    "psychic",
+                    "icebeam",
+                    "energyball"
+                ],
+                "baseAbility": "levitate",
+                "item": "leftovers",
+                "pokeball": "pokeball",
+                "ability": "levitate"
+            },
+            {
+                "ident": "p1: Crawdaunt",
+                "details": "Crawdaunt, L84, M",
+                "condition": "243/243",
+                "active": false,
+                "stats": {
+                    "atk": 250,
+                    "def": 191,
+                    "spa": 199,
+                    "spd": 141,
+                    "spe": 141
+                },
+                "moves": [
+                    "knockoff",
+                    "closecombat",
+                    "aquajet",
+                    "dragondance"
+                ],
+                "baseAbility": "adaptability",
+                "item": "lifeorb",
+                "pokeball": "pokeball",
+                "ability": "adaptability"
+            },
+            {
+                "ident": "p1: Seismitoad",
+                "details": "Seismitoad, L84, F",
+                "condition": "314/314",
+                "active": false,
+                "stats": {
+                    "atk": 208,
+                    "def": 174,
+                    "spa": 191,
+                    "spd": 174,
+                    "spe": 173
+                },
+                "moves": [
+                    "raindance",
+                    "earthquake",
+                    "stealthrock",
+                    "liquidation"
+                ],
+                "baseAbility": "swiftswim",
+                "item": "lifeorb",
+                "pokeball": "pokeball",
+                "ability": "swiftswim"
+            }
+        ]
+    },
+    "rqid": 2
+}
