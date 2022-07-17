@@ -14,7 +14,7 @@ let newChatWith: string
 function openNewChat() {
     tsPrint(`new PM`)
         pmChats.update((pms) => {
-            pms = [...pms, {with: newChatWith, first: null}]
+            pms = [...pms, {with: newChatWith, first: {}}]
             return pms
         })
 }
@@ -32,7 +32,7 @@ EventsOn(IPCEventTypes.PrivateMessage, (data: PmPayload) => {
     let openChats = get(pmChats)
     if (!openChats.find(p => p.with === data.With)) {
         tsPrint(`new PM`)
-        pmChats.update((pms) => {
+        pmChats.update((pms: PmRecord[]) => {
             pms = [...pms, {with: data.With, first: data}]
             return pms
         })
@@ -41,6 +41,14 @@ EventsOn(IPCEventTypes.PrivateMessage, (data: PmPayload) => {
         tsPrint(`forward chat ${JSON.stringify(data)} to chat component`)
         EventsEmit(data.With, data)
     }  
+})
+
+EventsOn(UiEventTypes.DeleteChat, (withUser: string) => {
+    tsPrint(`closing chat box with ${withUser}`)
+    pmChats.update((pms: PmRecord[]) => {
+        pms = pms.filter((p: PmRecord) => p.with !== withUser)
+        return pms
+    })
 })
 </script>
 

@@ -2,11 +2,11 @@
 <script lang="ts">
 import { pmChats } from "../store";
 
-import { PmPayload, PmSource, tsPrint } from "../util";
+import { PmPayload, PmSource, tsPrint, UiEventTypes } from "../util";
 import { onDestroy, onMount } from "svelte";
 import { get } from "svelte/store";
-import { SendPM } from "../../wailsjs/go/main/App";
-import { EventsOff, EventsOn } from "../../wailsjs/runtime/runtime";
+import { AcceptBattleChallengeFromUser, CancelBattleChallengeToUser, RejectBattleChallengeFromUser, SendBattleChallengeToUser, SendPM } from "../../wailsjs/go/main/App";
+import { EventsEmit, EventsOff, EventsOn } from "../../wailsjs/runtime/runtime";
 
 export let chatWith: string
 
@@ -19,23 +19,23 @@ function sendMsg() {
 }
 
 function closeThisChat() {
-
+    EventsEmit(UiEventTypes.DeleteChat, chatWith)
 }
 
 function challengeToBattle() {
-
+    SendBattleChallengeToUser(chatWith, "gen8randombattle", "null")
 }
 
 function acceptChallenge() {
-
+    AcceptBattleChallengeFromUser(chatWith, "null")
 }
 
 function rejectChallenge() {
-
+    RejectBattleChallengeFromUser(chatWith)
 }
 
 function cancelChallenge() {
-
+    CancelBattleChallengeToUser(chatWith)
 }
 
 function blockUser() {
@@ -59,7 +59,7 @@ onMount(() => {
 })
 
 onDestroy(() => {
-    tsPrint("chat component destroyed")
+    tsPrint(`chat component with user ${chatWith} destroyed`)
     EventsOff(chatWith)
 })
 </script>

@@ -10,12 +10,8 @@ export function SearchForBattle(arg1, arg2) {
   window['go']['main']['App']['SearchForBattle'](arg1, arg2);
 }
 
-export function SendBattleChallengeToUser(arg1, arg2, arg3) {
-  window['go']['main']['App']['SendBattleChallengeToUser'](arg1, arg2, arg3);
-}
-
-export function AcceptBattleChallengeFromUser(arg1, arg2) {
-  window['go']['main']['App']['AcceptBattleChallengeFromUser'](arg1, arg2);
+export function SendPM(arg1, arg2) {
+  window['go']['main']['App']['SendPM'](arg1, arg2);
 }
 
 export function CancelBattleChallengeToUser(arg1) {
@@ -26,22 +22,26 @@ export function CancelSearchForBattle() {
   window['go']['main']['App']['CancelSearchForBattle']();
 }
 
+export function MakeBattleChoice(arg1) {
+  window['go']['main']['App']['MakeBattleChoice'](arg1);
+}
+
 export function SDLogin(arg1, arg2) {
   window['go']['main']['App']['SDLogin'](arg1, arg2);
+}
+
+export function AcceptBattleChallengeFromUser(arg1, arg2) {
+  window['go']['main']['App']['AcceptBattleChallengeFromUser'](arg1, arg2);
 }
 
 export function GetFormats() {
   return window['go']['main']['App']['GetFormats']();
 }
 
-export function MakeBattleChoice(arg1) {
-  window['go']['main']['App']['MakeBattleChoice'](arg1);
-}
-
 export function RejectBattleChallengeFromUser(arg1) {
   window['go']['main']['App']['RejectBattleChallengeFromUser'](arg1);
 }
 
-export function SendPM(arg1, arg2) {
-  window['go']['main']['App']['SendPM'](arg1, arg2);
+export function SendBattleChallengeToUser(arg1, arg2, arg3) {
+  window['go']['main']['App']['SendBattleChallengeToUser'](arg1, arg2, arg3);
 }

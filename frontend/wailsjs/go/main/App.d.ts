@@ -6,20 +6,20 @@ export function SDLogout():void;
 
 export function SearchForBattle(arg1:string,arg2:string):void;
 
-export function SendBattleChallengeToUser(arg1:string,arg2:string,arg3:string):void;
-
-export function AcceptBattleChallengeFromUser(arg1:string,arg2:string):void;
+export function SendPM(arg1:string,arg2:string):void;
 
 export function CancelBattleChallengeToUser(arg1:string):void;
 
 export function CancelSearchForBattle():void;
 
+export function MakeBattleChoice(arg1:Array<main.BattleChoice>):void;
+
 export function SDLogin(arg1:string,arg2:string):void;
+
+export function AcceptBattleChallengeFromUser(arg1:string,arg2:string):void;
 
 export function GetFormats():Promise<main.FormatInfo>;
 
-export function MakeBattleChoice(arg1:Array<main.BattleChoice>):void;
-
 export function RejectBattleChallengeFromUser(arg1:string):void;
 
-export function SendPM(arg1:string,arg2:string):void;
+export function SendBattleChallengeToUser(arg1:string,arg2:string,arg3:string):void;
