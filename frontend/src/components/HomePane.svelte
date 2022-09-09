@@ -1,20 +1,12 @@
 <!-- The Home Pane is where the user can search for battles, Users, Rooms, etc-->
 <script lang="ts">
 import type { PaneInfo } from "../store";
-import { UiEventTypes } from "../util";
-import { EventsOn } from "../../wailsjs/runtime/runtime";
+import { currentPaneStore } from "../store"
 
 export let info: PaneInfo
 
-let isFront: boolean = info.front
+$: isFront = info.name === $currentPaneStore
 
-EventsOn(UiEventTypes.PaneChange, (paneName: string) => {
-    if (paneName === info.name) {
-        isFront = true
-    } else {
-        isFront = false
-    }
-})
 </script>
 
 <main>

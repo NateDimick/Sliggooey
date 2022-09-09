@@ -1,22 +1,14 @@
 <script lang="ts">
 import type { PaneInfo } from "../store";
-import { UiEventTypes } from "../util";
-import { EventsOn } from "../../wailsjs/runtime/runtime";
+import { currentPaneStore } from "../store";
 import BattleScene from "./battle/BattleScene.svelte";
 import BattleCommandPalette from "./battle/BattleCommandPalette.svelte";
 import BattleChat from "./battle/BattleChat.svelte";
 
 export let info: PaneInfo
 
-let isFront: boolean = info.front
+$: isFront = info.name === $currentPaneStore
 
-EventsOn(UiEventTypes.PaneChange, (paneName: string) => {
-    if (paneName === info.name) {
-        isFront = true
-    } else {
-        isFront = false
-    }
-})
 </script>
 
 <main>

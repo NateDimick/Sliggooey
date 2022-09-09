@@ -2,12 +2,12 @@
 <script lang="ts">
     import { UiEventTypes, PaneType } from "../util"
     import { EventsEmit } from "../../wailsjs/runtime/runtime"
-    import type { PaneInfo } from "../store"
+    import { currentPaneStore, PaneInfo } from "../store"
 
     export let info: PaneInfo
 
     function seeThisPane() {
-        EventsEmit(UiEventTypes.PaneChange, info.name)
+        currentPaneStore.set(info.name)
     }
 
     function deleteThisPane() {

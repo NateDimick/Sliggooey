@@ -1,13 +1,13 @@
 <!-- the Chat Pane manages and contains Multiple Chat boxes -->
 <script lang="ts">
-import { coldChallenges, PaneInfo, pmChats, PmRecord } from "../store";
+import { coldChallenges, PaneInfo, pmChats, currentPaneStore } from "../store";
 import { ChallengePayload, IPCEventTypes, PmPayload, tsPrint, UiEventTypes } from "../util";
 import { EventsEmit, EventsOn } from "../../wailsjs/runtime/runtime";
 import Chat from "./chat/Chat.svelte";
 
 export let info: PaneInfo
 
-let isFront: boolean = info.front
+$: isFront = info.name === $currentPaneStore
 let newChatWith: string
 
 function openNewChat() {
@@ -17,14 +17,6 @@ function openNewChat() {
             return pms
         })
 }
-
-EventsOn(UiEventTypes.PaneChange, (paneName: string) => {
-    if (paneName === info.name) {
-        isFront = true
-    } else {
-        isFront = false
-    }
-})
 
 EventsOn(UiEventTypes.DeleteChat, (withUser: string) => {
     tsPrint(`closing chat box with ${withUser}`)
