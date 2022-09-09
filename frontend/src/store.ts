@@ -1,7 +1,8 @@
 import { writable } from "svelte/store";
 import { PaneType, PmPayload } from "./util";
 
-export const pmChats = writable([])
+export const pmChats = writable(new Object())
+export const roomChats = writable(new Object())
 export const userName = writable("")
 export const panes = writable([
     {type: PaneType.HomePane, name: "Home", front: true, removable: false}, 

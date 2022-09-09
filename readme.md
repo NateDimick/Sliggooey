@@ -6,21 +6,22 @@ Improvements that this project seeks to add are:
 
 * Better use of screen real estate
 * Chat command hot keys
-* Automatic good sportmanship (GGs and GLHFs)
+* Automatic good sportsmanship (GGs and GLHFs)
 * Custom avatars (?)
 * Damage calculator integration @smogon/calc
 * Pikalytics integration (?)
 * Quick EV/IV presets in team builder (?)
 * Looking good
+* all avatars selectable from UI (unlike regular client, see the [trainers page](https://play.pokemonshowdown.com/sprites/trainers))
 
 ## Timeline
 
 Milestones will be as follows:
 
 * Milestone 1: can play random battles
-* Milestone 2: Damage Calculator integration
-* Milestone 3: can play any format by loading a team (and maybe teambuilder too)
-* Milestone 4: Multiple battles at once
+* Milestone 2: can play any format (with imported teams)
+* Milestone 3: teambuidler
+* Milestone 4: Improvements over the default pokemon showdown client
 
 ## About
 
@@ -36,8 +37,14 @@ See the Pokemon Showdown websocket protocol and api reference here: [Showdown Pr
 
 * To run in development mode, `wails dev`
     1. just the front end can be run alone with `npm run dev` from the `frontend` directory
-* To build Go code for front end use, `wails generate`
+    2. While in `wails dev`, the front end is also supposed to be accessible from `localhost:3000`, but this has not worked with this project
+* To build Go code for front end use, `wails generate module`
 * To build an executable, `wails build`
+
+### Development Goals
+
+1. try to unit test as much of the Go backend as possible
+2. minimum frontend work
 
 ### General Architecture
 
@@ -51,51 +58,54 @@ Sending messages is done through a direct function call.
 
 #### Emitted Back End Events
 
-* Popup events - create a popup
-* private message events - go to a pm component
-* challenge received events - go to a pm component?
-* name taken events - create a popup event
-* query response events - go to a pm component
-* room events (all occur over the same event topic)
-  * battle events
-  * chat events
-  * join events
-  * leave events
-  * notify events
+Backend events are emitted to permanent components in the front end. If a component can be created or destroyed dynamically, a permanent front end component must receive the event and propagate it to the volatile component over a custom ui topic.
 
-* `loginSuccess`
-  * to `Login.svelte`
-  * indicates a successful user login upon receipt of `updateuser`
+##### Backend Event Topics
+
 * `loginFail`
-  * to `Login.svelte`
-  * indicates user did not log in and the `Reason` message should be displayed
+* `loginSuccess`
+* `formats`
 * `pm`
-  * to `Client.svelte`
-  * contains a pm to propagate to the appropriate Chat component
 * `roomMsg`
-  * to `Client.svelte`
-  * contains a room message to propagate to the appropriate Battle/Chat room component  
+* `popup`
+* `challenged`
+* `challengeEnd`
 
 #### UI Events
 
-* `uiLogin`
-  * from `Login.svelte` or `Register.svelte`
-  * to `App.svelte`
-  * changes the main app view from login page to client page
-* `uiLogout`
-  * from `Client.svelte`
-  * to `App.svelte`
-  * changes the main app view from client page to login page
-* `uiRegister`
-  * **not implemented yet**
-  * from `Login.svelte`
-  * to `App.svelte`
-  * changes the mainapp view from the login page to the register page
-* `uiPM#username`
-  * from `Client.svelte`
-  * to `Chat.svelte`
-  * forwards a private message event to the chat component with the specified user
-* `uiRoomMsg#roomId`
-  * from `Client.svelte`
-  * to `BattleChat.svelte`
-  * sends a message to the in-room chat
+UI events are emitted and received by svelte components.
+
+Some UI event topics are dynamic, but most are defined constants.
+
+##### Defined UI Event Topics
+
+* `uiChangeView`
+  * This event is emitted by view components when they are relinquishing their control over the app to a new view
+  * Payload: The enumerated `ViewType` that should be switched to
+* `uiChangePane`
+  * This event is emitted by a PaneTab to cause the corresponding named Pane to become the main focus of the Client
+  * Any Pane should listen to this event. If the event references its name, then it should un-hide. Else, it should hide.
+  * Payload: the string name of the Pane to switch to
+* `uiDeletePane`
+  * This event is emitted by a PaneTab when the user has selected to close the Pane
+  * Payload: the string name of the Pane to delete
+* `uiDeleteChat`
+  * This event is emitted by a Chat when the user selects to close the chat
+
+## Note Taking
+
+Examples of how to get images of pokemon... from the showdown server
+
+* Pokemon Sprites [Pokemon Spritesheet](https://play.pokemonshowdown.com/sprites/pokemonicons-sheet.png)
+  * Have to do math based on pokedex number or something similar to get the right spot
+  * 40 by 30 pixels in size
+  * how to extract sprite from sprite sheet (12 sprites per row, 0 based index thanks to missingno #0 - sliggoo is #705. 59th row (30px per row 58 x 30 = 1740px), 10th column (40px per column 9 x 40 = 360px) <img style="width:40px; height:30px; background: url(https://play.pokemonshowdown.com/sprites/pokemonicons-sheet.png) transparent no-repeat scroll -360px -1740px;">
+* Pokemon "models" (example Sliggoo) ![Garchomp gif](https://play.pokemonshowdown.com/sprites/ani/sliggoo.gif)
+* Pokemon "models" from the back (example Sliggoo) ![Garchom back gif](https://play.pokemonshowdown.com/sprites/ani-back/sliggoo.gif)
+* Shiny ![Shiny Sliggoo](https://play.pokemonshowdown.com/sprites/ani-shiny/sliggoo.gif) ![Shiny Sliggoo](https://play.pokemonshowdown.com/sprites/ani-back-shiny/sliggoo.gif)
+* Pokemon Sprites april fools ![afd](https://play.pokemonshowdown.com/sprites/afd/sliggoo.png)
+* Type Labels ![Dragon](https://play.pokemonshowdown.com/sprites/types/Dragon.png)
+* Generation 5 animated sprites ![wooloo](https://play.pokemonshowdown.com/sprites/gen5ani/wooloo.gif) (not available for all gen 6+ pokemon)
+* Generation 5 still sprites ![Still Sliggoo](https://play.pokemonshowdown.com/sprites/gen5/sliggoo.png)
+* Generation 4 and below have no back fill of new pokemon sprites
+* Pokedex Image ![Sliggy](https://play.pokemonshowdown.com/sprites/dex/sliggoo.png)
