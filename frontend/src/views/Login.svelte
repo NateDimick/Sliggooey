@@ -1,5 +1,5 @@
 <script lang="ts">
-import { userName } from "../store";
+import { currentViewStore, userName } from "../store";
 import { IPCEventTypes, tsPrint, UiEventTypes, ViewType } from "../util";
 import { SDLogin } from "../../wailsjs/go/main/App";
 import { EventsEmit, EventsOn } from "../../wailsjs/runtime/runtime";
@@ -26,7 +26,7 @@ EventsOn(IPCEventTypes.LoginSuccess, (data: LoginSuccessEvent) => {
     userName.update(() => {
         return data.UserName
     })
-    EventsEmit(UiEventTypes.ViewChange, ViewType.Client)
+    currentViewStore.set(ViewType.Client)
 })
 
 EventsOn(IPCEventTypes.LoginFail, (data: LoginFailEvent) => {
