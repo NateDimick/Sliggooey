@@ -38,8 +38,9 @@ See the Pokemon Showdown websocket protocol and api reference here: [Showdown Pr
 
 ## First time setup
 
-* run `npm run build` from `frontend/`
 * run `wails generate module` from project root
+* run `npm run build` from `frontend/`
+
 
 * To run in development mode, `wails dev`
     1. just the front end can be run alone with `npm run dev` from the `frontend` directory
