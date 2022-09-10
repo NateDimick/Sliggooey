@@ -28,6 +28,7 @@ export enum IPCEventTypes {
     LoginSuccess = "loginSuccess",
     FormatList = "formats",
     PrivateMessage = "pm",
+    RoomInit = "newRoom",
     RoomMessage = "roomMsg",
     Popup = "popup",
     Challenge = "challenged",
@@ -52,4 +53,22 @@ export type ChallengePayload = {
     IAm: string,
     Format: string,
     Challenger: PmSource
+}
+
+export type NewRoomPayload = {
+    RoomId: string,
+    RoomType: string
+}
+
+export type RoomMessagePayload = {
+    RoomId: string,
+    From: string, 
+    Message: string
+}
+
+export type RoomHtmlPayload = {
+    RoomId: string,
+    Html: string,
+    Name: string,
+    Update: boolean
 }

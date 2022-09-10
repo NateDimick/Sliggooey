@@ -1,11 +1,12 @@
 <!-- Pane Tab is a tab that allows the user to selct the specific pane they want to see by clicking this -->
 <script lang="ts">
-    import { PaneType } from "../util"
-    import { currentPaneStore, PaneInfo, panes } from "../store"
+    import { PaneType, tsPrint } from "../util"
+    import { currentPaneStore, PaneInfo, panes, roomChats } from "../store"
 
     export let info: PaneInfo
 
     function seeThisPane() {
+        tsPrint(`Switching to pane ${info.name}`)
         currentPaneStore.set(info.name)
     }
 
@@ -13,6 +14,10 @@
         panes.update((panes: PaneInfo[]) => {
             panes = panes.filter((p: PaneInfo) => p.name !== info.name)
             return panes
+        })
+        roomChats.update((rms) => {
+            delete rms[info.name]
+            return rms
         })
     }
 </script>

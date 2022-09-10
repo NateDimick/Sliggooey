@@ -6,7 +6,7 @@ import (
 )
 
 // exposed functions for the frontend to use
-func (a *App) SDLogin(uname string, pword string) {
+func (a *App) SDLogin(uname, pword string) {
 	a.state.credentials = &ShowdownCredentials{uname, pword}
 	a.login()
 }
@@ -21,8 +21,12 @@ func (a *App) GetFormats() FormatInfo {
 	return *a.state.formatList
 }
 
-func (a *App) SendPM(to string, message string) {
+func (a *App) SendPM(to, message string) {
 	a.conn.SendServerCommand(buildCommand(SendMessage, to, message))
+}
+
+func (a *App) SendRoomChat(roomId, message string) {
+	a.conn.SendServerMessageToRoom(roomId, message)
 }
 
 func (a *App) MakeBattleChoice(choices ...BattleChoice) {
@@ -39,7 +43,7 @@ func FormatBattleChoices(choices ...BattleChoice) string {
 	return buildCommand(Choose, fmtChoices...)
 }
 
-func (a *App) SearchForBattle(formatName string, team string) {
+func (a *App) SearchForBattle(formatName, team string) {
 
 }
 
@@ -47,7 +51,7 @@ func (A *App) CancelSearchForBattle() {
 
 }
 
-func (a *App) SendBattleChallengeToUser(user string, format string, team string) {
+func (a *App) SendBattleChallengeToUser(user, format, team string) {
 	goPrint("sending", format, "challenge to", user, "with team", team)
 	a.conn.SendServerCommand(buildCommand(UseTeam, team))
 	a.conn.SendServerCommand(buildCommand(Challenge, user, format))
@@ -58,7 +62,7 @@ func (a *App) CancelBattleChallengeToUser(user string) {
 	a.conn.SendServerCommand(buildCommand(CancelChallenge, user))
 }
 
-func (a *App) AcceptBattleChallengeFromUser(user string, team string) {
+func (a *App) AcceptBattleChallengeFromUser(user, team string) {
 	goPrint("accepting challenge from", user, "with team", team)
 	a.conn.SendServerCommand(buildCommand(UseTeam, team))
 	a.conn.SendServerCommand(buildCommand(AcceptChallenge, user))

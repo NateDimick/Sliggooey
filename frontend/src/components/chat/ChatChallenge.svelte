@@ -21,17 +21,14 @@ coldChallenges.subscribe((challenges: ChallengePayload[]) => {
 
 function acceptChallenge() {
     AcceptBattleChallengeFromUser(challengeWith, "null")
-    activeChallenge = false
 }
 
 function rejectChallenge() {
     RejectBattleChallengeFromUser(challengeWith)
-    activeChallenge = false
 }
 
 function cancelChallenge() {
     CancelBattleChallengeToUser(challengeWith)
-    activeChallenge = false
 }
 </script>
 

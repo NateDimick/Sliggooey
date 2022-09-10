@@ -44,10 +44,10 @@ func NewUser(nameStr string) *User {
 	u.UserName = splitName.Get(0)
 	u.Rank = UserRank(nameStr[0])
 	u.IsUser = false
-	if splitName.Get(0) != "" {
+	if splitName.Get(1) != "" {
 		u.IsAway = splitName.Get(1)[0] == '!'
 	}
-	if len(splitName.Get(0)) > 1 {
+	if len(splitName.Get(1)) > 1 {
 		u.Status = splitName.Get(1)[1:]
 	}
 	return u
