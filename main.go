@@ -28,8 +28,10 @@ func main() {
 	// Create application with options
 	err := wails.Run(&options.App{
 		Title:     "gooey",
-		Width:     1024,
-		Height:    768,
+		MaxWidth:  2160,
+		MaxHeight: 1440,
+		Width:     1080,
+		Height:    720,
 		Assets:    assets,
 		OnStartup: app.startup,
 		Bind: []interface{}{

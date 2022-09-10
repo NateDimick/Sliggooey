@@ -20,6 +20,7 @@ const (
 	Message          MessageType = ""
 	Html             MessageType = "html"
 	Uhtml            MessageType = "uhtml"
+	UhtmlChange      MessageType = "htmlchange"
 	Join             MessageType = "join"
 	Join2            MessageType = "j"
 	Leave            MessageType = "leave"
@@ -61,6 +62,7 @@ const (
 	Win           MessageType = "win"
 	Tie           MessageType = "tie"
 	Timestamp     MessageType = "t:"
+	Timestamp2    MessageType = ":"
 	// Battle sim actions (major)
 	Move           MessageType = "move"
 	Switch         MessageType = "switch"

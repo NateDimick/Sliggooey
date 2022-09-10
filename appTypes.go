@@ -20,7 +20,8 @@ const (
 	LoginSuccess      ShowdownEventTopic = "loginSuccess"
 	FormatTopic       ShowdownEventTopic = "formats"
 	PMTopic           ShowdownEventTopic = "pm"
-	RoomMessage       ShowdownEventTopic = "roomMsg"
+	NewRoomTopic      ShowdownEventTopic = "newRoom"
+	RoomMessageTopic  ShowdownEventTopic = "roomMsg"
 	PopupTopic        ShowdownEventTopic = "popup"
 	ChallengeTopic    ShowdownEventTopic = "challenged"
 	ChallengeEndTopic ShowdownEventTopic = "challengeEnd"
@@ -33,13 +34,22 @@ type User struct {
 	UserName string
 	Rank     UserRank
 	IsUser   bool
+	IsAway   bool
+	Status   string
 }
 
 func NewUser(nameStr string) *User {
 	u := new(User)
-	u.UserName = nameStr[1:]
+	splitName := NewSplitString(nameStr[1:], "@")
+	u.UserName = splitName.Get(0)
 	u.Rank = UserRank(nameStr[0])
 	u.IsUser = false
+	if splitName.Get(0) != "" {
+		u.IsAway = splitName.Get(1)[0] == '!'
+	}
+	if len(splitName.Get(0)) > 1 {
+		u.Status = splitName.Get(1)[1:]
+	}
 	return u
 }
 
@@ -128,10 +138,26 @@ type PrivateMessagePayload struct {
 	From    PmSource
 }
 
+type NewRoomPayload struct {
+	RoomId   string
+	RoomType RoomType
+}
+
 type RoomMessagePayload struct {
 	RoomId  string
 	From    string
 	Message string
+}
+
+type RoomHtmlPayload struct {
+	RoomId string
+	Html   string
+	Name   string
+	Update bool
+}
+
+type RoomStatePayload struct {
+	Title string
 }
 
 type ChallengePayload struct {
