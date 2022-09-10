@@ -36,13 +36,7 @@ Contributions are welcome and appreciated. Make an issue, a PR or hit me up on T
 
 See the Pokemon Showdown websocket protocol and api reference here: [Showdown Protocol](https://github.com/smogon/pokemon-showdown/blob/master/PROTOCOL.md)
 
-## First time setup
-
-* run `wails generate module` from project root
-* run `npm run build` from `frontend/`
-
-
-* To run in development mode, `wails dev`
+* To run in development mode, `wails dev` (**do this for first time setup too** - it will populate frontend/dist, frontend/wailsjs, and create build)
     1. just the front end can be run alone with `npm run dev` from the `frontend` directory
     2. While in `wails dev`, the front end is also supposed to be accessible from `localhost:3000`, but this has not worked with this project
 * To build Go code for front end use, `wails generate module`
