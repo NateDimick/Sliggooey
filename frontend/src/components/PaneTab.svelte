@@ -1,6 +1,6 @@
 <!-- Pane Tab is a tab that allows the user to selct the specific pane they want to see by clicking this -->
 <script lang="ts">
-    import { PaneType, tsPrint } from "../util"
+    import { tsPrint } from "../util"
     import { currentPaneStore, PaneInfo, panes, roomChats } from "../store"
 
     export let info: PaneInfo
@@ -24,7 +24,7 @@
 
 <main>
     <input type="button" value={info.name} on:click={seeThisPane}>
-    {#if info.type !== PaneType.HomePane && info.type !== PaneType.ChatPane}
+    {#if info.removable === true}
         <input type="button" value="&#10006" on:click={deleteThisPane}>
     {/if}
 </main>

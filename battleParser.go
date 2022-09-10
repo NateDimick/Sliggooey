@@ -18,6 +18,8 @@ func (a *App) parseBattleMessage(roomId string, msg *SplitString) {
 		// 0 |   1   |      2
 		if msg.Get(2) != "" {
 			a.handleBattleRequest(roomId, msg.ReassembleTail(2))
+		} else {
+			a.channels.frontendChan <- ShowdownEvent{BattleRequestTopic, nil}
 		}
 	case Timestamp:
 		//   |t:|<unix timestamp>

@@ -285,6 +285,7 @@ type BattleRequest struct {
 	Side      *PlayerSideDetails `json:"side"`
 	Active    []ActiveDetails    `json:"active"`
 	RequestId int                `json:"rqid"`
+	RoomId    string
 }
 
 type PlayerSideDetails struct {

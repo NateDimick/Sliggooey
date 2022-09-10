@@ -8,6 +8,7 @@ export function tsPrint(message: string) {
 export enum PaneType {
     HomePane,
     ChatPane,
+    BattleHubPane,
     BattlePane,
     RoomPane,
     TeamBuilderPane
@@ -30,9 +31,11 @@ export enum IPCEventTypes {
     PrivateMessage = "pm",
     RoomInit = "newRoom",
     RoomMessage = "roomMsg",
+    RoomState = "roomState",
     Popup = "popup",
     Challenge = "challenged",
-    ChallengeEnd = "challengeEnd"
+    ChallengeEnd = "challengeEnd",
+    BattleRequest = "battleRequest"
 }
 
 export enum PmSource {
@@ -71,4 +74,10 @@ export type RoomHtmlPayload = {
     Html: string,
     Name: string,
     Update: boolean
+}
+
+export type RoomStatePayload = {
+    RoomId: string,
+    Title: string,
+    Users: string[]
 }

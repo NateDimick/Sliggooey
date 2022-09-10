@@ -1,15 +1,16 @@
 <!-- the Pane Manager allows for switching between Panes and manages the addition and removal of Panes -->
 <script lang="ts">
 import PaneTab from "./PaneTab.svelte";
-import { PaneInfo, panes, roomChats } from "../store"
-import { IPCEventTypes, NewRoomPayload, PaneType, RoomHtmlPayload, RoomMessagePayload, tsPrint } from "../util";
+import { currentPaneStore, PaneInfo, panes, roomChats, roomStates } from "../store"
+import { IPCEventTypes, NewRoomPayload, PaneType, RoomHtmlPayload, RoomMessagePayload, RoomStatePayload, tsPrint } from "../util";
 import HomePane from "./HomePane.svelte";
 import ChatPane from "./ChatPane.svelte";
 import BattlePane from "./BattlePane.svelte";
 import { EventsOn } from "../../wailsjs/runtime/runtime";
+import BattleHubPane from "./BattleHubPane.svelte";
 
 EventsOn(IPCEventTypes.RoomInit, (data: NewRoomPayload) => {
-    let newPane: PaneInfo = {name: data.RoomId, front: false, removable: true, type: undefined}
+    let newPane: PaneInfo = {name: data.RoomId, front: true, removable: true, type: undefined}
     if (data.RoomType === "chat") {
         newPane.type = PaneType.RoomPane
     }else if (data.RoomType === "battle") {
@@ -26,7 +27,7 @@ EventsOn(IPCEventTypes.RoomInit, (data: NewRoomPayload) => {
         panes = [...panes, newPane]
         return panes
     })
-    
+    currentPaneStore.set(data.RoomId)
 })
 
 EventsOn(IPCEventTypes.RoomMessage, (data: RoomMessagePayload | RoomHtmlPayload) => {
@@ -47,6 +48,14 @@ EventsOn(IPCEventTypes.RoomMessage, (data: RoomMessagePayload | RoomHtmlPayload)
     }
     tsPrint(JSON.stringify($roomChats))
 })
+
+EventsOn(IPCEventTypes.RoomState, (data: RoomStatePayload) => {
+    roomStates.update((rss) => {
+        // Todo: need to reconcile roomstate, not just replace
+        rss[data.RoomId] = data
+        return rss
+    })
+})
 </script>
 
 <main>
@@ -61,6 +70,8 @@ EventsOn(IPCEventTypes.RoomMessage, (data: RoomMessagePayload | RoomHtmlPayload)
                 <HomePane info={p}/>
             {:else if p.type === PaneType.ChatPane}
                 <ChatPane info={p}/>
+            {:else if p.type === PaneType.BattleHubPane}
+                <BattleHubPane info={p}/>
             {:else if p.type === PaneType.BattlePane}
                 <BattlePane info={p}/>
             {/if}

@@ -14,14 +14,14 @@ $: isFront = info.name === $currentPaneStore
 <main>
     <div hidden={!isFront}>
         <h1>This is a battle pane</h1>
-        <div id="left-col">
+        <div class="left-col">
             <h2>Imagine something cool being here, like a damage calculator</h2>
         </div>
-        <div id="center-col">
+        <div class="center-col">
             <BattleScene/>
             <BattleCommandPalette/>
         </div>
-        <div id="right-col">
+        <div class="right-col">
             <BattleChat roomName={info.name}/>
         </div>
     </div>

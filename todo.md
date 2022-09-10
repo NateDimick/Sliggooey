@@ -4,12 +4,14 @@ last modified: 9/10/2022
 
 this is a completely disorganized list of ideas for things to do or research
 
+* reconcile front end room state
+* remove `front` property from `PaneInfo`
+* send `leave` when closing room pane
 * finish handling room messages
   * notify - back and front
   * chatTs - ?
   * : - ?
   * uhtml + **uhtmlchange** in the front
-* begin handling battle messages
 * Battle Manager Pane
   * where ladder search will eventually live
   * where current games will be re-accessible if their pane was closed

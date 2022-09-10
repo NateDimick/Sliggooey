@@ -12,5 +12,6 @@ func (a *App) handleBattleRequest(roomId, request string) {
 		a.channels.errorChan <- JsonUnmarshalError
 		return
 	}
+	req.RoomId = roomId
 	a.channels.frontendChan <- ShowdownEvent{BattleRequestTopic, req}
 }
