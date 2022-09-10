@@ -1,10 +1,9 @@
 <!-- a Chat component represents a PM chat with 1 user on the home pane-->
 <script lang="ts">
-import { coldChallenges, pmChats } from "../../store";
+import { pmChats } from "../../store";
 
-import { PmSource, tsPrint, UiEventTypes } from "../../util";
+import { PmSource, tsPrint } from "../../util";
 import { AcceptBattleChallengeFromUser, CancelBattleChallengeToUser, RejectBattleChallengeFromUser, SendBattleChallengeToUser, SendPM } from "../../../wailsjs/go/main/App";
-import { EventsEmit } from "../../../wailsjs/runtime/runtime";
 import ChatCommandChin from "./ChatCommandChin.svelte";
 import ChatChallenge from "./ChatChallenge.svelte";
 
@@ -18,7 +17,11 @@ function sendMsg() {
 }
 
 function closeThisChat() {
-    EventsEmit(UiEventTypes.DeleteChat, chatWith)
+    tsPrint(`closing chat box with ${chatWith}`)
+    pmChats.update((pms => {
+        delete pms[chatWith]
+        return pms
+    }))
 }
 
 </script>

@@ -1,6 +1,5 @@
 <script lang="ts">
-import { EventsOn } from "../wailsjs/runtime/runtime";
-import { UiEventTypes, ViewType } from "./util";
+import { ViewType } from "./util";
 import { currentViewStore } from "./store";
 import Client from "./views/Client.svelte";
 import Login from "./views/Login.svelte";

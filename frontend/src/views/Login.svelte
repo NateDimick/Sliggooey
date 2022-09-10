@@ -1,8 +1,8 @@
 <script lang="ts">
 import { currentViewStore, userName } from "../store";
-import { IPCEventTypes, tsPrint, UiEventTypes, ViewType } from "../util";
+import { IPCEventTypes, tsPrint, ViewType } from "../util";
 import { SDLogin } from "../../wailsjs/go/main/App";
-import { EventsEmit, EventsOn } from "../../wailsjs/runtime/runtime";
+import { EventsOn } from "../../wailsjs/runtime/runtime";
 
 let chooseName: string
 let password: string

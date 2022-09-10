@@ -1,8 +1,8 @@
 <!-- the Chat Pane manages and contains Multiple Chat boxes -->
 <script lang="ts">
 import { coldChallenges, PaneInfo, pmChats, currentPaneStore } from "../store";
-import { ChallengePayload, IPCEventTypes, PmPayload, tsPrint, UiEventTypes } from "../util";
-import { EventsEmit, EventsOn } from "../../wailsjs/runtime/runtime";
+import { ChallengePayload, IPCEventTypes, PmPayload, tsPrint } from "../util";
+import { EventsOn } from "../../wailsjs/runtime/runtime";
 import Chat from "./chat/Chat.svelte";
 
 export let info: PaneInfo
@@ -17,14 +17,6 @@ function openNewChat() {
             return pms
         })
 }
-
-EventsOn(UiEventTypes.DeleteChat, (withUser: string) => {
-    tsPrint(`closing chat box with ${withUser}`)
-    pmChats.update((pms => {
-        delete pms[withUser]
-        return pms
-    }))
-})
 
 EventsOn(IPCEventTypes.PrivateMessage, (data: PmPayload) => {
     tsPrint(`received a new PM: ${JSON.stringify(data)}`)

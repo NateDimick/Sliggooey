@@ -1,10 +1,8 @@
 <!-- Display active challenge info within a private chat -->
 <script lang="ts">
-import { ChallengePayload, PmSource, UiEventTypes } from "../../util";
+import { ChallengePayload, PmSource } from "../../util";
 import { coldChallenges, userName } from "../../store";
-import { EventsOff, EventsOn } from "../../../wailsjs/runtime/runtime";
 import { AcceptBattleChallengeFromUser, CancelBattleChallengeToUser, RejectBattleChallengeFromUser } from "../../../wailsjs/go/main/App";
-import { onDestroy, onMount } from "svelte";
 
 export let challengeWith: string
 
@@ -12,6 +10,7 @@ let challenger: string = "sliggoeyAppPlaceholderChallenger"
 let format: string = ""
 
 $: activeChallenge = $coldChallenges.find((c) => c.With === challengeWith) !== undefined
+
 coldChallenges.subscribe((challenges: ChallengePayload[]) => {
     let c = challenges.find((ch) => ch.With === challengeWith)
     if (c) {

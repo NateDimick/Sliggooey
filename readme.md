@@ -13,6 +13,7 @@ Improvements that this project seeks to add are:
 * Quick EV/IV presets in team builder (?)
 * Looking good
 * all avatars selectable from UI (unlike regular client, see the [trainers page](https://play.pokemonshowdown.com/sprites/trainers))
+* gamepad support
 
 ## Timeline
 
@@ -31,7 +32,7 @@ Gooey is a play on words of "GUI" (If you're not in the know, many people pronou
 
 This project is built in [Go 1.18](go.dev) with a [Svelte](svelte.dev)-Typescript front end with [Wails version 2](https://wails.io/)
 
-Contributions are welcome and appreciated. Make an issue, a PR or hit me up on Twitter if you have an idea for a feature to add.
+Contributions are welcome and appreciated. Make an issue, a PR or hit me up on Twitter if you have an idea for a feature to add (or just want to help this get to version 1.0).
 
 See the Pokemon Showdown websocket protocol and api reference here: [Showdown Protocol](https://github.com/smogon/pokemon-showdown/blob/master/PROTOCOL.md)
 
@@ -44,7 +45,8 @@ See the Pokemon Showdown websocket protocol and api reference here: [Showdown Pr
 ### Development Goals
 
 1. try to unit test as much of the Go backend as possible
-2. minimum frontend work
+2. minimize TS code footprint (use svelte features and go backend as much as possible)
+3. use Wails only for IPC (no events that don't cross IPC threshold)
 
 ### General Architecture
 
@@ -60,7 +62,7 @@ Sending messages is done through a direct function call.
 
 Backend events are emitted to permanent components in the front end. If a component can be created or destroyed dynamically, a permanent front end component must receive the event and propagate it to the volatile component over a custom ui topic.
 
-##### Backend Event Topics
+##### Backend->Frontend Event Topics
 
 * `loginFail`
 * `loginSuccess`
@@ -76,21 +78,6 @@ Backend events are emitted to permanent components in the front end. If a compon
 UI events are emitted and received by svelte components.
 
 Some UI event topics are dynamic, but most are defined constants.
-
-##### Defined UI Event Topics
-
-* `uiChangeView`
-  * This event is emitted by view components when they are relinquishing their control over the app to a new view
-  * Payload: The enumerated `ViewType` that should be switched to
-* `uiChangePane`
-  * This event is emitted by a PaneTab to cause the corresponding named Pane to become the main focus of the Client
-  * Any Pane should listen to this event. If the event references its name, then it should un-hide. Else, it should hide.
-  * Payload: the string name of the Pane to switch to
-* `uiDeletePane`
-  * This event is emitted by a PaneTab when the user has selected to close the Pane
-  * Payload: the string name of the Pane to delete
-* `uiDeleteChat`
-  * This event is emitted by a Chat when the user selects to close the chat
 
 ## Note Taking
 
@@ -109,3 +96,7 @@ Examples of how to get images of pokemon... from the showdown server
 * Generation 5 still sprites ![Still Sliggoo](https://play.pokemonshowdown.com/sprites/gen5/sliggoo.png)
 * Generation 4 and below have no back fill of new pokemon sprites
 * Pokedex Image ![Sliggy](https://play.pokemonshowdown.com/sprites/dex/sliggoo.png)
+
+## Side Notes
+
+* the GUI will not render (dev or build) on Ubuntu 22.04 with the combination of Radeon Software for Linux 22.20 drivers and libwebkit2gtk-4.0-dev version 2.36.6-0ubuntu0.22.04.1

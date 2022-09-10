@@ -22,15 +22,6 @@ export enum ViewType {
     Previous
 }
 
-// event types that exist only within the UI
-export enum UiEventTypes {
-    ViewChange = "uiChangeView",
-    PaneChange = "uiChangePane",
-    DeletePane = "uiDeletePane",
-    DeleteChat = "uiDeleteChat",
-    NewChallenge = "uiBeenChallenged"
-}
-
 // event types that come from the Go backend (appTypes.go ShowdownEventTopic)
 export enum IPCEventTypes {
     LoginFail = "loginFail",
