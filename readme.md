@@ -1,32 +1,46 @@
 # Pokemon Sliggooey
 
-The goal of this project is to build a Pokemon showdown client that offers a better user experience than the default client. By building in Go with Wails, it also will be available for Windows, Mac or Linux, whereas the default client is only available for Windows and Mac.
+The goal of this project is to build a Pokemon showdown client that offers a better user experience than the default client.
 
-Improvements that this project seeks to add are:
+By building in Go with Wails, we get the following benefits:
 
-* Better use of screen real estate
-* Chat command hot keys
-* Automatic good sportsmanship (GGs and GLHFs)
-* Custom avatars (?)
-* Damage calculator integration @smogon/calc
-* Pikalytics integration (?)
-* Quick EV/IV presets in team builder (?)
-* Looking good
-* all avatars selectable from UI (unlike regular client, see the [trainers page](https://play.pokemonshowdown.com/sprites/trainers))
-* gamepad support
+* Faster an simpler compiling
+* Smaller Executables (showdown client for windows is 44 MB)
+* Linux build target support
+* No PHP
 
 ## Timeline
 
+This projects seeks to be an improvement over the default showdown client. However, before it can surpass the default client, it must reach feature parity. The Roadmap below provides a general outline of the big milestones of this project.
+
 Milestones will be as follows:
 
+* Milestone 0: can play a full current gen random single battle initiated through a challenge
 * Milestone 1: can play random battles
-* Milestone 2: can play any format (with imported teams)
-* Milestone 3: teambuidler
-* Milestone 4: Improvements over the default pokemon showdown client
+  * this means any format with random teams can be played, whether through direct challenges or through matchmaking on the ladder
+  * fortunately. this step requires probably 95-99% support of the battle simulator protocol support, meaning future steps will not have to do much more work on supporting battles
+* Milestone 2: can play any format and teambuilder
+  * this is a big step. Any format must become playable and the teambuilder must be incorporated to help support that
+  * Teambuidler includes team validation
+  * Teambuilder includes team importing and exporting from pokepaste and json formats
+  * teams must be packable to the WSS protocol packed format
+* Milestone 3: Improvements over the default pokemon showdown client, which include (in no particular order)
+  * Key bindings and shortcuts
+  * Gamepad support
+  * Damage Calculator integration
+  * Automation in response to certain events
+    * auto timer start
+    * auto gl/hf/gg
+    * custom automation event support
+  * Appearance customization
+  * Full range of player avatars available for selection
+  * Team Builder Aid, such as:
+    * Pikalytics integration (?)
+    * EV/IV presets
 
 ## About
 
-Gooey is a play on words of "GUI" (If you're not in the know, many people pronounce GUI as "Gooey" rather than "gee yoo eye") and also allows us to use the Goodra line as our mascot.
+Sliggooey is a play on words of Sliggoo, the pokemon, and "GUI" (If you're not in the know, many people pronounce GUI as "Gooey" rather than "gee yoo eye").
 
 ## Development Details
 
@@ -36,9 +50,9 @@ Contributions are welcome and appreciated. Make an issue, a PR or hit me up on T
 
 See the Pokemon Showdown websocket protocol and api reference here: [Showdown Protocol](https://github.com/smogon/pokemon-showdown/blob/master/PROTOCOL.md)
 
-* To run in development mode, `wails dev` (**do this for first time setup too** - it will populate frontend/dist, frontend/wailsjs, and create build)
+* To run in development mode, `wails dev` (**do this for first time setup too** - it will populate frontend/dist, frontend/wailsjs, and create the build/directory)
     1. just the front end can be run alone with `npm run dev` from the `frontend` directory
-    2. While in `wails dev`, the front end is also supposed to be accessible from `localhost:3000`, but this has not worked with this project
+    2. While in `wails dev`, the front end is also accessible from `localhost:34115` in your browser
 * To build Go code for front end use, `wails generate module`
 * To build an executable, `wails build`
 
@@ -81,7 +95,12 @@ Examples of how to get images of pokemon... from the showdown server
 * Pokemon Sprites [Pokemon Spritesheet](https://play.pokemonshowdown.com/sprites/pokemonicons-sheet.png)
   * Have to do math based on pokedex number or something similar to get the right spot
   * 40 by 30 pixels in size
-  * how to extract sprite from sprite sheet (12 sprites per row, 0 based index thanks to missingno #0 - sliggoo is #705. 59th row (30px per row 58 x 30 = 1740px), 10th column (40px per column 9 x 40 = 360px) <img style="width:40px; height:30px; background: url(https://play.pokemonshowdown.com/sprites/pokemonicons-sheet.png) transparent no-repeat scroll -360px -1740px;">
+  * how to extract sprite from sprite sheet (12 sprites per row, 0 based index thanks to missingno #0 - sliggoo is #705. 59th row (30px per row 58 x 30 = 1740px), 10th column (40px per column 9 x 40 = 360px)
+
+    ``` html
+    <img style="width:40px; height:30px; background: url(https://play.pokemonshowdown.com/sprites/pokemonicons-sheet.png) transparent no-repeat scroll -360px -1740px;">
+    ```
+
 * Pokemon "models" (example Sliggoo) ![Garchomp gif](https://play.pokemonshowdown.com/sprites/ani/sliggoo.gif)
 * Pokemon "models" from the back (example Sliggoo) ![Garchom back gif](https://play.pokemonshowdown.com/sprites/ani-back/sliggoo.gif)
 * Shiny ![Shiny Sliggoo](https://play.pokemonshowdown.com/sprites/ani-shiny/sliggoo.gif) ![Shiny Sliggoo](https://play.pokemonshowdown.com/sprites/ani-back-shiny/sliggoo.gif)

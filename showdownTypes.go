@@ -1,7 +1,5 @@
 package main
 
-import "encoding/json"
-
 // types for the pokemon showdown wss protocol
 
 type RoomType string
@@ -52,6 +50,7 @@ const (
 	IsRatedBattle MessageType = "rated"
 	Rule          MessageType = "rule"
 	ClearPoke     MessageType = "clearpoke"
+	PreviewPoke   MessageType = "poke"
 	TeamPreview   MessageType = "teampreview"
 	SimStart      MessageType = "start"
 	Request       MessageType = "request"
@@ -254,17 +253,13 @@ type LoginResponse struct {
 
 type GamesStatus struct {
 	// from the updatesearch status message
-	Games  json.RawMessage `json:"games"`
-	Search []string        `json:"searching"`
+	Games  map[string]string `json:"games"`
+	Search []string          `json:"searching"`
 }
 
-func (g *GamesStatus) GetGames() map[string]string {
-	games := make(map[string]string)
-	if string(g.Games) != "null" {
-		json.Unmarshal(g.Games, &games)
-	}
-	return games
-}
+// func (g *GamesStatus) GetGames() map[string]string {
+// 	return g.Games.(map[string]string)
+// }
 
 type ChallengeStatus struct {
 	// from the updatechallenges status message

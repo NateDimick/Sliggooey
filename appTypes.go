@@ -10,21 +10,24 @@ import (
 type AppError int
 
 const (
-	WebsocketError AppError = 1
+	WebsocketError AppError = iota
+	JsonUnmarshalError
 )
 
 type ShowdownEventTopic string
 
 const (
-	LoginFail         ShowdownEventTopic = "loginFail"
-	LoginSuccess      ShowdownEventTopic = "loginSuccess"
-	FormatTopic       ShowdownEventTopic = "formats"
-	PMTopic           ShowdownEventTopic = "pm"
-	NewRoomTopic      ShowdownEventTopic = "newRoom"
-	RoomMessageTopic  ShowdownEventTopic = "roomMsg"
-	PopupTopic        ShowdownEventTopic = "popup"
-	ChallengeTopic    ShowdownEventTopic = "challenged"
-	ChallengeEndTopic ShowdownEventTopic = "challengeEnd"
+	LoginFail          ShowdownEventTopic = "loginFail"
+	LoginSuccess       ShowdownEventTopic = "loginSuccess"
+	FormatTopic        ShowdownEventTopic = "formats"
+	PMTopic            ShowdownEventTopic = "pm"
+	NewRoomTopic       ShowdownEventTopic = "newRoom"
+	RoomMessageTopic   ShowdownEventTopic = "roomMsg"
+	RoomStateTopic     ShowdownEventTopic = "roomState"
+	PopupTopic         ShowdownEventTopic = "popup"
+	ChallengeTopic     ShowdownEventTopic = "challenged"
+	ChallengeEndTopic  ShowdownEventTopic = "challengeEnd"
+	BattleRequestTopic ShowdownEventTopic = "battleRequest"
 )
 
 type AppSettings struct {
@@ -157,7 +160,16 @@ type RoomHtmlPayload struct {
 }
 
 type RoomStatePayload struct {
-	Title string
+	RoomId       string
+	Title        string
+	Users        []string
+	Players      []string
+	GameType     string
+	Gen          int
+	Format       string
+	IsRated      bool
+	TimerOn      bool
+	battleActive bool
 }
 
 type ChallengePayload struct {

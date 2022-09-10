@@ -69,12 +69,14 @@ func (a *App) nameTakenEvent(takenName string, errReason string) {
 }
 
 func (a *App) updateSearchEvent(searchJson string) {
-	var status *GamesStatus
+	status := new(GamesStatus)
 	err := json.Unmarshal([]byte(searchJson), status)
 	if err != nil {
 		goPrint("could not parse search status", searchJson)
+		goPrint("reason for parse failure: ", err.Error())
 		return
 	}
+	goPrint("current search status: ", status)
 	a.state.games = status
 }
 

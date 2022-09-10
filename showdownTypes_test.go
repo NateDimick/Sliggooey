@@ -5,6 +5,7 @@ import (
 	"testing"
 )
 
+// this is a bad test. re-write.
 func TestParseSearchJson(t *testing.T) {
 	cases := []struct {
 		input  string
@@ -20,7 +21,7 @@ func TestParseSearchJson(t *testing.T) {
 			t.Fatalf("got an error: %s", err.Error())
 		} else {
 			t.Logf("%s", gs)
-			t.Logf("%s", gs.GetGames())
+			t.Logf("%s", gs.Games)
 			t.Fail()
 		}
 	}

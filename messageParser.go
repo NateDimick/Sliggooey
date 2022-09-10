@@ -114,6 +114,7 @@ func (a *App) parseGlobalServerMessage(message string) {
 	}
 }
 
+// messages sent in the context of a room
 func (a *App) parseRoomServerMessage(roomId, message string) {
 	// parse a message from the server
 	chunkedMsg := NewSplitServerMessage(message)
@@ -132,30 +133,43 @@ func (a *App) parseRoomServerMessage(roomId, message string) {
 		//   |title|<title>
 		// 0 |  1  |   2
 		//payload := RoomStatePayload{Title: chunkedMsg.Get(2)}
-		goPrint("todo: handle title message", message)
+		payload := RoomStatePayload{RoomId: roomId, Title: chunkedMsg.Get(2)}
+		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, payload}
 	case Users:
 		//   |users|<user list>
 		// 0 |  1  |     2
 		// user list is comma delimited
 		// @ delimits a user entry with their status message
-		// status messages starting with ! means the user is away
-		goPrint("todo: handle users message", message)
+		// status messages starting with ! means the user is aways
+		userList := NewSplitString(chunkedMsg.ReassembleTail(2), ",")
+		users := make([]string, len(userList.inner))
+		for i, u := range userList.inner {
+			users[i] = NewUser(u).UserName
+		}
+		payload := RoomStatePayload{RoomId: roomId, Users: users}
+		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, payload}
 	case Html:
 		//   |html|<html>
 		// 0 | 1  |  2
+		payload := RoomHtmlPayload{roomId, chunkedMsg.Get(2), "", false}
+		a.channels.frontendChan <- ShowdownEvent{RoomMessageTopic, payload}
 	case Uhtml:
 		//   |uhtml|<name>|<html>
 		// 0 |  1  |  2   |  3
 		// uhtml contains named, updatable html
+		payload := RoomHtmlPayload{roomId, chunkedMsg.Get(3), chunkedMsg.Get(2), false}
+		a.channels.frontendChan <- ShowdownEvent{RoomMessageTopic, payload}
 	case UhtmlChange:
 		//   |uhtmlchange|<name>|<html>
 		// 0 |     1     |  2   |  3
 		// uhtmlchange updates the named updatable html
+		payload := RoomHtmlPayload{roomId, chunkedMsg.Get(3), chunkedMsg.Get(2), true}
+		a.channels.frontendChan <- ShowdownEvent{RoomMessageTopic, payload}
 	case Join, Join2:
 		//   |join|<user>
 		// 0 | 1  |  2
 		joinUser := NewUser(chunkedMsg.Get(2))
-		payload := RoomMessagePayload{roomId, "system", fmt.Sprintf("%s joined", joinUser.UserName)}
+		payload := RoomMessagePayload{roomId, "system", fmt.Sprintf("%c%s joined", joinUser.Rank, joinUser.UserName)}
 		a.channels.frontendChan <- ShowdownEvent{RoomMessageTopic, payload}
 	case Leave, Leave2:
 		//   |leave|<user>
@@ -181,6 +195,7 @@ func (a *App) parseRoomServerMessage(roomId, message string) {
 		goPrint("todo: handle notify", message)
 	case Timestamp2:
 		//   |:|<unix timestamp>
+		goPrint("ignoring server room timestamp: ", message)
 	case ChatTs:
 		//   |c:|<unix timestamp>|<user>|<message>
 		// 0 |1 |        2       |  3   |    4
