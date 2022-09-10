@@ -36,6 +36,11 @@ Contributions are welcome and appreciated. Make an issue, a PR or hit me up on T
 
 See the Pokemon Showdown websocket protocol and api reference here: [Showdown Protocol](https://github.com/smogon/pokemon-showdown/blob/master/PROTOCOL.md)
 
+## First time setup
+
+* run `npm run build` from `frontend/`
+* run `wails generate module` from project root
+
 * To run in development mode, `wails dev`
     1. just the front end can be run alone with `npm run dev` from the `frontend` directory
     2. While in `wails dev`, the front end is also supposed to be accessible from `localhost:3000`, but this has not worked with this project
@@ -68,16 +73,11 @@ Backend events are emitted to permanent components in the front end. If a compon
 * `loginSuccess`
 * `formats`
 * `pm`
+* `newRoom`
 * `roomMsg`
 * `popup`
 * `challenged`
 * `challengeEnd`
-
-#### UI Events
-
-UI events are emitted and received by svelte components.
-
-Some UI event topics are dynamic, but most are defined constants.
 
 ## Note Taking
 
