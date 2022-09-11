@@ -291,7 +291,7 @@ type BattleRequest struct {
 
 type PlayerSideDetails struct {
 	PlayerName     string        `json:"name"`
-	PlayerId       int           `json:"id"`
+	PlayerId       string        `json:"id"`
 	PlayersPokemon []SidePokemon `json:"pokemon"`
 }
 
@@ -309,11 +309,13 @@ type SidePokemon struct {
 }
 
 type ActiveDetails struct {
-	Moves      []MoveInfo `json:"moves"`
-	CanDynamax bool       `json:"canDynamax"`
-	DmaxMoves  []MoveInfo `json:"maxMoves"`
+	Moves      []MoveInfo  `json:"moves"`
+	CanDynamax bool        `json:"canDynamax"`
+	DmaxMoves  MaxMoveInfo `json:"maxMoves"`
 }
-
+type MaxMoveInfo struct {
+	DmaxMoves []MoveInfo `json:"maxMoves"`
+}
 type MoveInfo struct {
 	MoveName  string `json:"move"`
 	MoveId    string `json:"id"`

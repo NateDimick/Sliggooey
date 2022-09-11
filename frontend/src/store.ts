@@ -15,7 +15,8 @@ export const battleRequests = writable(new Object())
 export const userName = writable("")
 // list of all open Panes
 export const panes = writable([
-    {type: PaneType.HomePane, name: "Home", removable: false}, 
+    {type: PaneType.HomePane, name: "Home", removable: false},
+    {type: PaneType.RoomHubPane, name: "Chat Room Hub", removable: false},
     {type: PaneType.ChatPane, name: "Private Chats", removable: false},
     {type: PaneType.BattleHubPane, name: "Battle Hub", removable: false}
 ])

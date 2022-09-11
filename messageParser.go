@@ -174,6 +174,7 @@ func (a *App) parseRoomServerMessage(roomId, message string) {
 		joinUser := NewUser(chunkedMsg.Get(2))
 		payload := RoomMessagePayload{roomId, "system", fmt.Sprintf("%c%s joined", joinUser.Rank, joinUser.UserName)}
 		a.channels.frontendChan <- ShowdownEvent{RoomMessageTopic, payload}
+		// FUN FACT: the server sends |j| both when a user joins and leaves
 	case Leave, Leave2:
 		//   |leave|<user>
 		// 0 |  1  |  2

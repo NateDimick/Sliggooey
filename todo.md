@@ -5,6 +5,7 @@ last modified: 9/10/2022
 this is a completely disorganized list of ideas for things to do or research
 
 * reconcile front end room state
+* refactor the Pane hidden/isfront mechanic to be in one central location to reduce duplicated code
 * finish handling room messages
   * notify - back and front
   * chatTs - ?

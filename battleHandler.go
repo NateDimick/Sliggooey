@@ -9,7 +9,7 @@ func (a *App) handleBattleRequest(roomId, request string) {
 	req := new(BattleRequest)
 	err := json.Unmarshal([]byte(request), req)
 	if err != nil {
-		a.channels.errorChan <- JsonUnmarshalError
+		goPrint("error Unmarshalling battle request", err.Error())
 		return
 	}
 	req.RoomId = roomId

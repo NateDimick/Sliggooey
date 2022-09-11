@@ -8,6 +8,7 @@ import ChatPane from "./ChatPane.svelte";
 import BattlePane from "./BattlePane.svelte";
 import { EventsOn } from "../../wailsjs/runtime/runtime";
 import BattleHubPane from "./BattleHubPane.svelte";
+import RoomsHubPane from "./RoomsHubPane.svelte";
 
 EventsOn(IPCEventTypes.RoomInit, (data: NewRoomPayload) => {
     let newPane: PaneInfo = {name: data.RoomId, removable: true, type: undefined}
@@ -68,7 +69,6 @@ EventsOn(IPCEventTypes.RoomMessage, (data: RoomMessagePayload | RoomHtmlPayload)
             return rms
         })
     }
-    tsPrint(JSON.stringify($roomChats))
 })
 
 EventsOn(IPCEventTypes.RoomState, (data: RoomStatePayload) => {
@@ -96,6 +96,8 @@ EventsOn(IPCEventTypes.RoomState, (data: RoomStatePayload) => {
                 <BattleHubPane info={p}/>
             {:else if p.type === PaneType.BattlePane}
                 <BattlePane info={p}/>
+            {:else if p.type === PaneType.RoomHubPane}
+                <RoomsHubPane info={p}/>
             {/if}
         {/each}
     </div>

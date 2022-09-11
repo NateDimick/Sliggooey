@@ -10,6 +10,7 @@ export enum PaneType {
     ChatPane,
     BattleHubPane,
     BattlePane,
+    RoomHubPane,
     RoomPane,
     TeamBuilderPane
 }
