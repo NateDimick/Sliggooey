@@ -10,7 +10,7 @@ import { EventsOn } from "../../wailsjs/runtime/runtime";
 import BattleHubPane from "./BattleHubPane.svelte";
 
 EventsOn(IPCEventTypes.RoomInit, (data: NewRoomPayload) => {
-    let newPane: PaneInfo = {name: data.RoomId, front: true, removable: true, type: undefined}
+    let newPane: PaneInfo = {name: data.RoomId, removable: true, type: undefined}
     if (data.RoomType === "chat") {
         newPane.type = PaneType.RoomPane
     }else if (data.RoomType === "battle") {
