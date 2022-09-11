@@ -1,13 +1,10 @@
 <!-- the Chat Pane manages and contains Multiple Chat boxes -->
 <script lang="ts">
-import { coldChallenges, PaneInfo, pmChats, currentPaneStore } from "../store";
+import { coldChallenges, pmChats } from "../store";
 import { ChallengePayload, IPCEventTypes, PmPayload, tsPrint } from "../util";
 import { EventsOn } from "../../wailsjs/runtime/runtime";
 import Chat from "./chat/Chat.svelte";
 
-export let info: PaneInfo
-
-$: isFront = info.name === $currentPaneStore
 let newChatWith: string
 
 function openNewChat() {
@@ -55,12 +52,10 @@ EventsOn(IPCEventTypes.ChallengeEnd, (challengeWith: string) => {
 </script>
 
 <main>
-    <div hidden={!isFront}>
-        <h1>This is a Chat Pane</h1>
-        <input type="text" bind:value={newChatWith}>
-        <input type="button" value="Start New Chat" on:click={openNewChat}>
-        {#each Object.keys($pmChats) as pmWith}
-            <Chat chatWith={pmWith}/>
-        {/each}
-    </div>    
+    <h1>This is a Chat Pane</h1>
+    <input type="text" bind:value={newChatWith}>
+    <input type="button" value="Start New Chat" on:click={openNewChat}>
+    {#each Object.keys($pmChats) as pmWith}
+        <Chat chatWith={pmWith}/>
+    {/each}  
 </main>

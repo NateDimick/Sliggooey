@@ -9,6 +9,7 @@ import BattlePane from "./BattlePane.svelte";
 import { EventsOn } from "../../wailsjs/runtime/runtime";
 import BattleHubPane from "./BattleHubPane.svelte";
 import RoomsHubPane from "./RoomsHubPane.svelte";
+import RoomPane from "./RoomPane.svelte";
 
 EventsOn(IPCEventTypes.RoomInit, (data: NewRoomPayload) => {
     let newPane: PaneInfo = {name: data.RoomId, removable: true, type: undefined}
@@ -88,17 +89,21 @@ EventsOn(IPCEventTypes.RoomState, (data: RoomStatePayload) => {
     </div>
     <div id="view">
         {#each $panes as p}
+        <div hidden={p.name !== $currentPaneStore}>
             {#if p.type === PaneType.HomePane}
-                <HomePane info={p}/>
+                <HomePane/>
             {:else if p.type === PaneType.ChatPane}
-                <ChatPane info={p}/>
+                <ChatPane/>
             {:else if p.type === PaneType.BattleHubPane}
-                <BattleHubPane info={p}/>
+                <BattleHubPane/>
             {:else if p.type === PaneType.BattlePane}
                 <BattlePane info={p}/>
             {:else if p.type === PaneType.RoomHubPane}
-                <RoomsHubPane info={p}/>
+                <RoomsHubPane/>
+            {:else if p.type === PaneType.RoomPane}
+                <RoomPane info={p}/>
             {/if}
+        </div>
         {/each}
     </div>
 </main>
