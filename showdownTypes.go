@@ -13,6 +13,7 @@ type MessageType string
 
 const (
 	Init             MessageType = "init"
+	DeInit           MessageType = "deinit"
 	Title            MessageType = "title"
 	Users            MessageType = "users"
 	Message          MessageType = ""

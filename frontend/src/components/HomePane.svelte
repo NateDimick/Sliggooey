@@ -12,6 +12,6 @@ $: isFront = info.name === $currentPaneStore
 <main>
     <div hidden={!isFront}>
         <h1>This is the Home Pane</h1>
-        <h2>Eventually this is where Battle search will appear</h2>
+        <h2>This page will eventually have something</h2>
     </div>
 </main>

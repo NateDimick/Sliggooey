@@ -78,6 +78,7 @@ func (a *App) updateSearchEvent(searchJson string) {
 	}
 	goPrint("current search status: ", status)
 	a.state.games = status
+	a.channels.frontendChan <- ShowdownEvent{CurrentGamesTopic, status}
 }
 
 func (a *App) updateChallengeEvent(challJson string) {

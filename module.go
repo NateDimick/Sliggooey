@@ -29,6 +29,14 @@ func (a *App) SendRoomChat(roomId, message string) {
 	a.conn.SendServerMessageToRoom(roomId, message)
 }
 
+func (a *App) JoinRoom(roomId string) {
+	a.conn.SendServerCommand(buildCommand(JoinCmd, roomId))
+}
+
+func (a *App) LeaveRoom(roomId string) {
+	a.conn.SendServerCommand(buildCommand(LeaveCmd, roomId))
+}
+
 func (a *App) MakeBattleChoice(choices ...BattleChoice) {
 	cmd := FormatBattleChoices(choices...)
 	a.conn.SendServerCommand(cmd)

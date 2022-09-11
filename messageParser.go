@@ -129,6 +129,9 @@ func (a *App) parseRoomServerMessage(roomId, message string) {
 		// 0 | 1  |     2
 		payload := NewRoomPayload{roomId, RoomType(chunkedMsg.Get(2))}
 		a.channels.frontendChan <- ShowdownEvent{NewRoomTopic, payload}
+	case DeInit:
+		//   |deinit
+		a.channels.frontendChan <- ShowdownEvent{RoomExitTopic, roomId}
 	case Title:
 		//   |title|<title>
 		// 0 |  1  |   2

@@ -1,7 +1,8 @@
 <!-- Pane Tab is a tab that allows the user to selct the specific pane they want to see by clicking this -->
 <script lang="ts">
-    import { tsPrint } from "../util"
+    import { PaneType, tsPrint } from "../util"
     import { currentPaneStore, PaneInfo, panes, roomChats } from "../store"
+    import { LeaveRoom } from "../../wailsjs/go/main/App"
 
     export let info: PaneInfo
 
@@ -19,6 +20,9 @@
             delete rms[info.name]
             return rms
         })
+        if (info.type === PaneType.BattlePane || info.type === PaneType.RoomPane) {
+            LeaveRoom(info.name)
+        }
     }
 </script>
 

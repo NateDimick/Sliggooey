@@ -30,9 +30,11 @@ export enum IPCEventTypes {
     FormatList = "formats",
     PrivateMessage = "pm",
     RoomInit = "newRoom",
+    RoomExit = "roomExit",
     RoomMessage = "roomMsg",
     RoomState = "roomState",
     Popup = "popup",
+    Games = "games",
     Challenge = "challenged",
     ChallengeEnd = "challengeEnd",
     BattleRequest = "battleRequest"
@@ -80,4 +82,9 @@ export type RoomStatePayload = {
     RoomId: string,
     Title: string,
     Users: string[]
+}
+
+export type GamesPayload = {
+    games: Object,
+    searching: string[]
 }

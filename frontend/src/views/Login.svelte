@@ -42,4 +42,5 @@ EventsOn(IPCEventTypes.LoginFail, (data: LoginFailEvent) => {
     <input type="text" name="uname" id="uname" bind:value={chooseName}>
     <input type="password" name="pword" id="pword" bind:value={password}>
     <input type="button" value="Login" on:click={login}>
+    <img src="https://play.pokemonshowdown.com/sprites/dex/sliggoo.png" alt="Welcome to Sliggooey">
 </main>

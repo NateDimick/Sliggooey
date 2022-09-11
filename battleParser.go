@@ -11,7 +11,7 @@ import (
 func (a *App) parseBattleMessage(roomId string, msg *SplitString) {
 	fullMessage := msg.ReassembleTail(0)
 	goPrint("incoming battle message", fullMessage)
-	msgType := MessageType(msg.Get(0))
+	msgType := MessageType(msg.Get(1))
 	switch msgType {
 	case Request:
 		//   |request|<request json>
@@ -19,7 +19,8 @@ func (a *App) parseBattleMessage(roomId string, msg *SplitString) {
 		if msg.Get(2) != "" {
 			a.handleBattleRequest(roomId, msg.ReassembleTail(2))
 		} else {
-			a.channels.frontendChan <- ShowdownEvent{BattleRequestTopic, nil}
+			payload := BattleRequest{RoomId: roomId}
+			a.channels.frontendChan <- ShowdownEvent{BattleRequestTopic, payload}
 		}
 	case Timestamp:
 		//   |t:|<unix timestamp>
@@ -124,7 +125,7 @@ func (a *App) parseBattleMessage(roomId string, msg *SplitString) {
 func (a *App) parseMajorBattleAction(roomId string, msg *SplitString) {
 	fullMessage := msg.ReassembleTail(0)
 	goPrint("possible major battle action", fullMessage)
-	msgType := MessageType(msg.Get(0))
+	msgType := MessageType(msg.Get(1))
 	switch msgType {
 	case Move:
 		//

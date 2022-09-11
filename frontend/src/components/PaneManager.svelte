@@ -23,6 +23,10 @@ EventsOn(IPCEventTypes.RoomInit, (data: NewRoomPayload) => {
         rms[data.RoomId] = []
         return rms
     })
+    roomStates.update((rss) => {
+        rss[data.RoomId] = {}
+        return rss
+    })
     panes.update((panes: PaneInfo[]) => {
         panes = [...panes, newPane]
         return panes
@@ -30,9 +34,27 @@ EventsOn(IPCEventTypes.RoomInit, (data: NewRoomPayload) => {
     currentPaneStore.set(data.RoomId)
 })
 
+EventsOn(IPCEventTypes.RoomExit, (data: string) => {
+    tsPrint(`closing room ${data}`)
+    roomChats.update((rms) => {
+        delete rms[data]
+        return rms
+    })
+    roomStates.update((rss) => {
+        delete rss[data]
+        return rss
+    })
+    panes.update((panes: PaneInfo[]) => {
+        panes = panes.filter((p) => p.name !== data)
+        return panes
+    })
+    if ($currentPaneStore === data) {
+        currentPaneStore.set("Home")
+    }
+})
+
 EventsOn(IPCEventTypes.RoomMessage, (data: RoomMessagePayload | RoomHtmlPayload) => {
     tsPrint(`received a new Room message: ${JSON.stringify(data)}`)
-    tsPrint(JSON.stringify($roomChats))
     if ($roomChats[data.RoomId] === undefined) {
         // new chat
         roomChats.update((rms) => {
