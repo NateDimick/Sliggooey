@@ -90,11 +90,15 @@ export type GamesPayload = {
     searching: string[]
 }
 
+export type BattleRequestPayload = {
+    RequestJson: string,
+    RoomId: string
+}
+
 export type BattleRequest = {
     side: PlayerSideDetails,
     rqid: number,
-    active: ActivePokemon[],
-    RoomId: string
+    active: ActivePokemon[]
 }
 
 export type PlayerSideDetails = {

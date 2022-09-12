@@ -16,12 +16,11 @@ func (a *App) parseBattleMessage(roomId string, msg *SplitString) {
 	case Request:
 		//   |request|<request json>
 		// 0 |   1   |      2
+		payload := BattleRequestPayload{RoomId: roomId}
 		if msg.Get(2) != "" {
-			a.handleBattleRequest(roomId, msg.ReassembleTail(2))
-		} else {
-			payload := BattleRequest{RoomId: roomId}
-			a.channels.frontendChan <- ShowdownEvent{BattleRequestTopic, payload}
+			payload.RequestJson = msg.ReassembleTail(2)
 		}
+		a.channels.frontendChan <- ShowdownEvent{BattleRequestTopic, payload}
 	case Timestamp:
 		//   |t:|<unix timestamp>
 		// 0 |1 |        2

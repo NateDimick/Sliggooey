@@ -272,45 +272,7 @@ type Format struct {
 	Tags string
 }
 
-type BattleRequest struct {
-	Side      *PlayerSideDetails `json:"side"`
-	Active    []ActiveDetails    `json:"active"`
-	RequestId int                `json:"rqid"`
-	RoomId    string
-}
-
-type PlayerSideDetails struct {
-	PlayerName     string        `json:"name"`
-	PlayerId       string        `json:"id"`
-	PlayersPokemon []SidePokemon `json:"pokemon"`
-}
-
-type SidePokemon struct {
-	Active      bool           `json:"active"`
-	Item        string         `json:"item"`
-	BaseAbility string         `json:"baseAbility"`
-	Ability     string         `json:"ability"`
-	Pokeball    string         `json:"pokeball"`
-	Moves       []string       `json:"moves"`
-	Stats       map[string]int `json:"stats"`
-	Details     string         `json:"details"`
-	Identifier  string         `json:"ident"`
-	Condition   string         `json:"condition"`
-}
-
-type ActiveDetails struct {
-	Moves      []MoveInfo  `json:"moves"`
-	CanDynamax bool        `json:"canDynamax"`
-	DmaxMoves  MaxMoveInfo `json:"maxMoves"`
-}
-type MaxMoveInfo struct {
-	DmaxMoves []MoveInfo `json:"maxMoves"`
-}
-type MoveInfo struct {
-	MoveName  string `json:"move"`
-	MoveId    string `json:"id"`
-	CurrentPP int    `json:"pp"`
-	MaxPP     int    `json:"maxpp"`
-	Disabled  bool   `json:"disabled"`
-	Target    string `json:"target"`
+type BattleRequestPayload struct {
+	RequestJson string
+	RoomId      string
 }
