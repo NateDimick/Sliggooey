@@ -68,19 +68,6 @@ func (a *App) nameTakenEvent(takenName string, errReason string) {
 	goPrint(takenName, "is taken. todo: try again.", errReason)
 }
 
-func (a *App) updateSearchEvent(searchJson string) {
-	status := new(GamesStatus)
-	err := json.Unmarshal([]byte(searchJson), status)
-	if err != nil {
-		goPrint("could not parse search status", searchJson)
-		goPrint("reason for parse failure: ", err.Error())
-		return
-	}
-	goPrint("current search status: ", status)
-	a.state.games = status
-	a.channels.frontendChan <- ShowdownEvent{CurrentGamesTopic, status}
-}
-
 func (a *App) updateChallengeEvent(challJson string) {
 	var status *ChallengeStatus
 	err := json.Unmarshal([]byte(challJson), status)

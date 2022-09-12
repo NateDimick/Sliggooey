@@ -26,7 +26,6 @@ type ShowdownState struct {
 	user        *ShowdownUser
 	loggedIn    bool
 	challenges  *ChallengeStatus
-	games       *GamesStatus
 	settings    *AppSettings
 	credentials *ShowdownCredentials
 	formatList  *FormatInfo

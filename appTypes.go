@@ -62,7 +62,6 @@ type ShowdownUser struct {
 	User       *User
 	Avatar     int
 	Settings   *UserSettings
-	Games      *GamesStatus
 	Challenges *ChallengeStatus
 }
 

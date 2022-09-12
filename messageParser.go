@@ -58,7 +58,7 @@ func (a *App) parseGlobalServerMessage(message string) {
 		//   |updatesearch|<search json>
 		// 0 |     1      |     2
 		goPrint("update search", message)
-		a.updateSearchEvent(chunkedMsg.ReassembleTail(2))
+		a.channels.frontendChan <- ShowdownEvent{CurrentGamesTopic, chunkedMsg.ReassembleTail(2)}
 	case UpdateUser:
 		//   |updateuser|username|guestflag|avatarnum|<settings json>
 		// 0 |     1    |    2   |    3    |    4    |       5

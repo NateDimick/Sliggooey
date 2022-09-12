@@ -252,16 +252,6 @@ type LoginResponse struct {
 	ActionSuccess bool   `json:"actionsuccess"`
 }
 
-type GamesStatus struct {
-	// from the updatesearch status message
-	Games  map[string]string `json:"games"`
-	Search []string          `json:"searching"`
-}
-
-// func (g *GamesStatus) GetGames() map[string]string {
-// 	return g.Games.(map[string]string)
-// }
-
 type ChallengeStatus struct {
 	// from the updatechallenges status message
 	Challengers map[string]string `json:"challengesFrom"`
