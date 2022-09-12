@@ -1,7 +1,7 @@
 <script lang="ts">
 import { IPCEventTypes } from "../../util";
 
-import { EventsOn } from "../../../wailsjs/runtime/runtime";
+import { EventsOn } from "../../wailsjs/runtime/runtime";
 
 
 

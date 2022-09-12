@@ -4,6 +4,8 @@ last modified: 9/10/2022
 
 this is a completely disorganized list of ideas for things to do or research
 
+* send battle requests straight through without unmarshalling in go (no added value)
+* send battle search json straight through without unmarshalling in go (no added value)
 * reconcile front end room state
 * finish handling room messages
   * notify - back and front

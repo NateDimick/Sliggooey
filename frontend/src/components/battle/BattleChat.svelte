@@ -1,7 +1,7 @@
 <!-- Chat Room for a Battle Room -->
 <script lang="ts">
 import { roomChats } from "../../store";
-import { SendRoomChat } from "../../../wailsjs/go/main/App"
+import { SendRoomChat } from "../../wailsjs/go/main/App"
 
 export let roomName: string
 

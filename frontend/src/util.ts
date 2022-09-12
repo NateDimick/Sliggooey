@@ -1,4 +1,4 @@
-import { LogPrint } from "../wailsjs/runtime/runtime.js";
+import { LogPrint } from "./wailsjs/runtime/runtime";
 
 export function tsPrint(message: string) {
     LogPrint("[TS] " + message)
@@ -88,4 +88,68 @@ export type RoomStatePayload = {
 export type GamesPayload = {
     games: Object,
     searching: string[]
+}
+
+export type BattleRequest = {
+    side: PlayerSideDetails,
+    rqid: number,
+    active: ActivePokemon[],
+    RoomId: string
+}
+
+export type PlayerSideDetails = {
+    name: string,
+    id: string,
+    pokemon: SidePokemon[]
+}
+
+export type SidePokemon = {
+    active: boolean,
+    item: string,
+    baseAbility: string,
+    ability: string,
+    pokeball: string,
+    moves: string[],
+    stats: Map<string, number>,
+    details: string,
+    ident: string,
+    condition: string
+}
+
+export type ActivePokemon = {
+    moves: MoveInfo[],
+    canDynamax?: boolean,
+    maxMoves?: MaxMoveInfo
+}
+
+export type MaxMoveInfo = {
+    maxMoves: MoveInfo[]
+}
+
+export type MoveInfo = {
+    move: string,
+    id: string,
+    pp: number,
+    maxpp: number,
+    disabled: boolean,
+    target: string // TODO: change to targetType once all possible values are known
+}
+
+export enum TargetType {
+    Normal = "normal",
+    Self = "self",
+    Ally = "ally", // just a guess
+    Allies = "allySide",
+    AdjacentFoe = "adjacentFoe",
+    Foes = "foeSide",
+    All = "all" // just a guess
+}
+
+export type BattleChoice = {
+    Action: string,
+    Move: number,  // corresponds to the move's slot, 1-4
+    AltMove: string,
+    Target: number, // default to 0 for single battle, negative to target ally
+    Gimmick: string // max, mega, zmove
+
 }

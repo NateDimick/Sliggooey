@@ -2,7 +2,7 @@
 <script lang="ts">
 import { coldChallenges, pmChats } from "../store";
 import { ChallengePayload, IPCEventTypes, PmPayload, tsPrint } from "../util";
-import { EventsOn } from "../../wailsjs/runtime/runtime";
+import { EventsOn } from "../wailsjs/runtime/runtime";
 import Chat from "./chat/Chat.svelte";
 
 let newChatWith: string

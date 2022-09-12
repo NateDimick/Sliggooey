@@ -1,13 +1,13 @@
 <script lang="ts">
-import { GamesPayload, IPCEventTypes, tsPrint } from "../util";
-import { EventsOn } from "../../wailsjs/runtime/runtime";
+import { BattleRequest, GamesPayload, IPCEventTypes, tsPrint } from "../util";
+import { EventsOn } from "../wailsjs/runtime/runtime";
 import { battleRequests, battles } from "../store"
 import CurrentGames from "./battlehub/CurrentGames.svelte";
 import CurrentChallenges from "./battlehub/CurrentChallenges.svelte";
 import BattleSearch from "./battlehub/BattleSearch.svelte";
 
 
-EventsOn(IPCEventTypes.BattleRequest, (data) => {
+EventsOn(IPCEventTypes.BattleRequest, (data: BattleRequest) => {
     tsPrint(`incoming battle request info: ${JSON.stringify(data)}`)
     battleRequests.update((brs) => {
         brs[data.RoomId] = data

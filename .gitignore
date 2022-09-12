@@ -1,4 +1,4 @@
 *node_modules*
 frontend/dist/
-frontend/wailsjs/
+frontend/src/wailsjs/
 build/

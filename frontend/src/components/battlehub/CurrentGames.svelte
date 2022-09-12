@@ -1,6 +1,6 @@
 <script lang="ts">
 import { battles, currentPaneStore, panes, roomChats, roomStates } from "../../store";
-import { JoinRoom } from "../../../wailsjs/go/main/App"
+import { JoinRoom } from "../../wailsjs/go/main/App"
 import { tsPrint } from "../../util";
 
 function openBattleRoom(roomId: string) {

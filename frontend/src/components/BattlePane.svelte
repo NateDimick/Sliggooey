@@ -15,7 +15,7 @@ export let info: PaneInfo
     </div>
     <div class="center-col">
         <BattleScene/>
-        <BattleCommandPalette/>
+        <BattleCommandPalette roomName={info.name}/>
     </div>
     <div class="right-col">
         <BattleChat roomName={info.name}/>

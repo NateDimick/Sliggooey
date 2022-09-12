@@ -104,8 +104,12 @@ func (b *BattleChoice) format() string {
 	case SwitchOut:
 		return fmt.Sprintf("%s %d", b.Action, b.Target)
 	case Attack:
-		if b.Target > 0 {
-			return strings.TrimSpace(fmt.Sprintf("%s %d %d %s", b.Action, b.Move, b.Target, b.Gimmick))
+		if b.Target != 0 {
+			targetMod := ""
+			if b.Target > 0 {
+				targetMod = "+"
+			}
+			return strings.TrimSpace(fmt.Sprintf("%s %d %s%d %s", b.Action, b.Move, targetMod, b.Target, b.Gimmick))
 		} else {
 			return strings.TrimSpace(fmt.Sprintf("%s %d %s", b.Action, b.Move, b.Gimmick))
 

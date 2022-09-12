@@ -2,7 +2,7 @@
 <script lang="ts">
 import { ChallengePayload, PmSource } from "../../util";
 import { coldChallenges, userName } from "../../store";
-import { AcceptBattleChallengeFromUser, CancelBattleChallengeToUser, RejectBattleChallengeFromUser } from "../../../wailsjs/go/main/App";
+import { AcceptBattleChallengeFromUser, CancelBattleChallengeToUser, RejectBattleChallengeFromUser } from "../../wailsjs/go/main/App";
 
 export let challengeWith: string
 

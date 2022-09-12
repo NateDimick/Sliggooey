@@ -6,7 +6,7 @@ import { IPCEventTypes, NewRoomPayload, PaneType, RoomHtmlPayload, RoomMessagePa
 import HomePane from "./HomePane.svelte";
 import ChatPane from "./ChatPane.svelte";
 import BattlePane from "./BattlePane.svelte";
-import { EventsOn } from "../../wailsjs/runtime/runtime";
+import { EventsOn } from "../wailsjs/runtime/runtime";
 import BattleHubPane from "./BattleHubPane.svelte";
 import RoomsHubPane from "./RoomsHubPane.svelte";
 import RoomPane from "./RoomPane.svelte";
