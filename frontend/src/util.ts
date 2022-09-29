@@ -37,8 +37,7 @@ export enum IPCEventTypes {
     Popup = "popup",
     Games = "games",
     Challenge = "challenged",
-    ChallengeEnd = "challengeEnd",
-    BattleRequest = "battleRequest"
+    ChallengeEnd = "challengeEnd"
 }
 
 export enum PmSource {
@@ -82,7 +81,37 @@ export type RoomHtmlPayload = {
 export type RoomStatePayload = {
     RoomId: string,
     Title: string,
-    Users: string[]
+    // only for battle rooms
+    Gen: number,
+    Tier: string,
+    GameType: string,
+    Timer: boolean,
+    Rated: boolean,
+    Active: boolean,
+    Player: PlayerPayload,
+    Request: string
+}
+
+export type RoomState = {
+    request: BattleRequest,
+    title: string,
+    gen: number,
+    tier: string,
+    gameType: string, // TODO: may become enum
+    timer: boolean,
+    rated: boolean,
+    active: boolean,
+    participants: Object // keys are player ids, values are BattleRoomParticipant
+}
+
+export type BattleRoomParticipant = {
+    name: string,
+    id: string,
+    rating: string,
+    teamsize: number,
+    avatar: string,
+    active: SidePokemon[],
+    inactive: SidePokemon[]
 }
 
 export type GamesPayload = {
@@ -93,6 +122,22 @@ export type GamesPayload = {
 export type BattleRequestPayload = {
     RequestJson: string,
     RoomId: string
+}
+
+export type PlayerPayload = {
+    PlayerId: string,
+    Name: string, 
+    Avatar: string,
+    Rating: string,
+    TeamSize: number,
+    ActivePokemon
+}
+
+export type PlayerActivePokemonPayload = {
+    Reason: string,
+    Position,
+    Details,
+    HP: string
 }
 
 export type BattleRequest = {
@@ -142,18 +187,95 @@ export type MoveInfo = {
 export enum TargetType {
     Normal = "normal",
     Self = "self",
-    Ally = "ally", // just a guess
+    Ally = "adjacentAlly",
     Allies = "allySide",
     AdjacentFoe = "adjacentFoe",
     Foes = "foeSide",
-    All = "all" // just a guess
+    All = "all"
 }
 
 export type BattleChoice = {
     Action: string,
-    Move: number,  // corresponds to the move's slot, 1-4
-    AltMove: string,
-    Target: number, // default to 0 for single battle, negative to target ally
-    Gimmick: string // max, mega, zmove
+    Move?: number,  // corresponds to the move's slot, 1-4
+    AltMove?: string,
+    Target?: number, // default to 0 for single battle, negative to target ally
+    Gimmick?: string // max, mega, zmove
+}
 
+export type BattleParticipant = {
+    name: string,
+    id: string,
+    avatar: string,
+    elo: number,
+    teamSize: number,
+    activePokemon: [],
+    allPokemon: []
+}
+
+export function newRoomState(): RoomState {
+    return {
+        request: null,
+        title: "",
+        gen: null,
+        tier: "",
+        gameType: "",
+        timer: false,
+        rated: false,
+        active: false,
+        participants: {}
+    }
+}
+
+export function reconcileRoomState(update: RoomStatePayload, base: RoomState): RoomState {
+    if (update.Title) {
+        base.title = update.Title
+    }
+    if (update.Gen) {
+        base.gen = update.Gen
+    }
+    if (update.GameType) {
+        base.gameType = update.GameType
+    }
+    if (update.Request) {
+        base.request = JSON.parse(update.Request)
+    }
+    if (update.Tier) {
+        base.tier = update.Tier
+    }
+    if (update.Rated) {
+        base.rated = update.Rated
+    }
+    if (update.Timer !== undefined) {
+        base.timer = update.Timer
+    }
+    if (update.Active !== undefined) {
+        base.active = update.Active
+    }
+    if (update.Player) {
+        if (base[update.Player.PlayerId]) {
+            base[update.Player.PlayerId] = reconcilePlayerState(update.Player, base[update.Player.PlayerId])
+        } else {
+            base[update.Player.PlayerId] = {
+                name: update.Player.Name,
+                avatar: update.Player.Avatar,
+                elo: update.Player.Rating,
+                teamsize: 0,
+                id: update.Player.PlayerId,
+                active: [],
+                inactive: []
+            }
+        }
+    }
+
+    return base
+}
+
+function reconcilePlayerState(update: PlayerPayload, base: BattleRoomParticipant): BattleRoomParticipant {
+    if (update.TeamSize) {
+        base.teamsize = update.TeamSize
+    }
+    if (update.ActivePokemon) {
+
+    }
+    return base
 }

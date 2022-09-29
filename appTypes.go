@@ -17,20 +17,18 @@ const (
 type ShowdownEventTopic string
 
 const (
-	LoginFail          ShowdownEventTopic = "loginFail"
-	LoginSuccess       ShowdownEventTopic = "loginSuccess"
-	FormatTopic        ShowdownEventTopic = "formats"
-	PMTopic            ShowdownEventTopic = "pm"
-	NewRoomTopic       ShowdownEventTopic = "newRoom"
-	RoomExitTopic      ShowdownEventTopic = "roomExit"
-	RoomMessageTopic   ShowdownEventTopic = "roomMsg"
-	RoomStateTopic     ShowdownEventTopic = "roomState"
-	PopupTopic         ShowdownEventTopic = "popup"
-	CurrentGamesTopic  ShowdownEventTopic = "games"
-	ChallengeTopic     ShowdownEventTopic = "challenged"
-	ChallengeEndTopic  ShowdownEventTopic = "challengeEnd"
-	BattleRequestTopic ShowdownEventTopic = "battleRequest"
-	AddPlayerTopic     ShowdownEventTopic = "addPlayer"
+	LoginFail         ShowdownEventTopic = "loginFail"
+	LoginSuccess      ShowdownEventTopic = "loginSuccess"
+	FormatTopic       ShowdownEventTopic = "formats"
+	PMTopic           ShowdownEventTopic = "pm"
+	NewRoomTopic      ShowdownEventTopic = "newRoom"
+	RoomExitTopic     ShowdownEventTopic = "roomExit"
+	RoomMessageTopic  ShowdownEventTopic = "roomMsg"
+	RoomStateTopic    ShowdownEventTopic = "roomState"
+	PopupTopic        ShowdownEventTopic = "popup"
+	CurrentGamesTopic ShowdownEventTopic = "games"
+	ChallengeTopic    ShowdownEventTopic = "challenged"
+	ChallengeEndTopic ShowdownEventTopic = "challengeEnd"
 )
 
 type AppSettings struct {
@@ -165,19 +163,6 @@ type RoomHtmlPayload struct {
 	Update bool
 }
 
-type RoomStatePayload struct {
-	RoomId       string
-	Title        string
-	Users        []string
-	Players      []string
-	GameType     string
-	Gen          int
-	Format       string
-	IsRated      bool
-	TimerOn      bool
-	battleActive bool
-}
-
 type ChallengePayload struct {
 	With       string
 	IAm        string
@@ -185,19 +170,26 @@ type ChallengePayload struct {
 	Challenger PmSource
 }
 
-type NewPlayerPayload struct {
-	RoomId string
-	Id     string
-	Name   string
-	Avatar string
-	Rating string
+type UpdateRoomStatePayload struct {
+	RoomId   string
+	Title    string
+	Gen      int
+	GameType string
+	Tier     string
+	Timer    *bool // bools default to false, but pointers default to nil
+	Rated    bool
+	Active   *bool
+	Player   *UpdatePlayerPayload
+	Request  string
 }
 
 type UpdatePlayerPayload struct {
-	RoomId        string
 	PlayerId      string
+	Name          string
+	Avatar        string
+	Rating        string
 	TeamSize      int
-	ActivePokemon UpdatePlayerPokemon
+	ActivePokemon *UpdatePlayerPokemon
 }
 
 type UpdatePlayerPokemon struct {

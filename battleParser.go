@@ -9,6 +9,8 @@ import (
 
 // handles battle flow messages and then delegates action messages
 func (a *App) parseBattleMessage(roomId string, msg *SplitString) {
+	pTrue := true
+	pFalse := false
 	fullMessage := msg.ReassembleTail(0)
 	goPrint("incoming battle message", fullMessage)
 	msgType := MessageType(msg.Get(1))
@@ -16,11 +18,11 @@ func (a *App) parseBattleMessage(roomId string, msg *SplitString) {
 	case Request:
 		//   |request|<request json>
 		// 0 |   1   |      2
-		payload := BattleRequestPayload{RoomId: roomId}
+		payload := UpdateRoomStatePayload{RoomId: roomId}
 		if msg.Get(2) != "" {
-			payload.RequestJson = msg.ReassembleTail(2)
+			payload.Request = msg.ReassembleTail(2)
+			a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, payload}
 		}
-		a.channels.frontendChan <- ShowdownEvent{BattleRequestTopic, payload}
 	case Timestamp:
 		//   |t:|<unix timestamp>
 		// 0 |1 |        2
@@ -28,29 +30,31 @@ func (a *App) parseBattleMessage(roomId string, msg *SplitString) {
 	case GameType:
 		//   |gametype|<game type>
 		// 0 |   1    |     2
-		payload := RoomStatePayload{RoomId: roomId, GameType: msg.ReassembleTail(2)}
+		payload := UpdateRoomStatePayload{RoomId: roomId, GameType: msg.ReassembleTail(2)}
 		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, payload}
 	case Player:
 		//   |player|<id>|<name>|<avatar name>|<rating>
 		// 0 |  1   | 2  |  3   |      4      |   5
-		payload := NewPlayerPayload{roomId, msg.Get(2), msg.Get(3), msg.Get(4), msg.Get(5)}
-		a.channels.frontendChan <- ShowdownEvent{AddPlayerTopic, payload}
+		subPayload := UpdatePlayerPayload{PlayerId: msg.Get(2), Name: msg.Get(3), Avatar: msg.Get(4), Rating: msg.Get(5)}
+		payload := UpdateRoomStatePayload{RoomId: roomId, Player: &subPayload}
+		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, payload}
 	case TeamSize:
 		//   |teamsize|<id>|<size>
 		// 0 |   1    | 2  |  3
 		s, _ := strconv.Atoi(msg.Get(3))
-		payload := UpdatePlayerPayload{RoomId: roomId, PlayerId: msg.Get(2), TeamSize: s}
-		a.channels.frontendChan <- ShowdownEvent{"", payload} // TODO
+		subPayload := UpdatePlayerPayload{PlayerId: msg.Get(2), TeamSize: s}
+		payload := UpdateRoomStatePayload{RoomId: roomId, Player: &subPayload}
+		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, payload}
 	case Generation:
 		//   |gen|<number>
 		// 0 | 1 |   2
 		g, _ := strconv.Atoi(msg.Get(2))
-		payload := RoomStatePayload{RoomId: roomId, Gen: g}
+		payload := UpdateRoomStatePayload{RoomId: roomId, Gen: g}
 		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, payload}
 	case Tier:
 		//   |tier|<format name>
 		// 0 | 1  |      2
-		payload := RoomStatePayload{RoomId: roomId, Format: msg.ReassembleTail(2)}
+		payload := UpdateRoomStatePayload{RoomId: roomId, Tier: msg.ReassembleTail(2)}
 		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, payload}
 	case Rule:
 		//   |rule|<rule>
@@ -61,7 +65,7 @@ func (a *App) parseBattleMessage(roomId string, msg *SplitString) {
 		a.channels.frontendChan <- ShowdownEvent{RoomMessageTopic, payload}
 	case IsRatedBattle:
 		//   |rated|<message - optional>
-		payload := RoomStatePayload{RoomId: roomId, IsRated: true}
+		payload := UpdateRoomStatePayload{RoomId: roomId, Rated: true}
 		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, payload}
 		if msg.Get(2) != "" {
 			payload2 := RoomMessagePayload{roomId, "system", msg.ReassembleTail(2)}
@@ -82,8 +86,10 @@ func (a *App) parseBattleMessage(roomId string, msg *SplitString) {
 		goPrint(fullMessage, "is a team preview feature")
 	case SimStart:
 		//   |start
-		payload := RoomMessagePayload{roomId, "system", "The battle has begun!"}
-		a.channels.frontendChan <- ShowdownEvent{RoomMessageTopic, payload}
+		sPayload := UpdateRoomStatePayload{RoomId: roomId, Active: &pTrue}
+		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, sPayload}
+		cPayload := RoomMessagePayload{roomId, "system", "The battle has begun!"}
+		a.channels.frontendChan <- ShowdownEvent{RoomMessageTopic, cPayload}
 	case Turn:
 		//   |turn|<number>
 		// 0 | 1  |   2
@@ -92,14 +98,14 @@ func (a *App) parseBattleMessage(roomId string, msg *SplitString) {
 	case TimerOn:
 		//   |inactive|<message>
 		// 0 |    2   |    3
-		sPayload := RoomStatePayload{RoomId: roomId, TimerOn: true}
+		sPayload := UpdateRoomStatePayload{RoomId: roomId, Timer: &pTrue}
 		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, sPayload}
 		cPayload := RoomMessagePayload{roomId, "timer", msg.ReassembleTail(3)}
 		a.channels.frontendChan <- ShowdownEvent{RoomMessageTopic, cPayload}
 	case TimerOff:
 		//   |inactiveoff|<message>
 		// 0 |     2     |    3
-		sPayload := RoomStatePayload{RoomId: roomId, TimerOn: false}
+		sPayload := UpdateRoomStatePayload{RoomId: roomId, Timer: &pFalse}
 		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, sPayload}
 		cPayload := RoomMessagePayload{roomId, "timer", msg.ReassembleTail(3)}
 		a.channels.frontendChan <- ShowdownEvent{RoomMessageTopic, cPayload}
@@ -108,13 +114,13 @@ func (a *App) parseBattleMessage(roomId string, msg *SplitString) {
 	case Win:
 		//   |win|<user>
 		// 0 | 1 |  2
-		sPayload := RoomStatePayload{RoomId: roomId, battleActive: false}
+		sPayload := UpdateRoomStatePayload{RoomId: roomId, Active: &pFalse}
 		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, sPayload}
 		cPayload := RoomMessagePayload{roomId, "system", fmt.Sprintf("%s won!", msg.ReassembleTail(2))}
 		a.channels.frontendChan <- ShowdownEvent{RoomMessageTopic, cPayload}
 	case Tie:
 		//   |tie
-		sPayload := RoomStatePayload{RoomId: roomId, battleActive: false}
+		sPayload := UpdateRoomStatePayload{RoomId: roomId, Active: &pFalse}
 		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, sPayload}
 		cPayload := RoomMessagePayload{roomId, "system", "battle ended in a tie"}
 		a.channels.frontendChan <- ShowdownEvent{RoomMessageTopic, cPayload}
@@ -135,12 +141,13 @@ func (a *App) parseMajorBattleAction(roomId string, msg *SplitString) {
 	case Switch, Drag, Replace, DetailsChanged, FormeChange:
 		//   |<type>|<position spec>|<details spec>|<hp spec>
 		// 0 |  1   |       2       |       3      |    4
-		payload := UpdatePlayerPayload{RoomId: roomId}
+		subPayload := new(UpdatePlayerPayload)
 		p := NewPokemonPosition(msg.Get(2))
 		d := NewPokemonDetails(msg.Get(3))
-		payload.PlayerId = p.PlayerId
-		payload.ActivePokemon = UpdatePlayerPokemon{msgType, *p, *d, msg.Get(4)}
-		a.channels.frontendChan <- ShowdownEvent{"", payload} // TODO
+		subPayload.PlayerId = p.PlayerId
+		subPayload.ActivePokemon = &UpdatePlayerPokemon{msgType, *p, *d, msg.Get(4)}
+		payload := UpdateRoomStatePayload{RoomId: roomId, Player: subPayload}
+		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, payload}
 	case Swap:
 		//
 	case Cannot:

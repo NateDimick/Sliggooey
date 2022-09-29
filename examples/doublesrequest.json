@@ -1,0 +1,264 @@
+{
+    "active": [
+        {
+            "moves": [
+                {
+                    "move": "Night Shade",
+                    "id": "nightshade",
+                    "pp": 24,
+                    "maxpp": 24,
+                    "target": "normal",
+                    "disabled": false
+                },
+                {
+                    "move": "Trick Room",
+                    "id": "trickroom",
+                    "pp": 8,
+                    "maxpp": 8,
+                    "target": "all",
+                    "disabled": false
+                },
+                {
+                    "move": "Haze",
+                    "id": "haze",
+                    "pp": 48,
+                    "maxpp": 48,
+                    "target": "all",
+                    "disabled": false
+                },
+                {
+                    "move": "Helping Hand",
+                    "id": "helpinghand",
+                    "pp": 32,
+                    "maxpp": 32,
+                    "target": "adjacentAlly",
+                    "disabled": false
+                }
+            ],
+            "canDynamax": true,
+            "maxMoves": {
+                "maxMoves": [
+                    {
+                        "move": "maxphantasm",
+                        "target": "adjacentFoe"
+                    },
+                    {
+                        "move": "maxguard",
+                        "target": "self"
+                    },
+                    {
+                        "move": "maxguard",
+                        "target": "self"
+                    },
+                    {
+                        "move": "maxguard",
+                        "target": "self"
+                    }
+                ]
+            }
+        },
+        {
+            "moves": [
+                {
+                    "move": "Nasty Plot",
+                    "id": "nastyplot",
+                    "pp": 32,
+                    "maxpp": 32,
+                    "target": "self",
+                    "disabled": false
+                },
+                {
+                    "move": "Protect",
+                    "id": "protect",
+                    "pp": 16,
+                    "maxpp": 16,
+                    "target": "self",
+                    "disabled": false
+                },
+                {
+                    "move": "Sludge Bomb",
+                    "id": "sludgebomb",
+                    "pp": 16,
+                    "maxpp": 16,
+                    "target": "normal",
+                    "disabled": false
+                },
+                {
+                    "move": "Shadow Ball",
+                    "id": "shadowball",
+                    "pp": 24,
+                    "maxpp": 24,
+                    "target": "normal",
+                    "disabled": false
+                }
+            ],
+            "canDynamax": true,
+            "maxMoves": {
+                "maxMoves": [
+                    {
+                        "move": "maxguard",
+                        "target": "self"
+                    },
+                    {
+                        "move": "maxguard",
+                        "target": "self"
+                    },
+                    {
+                        "move": "maxooze",
+                        "target": "adjacentFoe"
+                    },
+                    {
+                        "move": "gmaxterror",
+                        "target": "adjacentFoe"
+                    }
+                ],
+                "gigantamax": "G-Max Terror"
+            }
+        }
+    ],
+    "side": {
+        "name": "CloudyNate",
+        "id": "p2",
+        "pokemon": [
+            {
+                "ident": "p2: Dusclops",
+                "details": "Dusclops, L84, M",
+                "condition": "204/204",
+                "active": true,
+                "stats": {
+                    "atk": 122,
+                    "def": 267,
+                    "spa": 149,
+                    "spd": 267,
+                    "spe": 47
+                },
+                "moves": [
+                    "nightshade",
+                    "trickroom",
+                    "haze",
+                    "helpinghand"
+                ],
+                "baseAbility": "frisk",
+                "item": "eviolite",
+                "pokeball": "pokeball",
+                "ability": "frisk"
+            },
+            {
+                "ident": "p2: Gengar",
+                "details": "Gengar, L86, M",
+                "condition": "243/243",
+                "active": true,
+                "stats": {
+                    "atk": 116,
+                    "def": 152,
+                    "spa": 273,
+                    "spd": 178,
+                    "spe": 238
+                },
+                "moves": [
+                    "nastyplot",
+                    "protect",
+                    "sludgebomb",
+                    "shadowball"
+                ],
+                "baseAbility": "cursedbody",
+                "item": "sitrusberry",
+                "pokeball": "pokeball",
+                "ability": "cursedbody"
+            },
+            {
+                "ident": "p2: Drapion",
+                "details": "Drapion, L88, F",
+                "condition": "266/266",
+                "active": false,
+                "stats": {
+                    "atk": 209,
+                    "def": 244,
+                    "spa": 156,
+                    "spd": 182,
+                    "spe": 217
+                },
+                "moves": [
+                    "protect",
+                    "rockslide",
+                    "knockoff",
+                    "poisonjab"
+                ],
+                "baseAbility": "sniper",
+                "item": "lifeorb",
+                "pokeball": "pokeball",
+                "ability": "sniper"
+            },
+            {
+                "ident": "p2: Hawlucha",
+                "details": "Hawlucha, L80, F",
+                "condition": "256/256",
+                "active": false,
+                "stats": {
+                    "atk": 193,
+                    "def": 166,
+                    "spa": 165,
+                    "spd": 147,
+                    "spe": 235
+                },
+                "moves": [
+                    "throatchop",
+                    "closecombat",
+                    "swordsdance",
+                    "bravebird"
+                ],
+                "baseAbility": "unburden",
+                "item": "whiteherb",
+                "pokeball": "pokeball",
+                "ability": "unburden"
+            },
+            {
+                "ident": "p2: Meowstic",
+                "details": "Meowstic-F, L88, F",
+                "condition": "274/274",
+                "active": false,
+                "stats": {
+                    "atk": 89,
+                    "def": 184,
+                    "spa": 196,
+                    "spd": 193,
+                    "spe": 233
+                },
+                "moves": [
+                    "psychic",
+                    "nastyplot",
+                    "shadowball",
+                    "thunderbolt"
+                ],
+                "baseAbility": "competitive",
+                "item": "lifeorb",
+                "pokeball": "pokeball",
+                "ability": "competitive"
+            },
+            {
+                "ident": "p2: Zygarde",
+                "details": "Zygarde-10%, L77",
+                "condition": "210/210",
+                "active": false,
+                "stats": {
+                    "atk": 199,
+                    "def": 154,
+                    "spa": 138,
+                    "spd": 175,
+                    "spe": 222
+                },
+                "moves": [
+                    "thousandarrows",
+                    "protect",
+                    "dragondance",
+                    "rockslide"
+                ],
+                "baseAbility": "powerconstruct",
+                "item": "sitrusberry",
+                "pokeball": "pokeball",
+                "ability": "powerconstruct"
+            }
+        ]
+    },
+    "rqid": 3
+}

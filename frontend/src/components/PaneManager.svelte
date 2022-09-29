@@ -2,7 +2,7 @@
 <script lang="ts">
 import PaneTab from "./PaneTab.svelte";
 import { currentPaneStore, PaneInfo, panes, roomChats, roomStates } from "../store"
-import { IPCEventTypes, NewRoomPayload, PaneType, RoomHtmlPayload, RoomMessagePayload, RoomStatePayload, tsPrint } from "../util";
+import { IPCEventTypes, NewRoomPayload, newRoomState, PaneType, reconcileRoomState, RoomHtmlPayload, RoomMessagePayload, RoomStatePayload, tsPrint } from "../util";
 import HomePane from "./HomePane.svelte";
 import ChatPane from "./ChatPane.svelte";
 import BattlePane from "./BattlePane.svelte";
@@ -26,7 +26,7 @@ EventsOn(IPCEventTypes.RoomInit, (data: NewRoomPayload) => {
         return rms
     })
     roomStates.update((rss) => {
-        rss[data.RoomId] = {}
+        rss[data.RoomId] = newRoomState()
         return rss
     })
     panes.update((panes: PaneInfo[]) => {
@@ -74,8 +74,12 @@ EventsOn(IPCEventTypes.RoomMessage, (data: RoomMessagePayload | RoomHtmlPayload)
 
 EventsOn(IPCEventTypes.RoomState, (data: RoomStatePayload) => {
     roomStates.update((rss) => {
-        // Todo: need to reconcile roomstate, not just replace
-        rss[data.RoomId] = data
+        if(rss[data.RoomId]) {
+            tsPrint(`Updating room state: ${data.RoomId}`)
+            rss[data.RoomId] = reconcileRoomState(data, rss[data.RoomId])
+        } else {
+            tsPrint(`Room state update ${data.RoomId} received but user is not in that room`)
+        }
         return rss
     })
 })

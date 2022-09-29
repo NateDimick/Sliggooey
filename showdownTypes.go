@@ -275,11 +275,6 @@ type Format struct {
 	Tags string
 }
 
-type BattleRequestPayload struct {
-	RequestJson string
-	RoomId      string
-}
-
 // p1a: Weezing
 type PokemonPosition struct {
 	PlayerId string

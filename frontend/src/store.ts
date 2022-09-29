@@ -9,8 +9,6 @@ export const roomChats = writable(new Object())
 export const roomStates = writable(new Object())
 // list of active battle room ids (even if the pane is closed)
 export const battles = writable([])
-// roomIds as keys, pending battle requests as the values
-export const battleRequests = writable(new Object())
 // logged in user's username
 export const userName = writable("")
 // list of all open Panes

@@ -137,7 +137,7 @@ func (a *App) parseRoomServerMessage(roomId, message string) {
 		//   |title|<title>
 		// 0 |  1  |   2
 		//payload := RoomStatePayload{Title: chunkedMsg.Get(2)}
-		payload := RoomStatePayload{RoomId: roomId, Title: chunkedMsg.Get(2)}
+		payload := UpdateRoomStatePayload{RoomId: roomId, Title: chunkedMsg.Get(2)}
 		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, payload}
 	case Users:
 		//   |users|<user list>
@@ -150,8 +150,9 @@ func (a *App) parseRoomServerMessage(roomId, message string) {
 		for i, u := range userList.inner {
 			users[i] = NewUser(u).UserName
 		}
-		payload := RoomStatePayload{RoomId: roomId, Users: users}
-		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, payload}
+		goPrint(users, "in room", roomId, "message dropped")
+		// payload := RoomStatePayload{RoomId: roomId, Users: users}
+		// a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, payload}
 	case Html:
 		//   |html|<html>
 		// 0 | 1  |  2
