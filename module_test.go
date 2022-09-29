@@ -9,7 +9,7 @@ func TestMakeBattleChoice(t *testing.T) {
 		choice BattleChoice
 		expect string
 	}{
-		{BattleChoice{Attack, 2, "", 1, "mega"}, "/choose move 2 1 mega"},
+		{BattleChoice{Attack, 2, "", 1, "mega"}, "/choose move 2 +1 mega"},
 		{BattleChoice{Attack, 1, "", 0, ""}, "/choose move 1"},
 		{BattleChoice{SwitchOut, 0, "", 4, ""}, "/choose switch 4"},
 		{BattleChoice{Default, 0, "", 0, ""}, "/choose default"},

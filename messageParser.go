@@ -76,6 +76,7 @@ func (a *App) parseGlobalServerMessage(message string) {
 	case UpdateChallenges:
 		//   |updatechallenges|<challenge json>
 		// 0 |        1       |       2
+		goPrint("pending challenges update", message)
 		a.updateChallengeEvent(chunkedMsg.ReassembleTail(2))
 	case Popup:
 		//   |popup|<message>

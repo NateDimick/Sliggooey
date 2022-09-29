@@ -1,5 +1,7 @@
 package main
 
+import "strconv"
+
 // types for the pokemon showdown wss protocol
 
 type RoomType string
@@ -66,6 +68,7 @@ const (
 	// Battle sim actions (major)
 	Move           MessageType = "move"
 	Switch         MessageType = "switch"
+	Drag           MessageType = "drag"
 	DetailsChanged MessageType = "detailschange"
 	FormeChange    MessageType = "-formechange"
 	Replace        MessageType = "replace"
@@ -275,4 +278,54 @@ type Format struct {
 type BattleRequestPayload struct {
 	RequestJson string
 	RoomId      string
+}
+
+// p1a: Weezing
+type PokemonPosition struct {
+	PlayerId string
+	Position int
+	NickName string
+}
+
+// Weezing, L88, M
+type PokemonDetails struct {
+	Species string
+	Level   int
+	Gender  rune
+	Shiny   bool
+}
+
+func NewPokemonPosition(positionSpec string) *PokemonPosition {
+	p := new(PokemonPosition)
+	splitSpec := NewSplitString(positionSpec, ": ")
+	p.NickName = splitSpec.Get(1)
+	// assume formats will only allow up to 9 players (current max is 4)
+	if len(splitSpec.Get(0)) == 3 {
+		p.PlayerId = splitSpec.Get(0)[:2]          // p1, p2, p3, etc but breaks for p10 or higher
+		p.Position = int(splitSpec.Get(0)[2]) - 96 // 'a' is 97 in ascii/utf, we want a = 1
+	} else {
+		p.PlayerId = splitSpec.Get(0)
+	}
+	return p
+}
+
+func NewPokemonDetails(detailSpec string) *PokemonDetails {
+	d := new(PokemonDetails)
+	splitSpec := NewSplitString(detailSpec, ", ")
+	d.Species = splitSpec.Get(0)
+	d.Level = 100
+	d.Shiny = false
+	d.Gender = ' '
+	for i := 1; i < splitSpec.len; i++ {
+		token := splitSpec.Get(i)
+		if token == "M" || token == "F" {
+			d.Gender = rune(token[0])
+		} else if token == "shiny" {
+			d.Shiny = true
+		} else if token[0] == 'L' {
+			level, _ := strconv.Atoi(token[1:])
+			d.Level = level
+		}
+	}
+	return d
 }

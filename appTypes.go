@@ -30,6 +30,7 @@ const (
 	ChallengeTopic     ShowdownEventTopic = "challenged"
 	ChallengeEndTopic  ShowdownEventTopic = "challengeEnd"
 	BattleRequestTopic ShowdownEventTopic = "battleRequest"
+	AddPlayerTopic     ShowdownEventTopic = "addPlayer"
 )
 
 type AppSettings struct {
@@ -182,6 +183,28 @@ type ChallengePayload struct {
 	IAm        string
 	Format     string
 	Challenger PmSource
+}
+
+type NewPlayerPayload struct {
+	RoomId string
+	Id     string
+	Name   string
+	Avatar string
+	Rating string
+}
+
+type UpdatePlayerPayload struct {
+	RoomId        string
+	PlayerId      string
+	TeamSize      int
+	ActivePokemon UpdatePlayerPokemon
+}
+
+type UpdatePlayerPokemon struct {
+	Reason   MessageType
+	Position PokemonPosition
+	Details  PokemonDetails
+	HP       string
 }
 
 /*

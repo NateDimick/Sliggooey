@@ -33,10 +33,14 @@ func (a *App) parseBattleMessage(roomId string, msg *SplitString) {
 	case Player:
 		//   |player|<id>|<name>|<avatar name>|<rating>
 		// 0 |  1   | 2  |  3   |      4      |   5
-		goPrint("todo: handle player declaration", fullMessage)
+		payload := NewPlayerPayload{roomId, msg.Get(2), msg.Get(3), msg.Get(4), msg.Get(5)}
+		a.channels.frontendChan <- ShowdownEvent{AddPlayerTopic, payload}
 	case TeamSize:
 		//   |teamsize|<id>|<size>
 		// 0 |   1    | 2  |  3
+		s, _ := strconv.Atoi(msg.Get(3))
+		payload := UpdatePlayerPayload{RoomId: roomId, PlayerId: msg.Get(2), TeamSize: s}
+		a.channels.frontendChan <- ShowdownEvent{"", payload} // TODO
 	case Generation:
 		//   |gen|<number>
 		// 0 | 1 |   2
@@ -128,12 +132,15 @@ func (a *App) parseMajorBattleAction(roomId string, msg *SplitString) {
 	switch msgType {
 	case Move:
 		//
-	case Switch:
-		//
-	case DetailsChanged:
-		//
-	case Replace:
-		//
+	case Switch, Drag, Replace, DetailsChanged, FormeChange:
+		//   |<type>|<position spec>|<details spec>|<hp spec>
+		// 0 |  1   |       2       |       3      |    4
+		payload := UpdatePlayerPayload{RoomId: roomId}
+		p := NewPokemonPosition(msg.Get(2))
+		d := NewPokemonDetails(msg.Get(3))
+		payload.PlayerId = p.PlayerId
+		payload.ActivePokemon = UpdatePlayerPokemon{msgType, *p, *d, msg.Get(4)}
+		a.channels.frontendChan <- ShowdownEvent{"", payload} // TODO
 	case Swap:
 		//
 	case Cannot:
