@@ -21,7 +21,7 @@ let currentChoiceIndex: number = 0
 
 $: {
     currentRequest = $roomStates[roomName]?.request
-    tsPrint(JSON.stringify(currentRequest))
+    tsPrint(`current request ${JSON.stringify(currentRequest)}`)
     // fill current choice by the number of active pokemon in currentRequest
     currentChoiceState = CommandPaletteState.SelectAction
     currentChoice = Array(currentRequest?.active?.length).fill({})

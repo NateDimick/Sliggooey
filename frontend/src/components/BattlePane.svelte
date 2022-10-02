@@ -14,7 +14,7 @@ export let info: PaneInfo
         <h2>Imagine something cool being here, like a damage calculator</h2>
     </div>
     <div class="center-col">
-        <BattleScene/>
+        <BattleScene roomName={info.name}/>
         <BattleCommandPalette roomName={info.name}/>
     </div>
     <div class="right-col">

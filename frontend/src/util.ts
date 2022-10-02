@@ -110,8 +110,8 @@ export type BattleRoomParticipant = {
     rating: string,
     teamsize: number,
     avatar: string,
-    active: SidePokemon[],
-    inactive: SidePokemon[]
+    active: PokemonState[],
+    inactive: PokemonState[]
 }
 
 export type GamesPayload = {
@@ -130,7 +130,7 @@ export type PlayerPayload = {
     Avatar: string,
     Rating: string,
     TeamSize: number,
-    ActivePokemon
+    ActivePokemon: PlayerActivePokemonPayload
 }
 
 export type PlayerActivePokemonPayload = {
@@ -202,14 +202,17 @@ export type BattleChoice = {
     Gimmick?: string // max, mega, zmove
 }
 
-export type BattleParticipant = {
-    name: string,
-    id: string,
-    avatar: string,
-    elo: number,
-    teamSize: number,
-    activePokemon: [],
-    allPokemon: []
+export type PokemonState = {
+    species: string,
+    nickname: string,
+    gender: string,
+    level: number,
+    majorStatus: string,
+    minorStatuses: string[],
+    moves: MoveInfo[],
+    playerId: string,
+    hpState: string,
+    shiny: boolean
 }
 
 export function newRoomState(): RoomState {
@@ -222,7 +225,7 @@ export function newRoomState(): RoomState {
         timer: false,
         rated: false,
         active: false,
-        participants: {}
+        participants: new Object()
     }
 }
 
@@ -252,10 +255,10 @@ export function reconcileRoomState(update: RoomStatePayload, base: RoomState): R
         base.active = update.Active
     }
     if (update.Player) {
-        if (base[update.Player.PlayerId]) {
-            base[update.Player.PlayerId] = reconcilePlayerState(update.Player, base[update.Player.PlayerId])
+        if (base.participants[update.Player.PlayerId]) {
+            base.participants[update.Player.PlayerId] = reconcilePlayerState(update.Player, base.participants[update.Player.PlayerId])
         } else {
-            base[update.Player.PlayerId] = {
+            base.participants[update.Player.PlayerId] = {
                 name: update.Player.Name,
                 avatar: update.Player.Avatar,
                 elo: update.Player.Rating,
@@ -275,7 +278,26 @@ function reconcilePlayerState(update: PlayerPayload, base: BattleRoomParticipant
         base.teamsize = update.TeamSize
     }
     if (update.ActivePokemon) {
-
+        let newActivePokemon = update.ActivePokemon
+        let newState: PokemonState = {
+            species: newActivePokemon.Details.Species,
+            level: newActivePokemon.Details.Level,
+            gender: newActivePokemon.Details.Gender,
+            shiny: newActivePokemon.Details.Shiny,
+            nickname: newActivePokemon.Position.NickName,
+            playerId: newActivePokemon.Position.PlayerId,
+            hpState: newActivePokemon.HP,
+            majorStatus: "",
+            minorStatuses: [],
+            moves: []
+        }
+        while (newActivePokemon.Position.Position > base.active.length) {
+            base.active.push(null)
+        }
+        if (base.active[newActivePokemon.Position.Position]) {
+            base.inactive.push(base.active[newActivePokemon.Position.Position]) // TODO check that that pokemon is not already inactive
+        }
+        base.active[newActivePokemon.Position.Position - 1] = newState
     }
     return base
 }
