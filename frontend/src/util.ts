@@ -143,7 +143,9 @@ export type PlayerActivePokemonPayload = {
 export type BattleRequest = {
     side: PlayerSideDetails,
     rqid: number,
-    active: ActivePokemon[]
+    active: ActivePokemon[],
+    forceSwitch: boolean[],
+    wait: boolean
 }
 
 export type PlayerSideDetails = {
@@ -191,7 +193,8 @@ export enum TargetType {
     Allies = "allySide",
     AdjacentFoe = "adjacentFoe",
     Foes = "foeSide",
-    All = "all"
+    All = "all",
+    Random = "randomNormal"
 }
 
 export type BattleChoice = {
@@ -239,8 +242,11 @@ export function reconcileRoomState(update: RoomStatePayload, base: RoomState): R
     if (update.GameType) {
         base.gameType = update.GameType
     }
-    if (update.Request) {
+    if (update.Request !== "" && update.Request !== null) {
+        tsPrint("Current request updated")
         base.request = JSON.parse(update.Request)
+    } else {
+        tsPrint(`current request not updated ${JSON.stringify(base.request)}`)
     }
     if (update.Tier) {
         base.tier = update.Tier
@@ -294,10 +300,12 @@ function reconcilePlayerState(update: PlayerPayload, base: BattleRoomParticipant
         while (newActivePokemon.Position.Position > base.active.length) {
             base.active.push(null)
         }
-        if (base.active[newActivePokemon.Position.Position]) {
-            base.inactive.push(base.active[newActivePokemon.Position.Position]) // TODO check that that pokemon is not already inactive
+        if (base.active[newActivePokemon.Position.Position - 1]) {
+            base.inactive = [...base.inactive, base.active[newActivePokemon.Position.Position - 1]]
         }
         base.active[newActivePokemon.Position.Position - 1] = newState
+        base.active = base.active
+        tsPrint(`updated active pokemon: ${JSON.stringify(base.active)} | ${JSON.stringify(base.inactive)}`)
     }
     return base
 }

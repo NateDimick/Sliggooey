@@ -1,0 +1,151 @@
+{
+    "forceSwitch": [
+        true
+    ],
+    "side": {
+        "name": "CloudyNate",
+        "id": "p2",
+        "pokemon": [
+            {
+                "ident": "p2: Slowking",
+                "details": "Slowking, L86, M",
+                "condition": "0 fnt",
+                "active": true,
+                "stats": {
+                    "atk": 134,
+                    "def": 187,
+                    "spa": 221,
+                    "spd": 238,
+                    "spe": 101
+                },
+                "moves": [
+                    "scald",
+                    "slackoff",
+                    "fireblast",
+                    "toxic"
+                ],
+                "baseAbility": "regenerator",
+                "item": "leftovers",
+                "pokeball": "pokeball",
+                "ability": "regenerator"
+            },
+            {
+                "ident": "p2: Togedemaru",
+                "details": "Togedemaru, L86, M",
+                "condition": "252/252",
+                "active": false,
+                "stats": {
+                    "atk": 218,
+                    "def": 158,
+                    "spa": 118,
+                    "spd": 175,
+                    "spe": 214
+                },
+                "moves": [
+                    "zingzap",
+                    "spikyshield",
+                    "wish",
+                    "ironhead"
+                ],
+                "baseAbility": "lightningrod",
+                "item": "leftovers",
+                "pokeball": "pokeball",
+                "ability": "lightningrod"
+            },
+            {
+                "ident": "p2: Noivern",
+                "details": "Noivern, L82, M",
+                "condition": "274/274",
+                "active": false,
+                "stats": {
+                    "atk": 119,
+                    "def": 178,
+                    "spa": 206,
+                    "spd": 178,
+                    "spe": 249
+                },
+                "moves": [
+                    "dracometeor",
+                    "hurricane",
+                    "defog",
+                    "roost"
+                ],
+                "baseAbility": "infiltrator",
+                "item": "heavydutyboots",
+                "pokeball": "pokeball",
+                "ability": "infiltrator"
+            },
+            {
+                "ident": "p2: Zygarde",
+                "details": "Zygarde-10%, L82",
+                "condition": "223/223",
+                "active": false,
+                "stats": {
+                    "atk": 211,
+                    "def": 164,
+                    "spa": 147,
+                    "spd": 187,
+                    "spe": 236
+                },
+                "moves": [
+                    "outrage",
+                    "thousandarrows",
+                    "coil",
+                    "irontail"
+                ],
+                "baseAbility": "aurabreak",
+                "item": "lifeorb",
+                "pokeball": "pokeball",
+                "ability": "aurabreak"
+            },
+            {
+                "ident": "p2: Noctowl",
+                "details": "Noctowl, L88, F",
+                "condition": "319/319",
+                "active": false,
+                "stats": {
+                    "atk": 93,
+                    "def": 138,
+                    "spa": 202,
+                    "spd": 219,
+                    "spe": 173
+                },
+                "moves": [
+                    "roost",
+                    "defog",
+                    "hurricane",
+                    "heatwave"
+                ],
+                "baseAbility": "tintedlens",
+                "item": "heavydutyboots",
+                "pokeball": "pokeball",
+                "ability": "tintedlens"
+            },
+            {
+                "ident": "p2: Calyrex",
+                "details": "Calyrex-Shadow, L65",
+                "condition": "238/238",
+                "active": false,
+                "stats": {
+                    "atk": 115,
+                    "def": 142,
+                    "spa": 253,
+                    "spd": 168,
+                    "spe": 233
+                },
+                "moves": [
+                    "substitute",
+                    "nastyplot",
+                    "psyshock",
+                    "astralbarrage"
+                ],
+                "baseAbility": "asonespectrier",
+                "item": "leftovers",
+                "pokeball": "pokeball",
+                "ability": "asonespectrier"
+            }
+        ]
+    },
+    "noCancel": true,
+    "rqid": 19
+}

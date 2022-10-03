@@ -9,7 +9,8 @@ const enum CommandPaletteState {
     TeamOrder,
     SelectAction,
     SelectTarget,
-    WaitForOpponent
+    WaitForOpponent,
+    ForceSwitch
 }
 
 export let roomName: string
@@ -23,14 +24,39 @@ $: {
     currentRequest = $roomStates[roomName]?.request
     tsPrint(`current request ${JSON.stringify(currentRequest)}`)
     // fill current choice by the number of active pokemon in currentRequest
-    currentChoiceState = CommandPaletteState.SelectAction
-    currentChoice = Array(currentRequest?.active?.length).fill({})
-    currentChoiceIndex = 0
+    if (currentRequest?.forceSwitch?.length) {
+        currentChoiceState = CommandPaletteState.ForceSwitch
+        currentChoice = Array(currentRequest?.forceSwitch.length).fill({})
+        currentChoiceIndex = 0
+    } else if (currentRequest?.wait) {
+        currentChoiceState = CommandPaletteState.WaitForOpponent
+    } else {
+        currentChoiceState = CommandPaletteState.SelectAction
+        currentChoice = Array(currentRequest?.active?.length).fill({})
+        currentChoiceIndex = 0
+    }
+}
+
+$: {
+    let newStateAfterUpdate = currentChoiceState
+    if ($roomStates[roomName]?.gameType === "singles" && newStateAfterUpdate === CommandPaletteState.SelectTarget) {
+        tsPrint(`sending single battle command in singles: ${JSON.stringify(currentChoice)}`)
+        sendCommandChoice()
+    }
+}
+
+$: {
+    let choiceIndexAfterUpdate = currentChoiceIndex
+    if (choiceIndexAfterUpdate >= currentChoice.length) {
+        tsPrint(`sending choices because all targets selected ${JSON.stringify(currentChoice)}`)
+        sendCommandChoice()
+    }
 }
 
 function setMove(moveIndex: number) {
     return () => {
         currentChoice[currentChoiceIndex].Move = moveIndex
+        currentChoice[currentChoiceIndex].Action = "move"
         currentChoiceState = CommandPaletteState.SelectTarget
     }
 }
@@ -42,12 +68,21 @@ function setTarget(t: number) {
     }
 }
 
+function setSwitchPokemon(switchIndex: number) {
+    return () => {
+        currentChoice[currentChoiceIndex].Action = "switch"
+        currentChoice[currentChoiceIndex].Target = switchIndex
+        currentChoiceIndex += 1
+    }
+}
+
 function sendChoice(choices: BattleChoice[]) {
     MakeBattleChoice(roomName, currentRequest.rqid, choices)
 }
 
 function sendCommandChoice() {
     sendChoice(currentChoice)
+    currentChoiceState = CommandPaletteState.WaitForOpponent
 }
 
 function cancelChoice() {
@@ -58,10 +93,12 @@ function cancelChoice() {
 
 function defaultChoice() {
     sendChoice([{Action: "default"}])
+    currentChoiceState = CommandPaletteState.WaitForOpponent
 }
 
 function skipChoice() {
     sendChoice([{Action: "pass"}])
+    currentChoiceState = CommandPaletteState.WaitForOpponent
 }
 
 function toggleGimmick() {
@@ -84,17 +121,28 @@ function forfeit() {
 <main>
     <div>
         <!-- commands that do not require a state context -->
+        <button on:click={skipChoice}>Skip</button>
+        <button on:click={defaultChoice}>Default</button>
+        <button>Timer</button>
+        <button>Forfeit</button>
     </div>
     {#if currentChoiceState === CommandPaletteState.WaitForCommand}
         <p>Getting Ready...</p>
-    {:else if currentChoiceState === CommandPaletteState.SelectAction}
-        {#if currentRequest != undefined}
-            {#each currentRequest?.active[currentChoiceIndex]?.moves as move, index}
-                <button on:click={setMove(index + 1)}>{move.move}</button>
-            {/each}
-            <!-- to do: change name that appears if game mod eis gen 8 and dynamax is allowed and dynamx is selected-->
-            <input type="checkbox" name="gimmick" id="gimmick" on:click={toggleGimmick}>
-        {/if}
+    {:else if currentChoiceState === CommandPaletteState.SelectAction && currentRequest !== null}
+        {#each currentRequest?.active[currentChoiceIndex]?.moves as move, index}
+            <button on:click={setMove(index + 1)}>{move.move} {move.pp}/{move.maxpp}</button>
+        {/each}
+        <!-- to do: change name that appears if game mod eis gen 8 and dynamax is allowed and dynamax is selected-->
+        <input type="checkbox" name="gimmick" id="gimmick" on:click={toggleGimmick}>
+        {#each currentRequest?.side?.pokemon as p, index}
+        <!-- todo do not allow switches to active or fainted pokemon -->
+            <button on:click={setSwitchPokemon(index + 1)}>{p.ident}</button>
+        {/each}
+    {:else if currentChoiceState === CommandPaletteState.ForceSwitch && currentRequest !== null}
+        {#each currentRequest?.side?.pokemon as p, index}
+        <!-- todo do not allow switches to active or fainted pokemon -->
+            <button on:click={setSwitchPokemon(index + 1)}>{p.ident}</button>
+        {/each}
     {:else if currentChoiceState === CommandPaletteState.SelectTarget}
         <p></p>
     {:else if currentChoiceState === CommandPaletteState.WaitForOpponent}

@@ -102,7 +102,7 @@ Examples of how to get images of pokemon... from the showdown server
     ```
 
 * Pokemon "models" (example Sliggoo) ![Garchomp gif](https://play.pokemonshowdown.com/sprites/ani/sliggoo.gif)
-* Pokemon "models" from the back (example Sliggoo) ![Garchom back gif](https://play.pokemonshowdown.com/sprites/ani-back/sliggoo.gif)
+* Pokemon "models" from the back (example Sliggoo) ![Garchomp back gif](https://play.pokemonshowdown.com/sprites/ani-back/sliggoo.gif)
 * Shiny ![Shiny Sliggoo](https://play.pokemonshowdown.com/sprites/ani-shiny/sliggoo.gif) ![Shiny Sliggoo](https://play.pokemonshowdown.com/sprites/ani-back-shiny/sliggoo.gif)
 * Pokemon Sprites april fools ![afd](https://play.pokemonshowdown.com/sprites/afd/sliggoo.png)
 * Type Labels ![Dragon](https://play.pokemonshowdown.com/sprites/types/Dragon.png)

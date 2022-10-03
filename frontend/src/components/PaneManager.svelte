@@ -74,14 +74,13 @@ EventsOn(IPCEventTypes.RoomMessage, (data: RoomMessagePayload | RoomHtmlPayload)
 
 EventsOn(IPCEventTypes.RoomState, (data: RoomStatePayload) => {
     roomStates.update((rss) => {
-        tsPrint(`room states before update: ${JSON.stringify(rss)}`)
         if(rss[data.RoomId]) {
             tsPrint(`Updating room state: ${data.RoomId}`)
             rss[data.RoomId] = reconcileRoomState(data, rss[data.RoomId])
-            tsPrint(`Updated room state: ${JSON.stringify(rss[data.RoomId])}`)
         } else {
             tsPrint(`Room state update ${data.RoomId} received but user is not in that room`)
         }
+        rss = rss
         return rss
     })
 })

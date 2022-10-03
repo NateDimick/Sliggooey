@@ -37,7 +37,7 @@ func (a *App) LeaveRoom(roomId string) {
 	a.conn.SendServerCommand(buildCommand(LeaveCmd, roomId))
 }
 
-func (a *App) MakeBattleChoice(roomId string, requestId int, choices ...BattleChoice) {
+func (a *App) MakeBattleChoice(roomId string, requestId int, choices []BattleChoice) {
 	cmd := FormatBattleChoices(choices...)
 	cmd = cmd + fmt.Sprintf("|%d", requestId)
 	a.conn.SendServerMessageToRoom(roomId, cmd)
