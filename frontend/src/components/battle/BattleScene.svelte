@@ -2,7 +2,7 @@
 <script lang="ts">
     import BattleSceneCorner from "./BattleSceneCorner.svelte";
     import { roomStates } from "../../store";
-    import { RoomState, tsPrint } from "../../util";
+    import type { RoomState } from "../../util";
 
     export let roomName: string
     let state: RoomState
@@ -10,7 +10,7 @@
 
     $: {
         state = $roomStates[roomName]
-        tsPrint(`updated state in battle scene ${JSON.stringify(state)}`)
+        // tsPrint(`updated state in battle scene ${JSON.stringify(state)}`)  // if command pallete ever eats shit, uncomment this line
         updates += 1
     }
 

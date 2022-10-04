@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -17,11 +18,11 @@ func TestMakeBattleChoice(t *testing.T) {
 		{BattleChoice{Undo, 0, "", 0, ""}, "/choose undo"},
 	}
 
-	for _, testcase := range tests {
-		result := FormatBattleChoices(testcase.choice)
-		if result != testcase.expect {
-			t.Fatalf("expected chose command '%s' but got '%s'", testcase.expect, result)
-		}
+	for i, tt := range tests {
+		t.Run(fmt.Sprintf("Battle Choice %d", i), func(t *testing.T) {
+			result := FormatBattleChoices(tt.choice)
+			assertEqual(t, "Formatted Battle Choice", tt.expect, result)
+		})
 	}
 
 }

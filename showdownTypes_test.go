@@ -52,3 +52,24 @@ func TestNewPokemonDetails(t *testing.T) {
 		})
 	}
 }
+
+func TestNewHPStatus(t *testing.T) {
+	tests := []struct {
+		input  string
+		output *HPStatus
+	}{
+		{"100/100", &HPStatus{100, 100, ""}},
+		{"24/48 par", &HPStatus{24, 48, "par"}},
+		{"0 fnt", &HPStatus{0, 0, "fnt"}},
+		{"333/512 slp", &HPStatus{333, 512, "slp"}},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.input, func(t *testing.T) {
+			h := NewHPStatus(tt.input)
+			assertEqual(t, "Current HP", tt.output.Current, h.Current)
+			assertEqual(t, "Max HP", tt.output.Max, h.Max)
+			assertEqual(t, "Status", tt.output.Status, h.Status)
+		})
+	}
+}

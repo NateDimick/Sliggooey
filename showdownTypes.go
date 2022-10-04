@@ -290,6 +290,13 @@ type PokemonDetails struct {
 	Shiny   bool
 }
 
+// 100/100 par
+type HPStatus struct {
+	Current int
+	Max     int
+	Status  string // par, slp, fnt, (brn, frz, psn, tox)
+}
+
 func NewPokemonPosition(positionSpec string) *PokemonPosition {
 	p := new(PokemonPosition)
 	splitSpec := NewSplitString(positionSpec, ": ")
@@ -323,4 +330,20 @@ func NewPokemonDetails(detailSpec string) *PokemonDetails {
 		}
 	}
 	return d
+}
+
+func NewHPStatus(hpSpec string) *HPStatus {
+	h := new(HPStatus)
+	splitSpec := NewSplitString(hpSpec, " ")
+	splitHp := NewSplitString(splitSpec.Get(0), "/")
+	if splitHp.len == 2 {
+		curr, _ := strconv.Atoi(splitHp.Get(0))
+		max, _ := strconv.Atoi(splitHp.Get(1))
+		h.Current = curr
+		h.Max = max
+	}
+	if splitSpec.len == 2 {
+		h.Status = splitSpec.Get(1)
+	}
+	return h
 }

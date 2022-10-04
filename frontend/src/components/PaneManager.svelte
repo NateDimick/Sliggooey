@@ -75,7 +75,7 @@ EventsOn(IPCEventTypes.RoomMessage, (data: RoomMessagePayload | RoomHtmlPayload)
 EventsOn(IPCEventTypes.RoomState, (data: RoomStatePayload) => {
     roomStates.update((rss) => {
         if(rss[data.RoomId]) {
-            tsPrint(`Updating room state: ${data.RoomId}`)
+            tsPrint(`Updating room state: ${data.RoomId}, ${data.Player?.ActivePokemon?.Reason}`)
             rss[data.RoomId] = reconcileRoomState(data, rss[data.RoomId])
         } else {
             tsPrint(`Room state update ${data.RoomId} received but user is not in that room`)

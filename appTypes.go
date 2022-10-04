@@ -194,9 +194,12 @@ type UpdatePlayerPayload struct {
 
 type UpdatePlayerPokemon struct {
 	Reason   MessageType
-	Position PokemonPosition
-	Details  PokemonDetails
-	HP       string
+	Position *PokemonPosition
+	Details  *PokemonDetails
+	HP       *HPStatus
+	// faint
+	// stat boosts
+	// statuses
 }
 
 /*

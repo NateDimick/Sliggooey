@@ -144,16 +144,25 @@ func (a *App) parseMajorBattleAction(roomId string, msg *SplitString) {
 		subPayload := new(UpdatePlayerPayload)
 		p := NewPokemonPosition(msg.Get(2))
 		d := NewPokemonDetails(msg.Get(3))
+		h := NewHPStatus(msg.Get(4))
 		subPayload.PlayerId = p.PlayerId
-		subPayload.ActivePokemon = &UpdatePlayerPokemon{msgType, *p, *d, msg.Get(4)}
+		subPayload.ActivePokemon = &UpdatePlayerPokemon{msgType, p, d, h}
 		payload := UpdateRoomStatePayload{RoomId: roomId, Player: subPayload}
 		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, payload}
+		// TODO send some sort of room message
 	case Swap:
 		//
 	case Cannot:
 		//
 	case Faint:
-		//
+		//   |faint|<position spec>
+		// 0 |  1  |       2
+		subPayload := new(UpdatePlayerPayload)
+		p := NewPokemonPosition(msg.Get(2))
+		subPayload.PlayerId = p.PlayerId
+		subPayload.ActivePokemon = &UpdatePlayerPokemon{Reason: msgType, Position: p}
+		payload := UpdateRoomStatePayload{RoomId: roomId, Player: subPayload}
+		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, payload}
 	default:
 		goPrint("not a supported major Battle action")
 	}
@@ -162,11 +171,29 @@ func (a *App) parseMajorBattleAction(roomId string, msg *SplitString) {
 func (a *App) parseMinorBattleAction(roomId string, msg *SplitString) {
 	fullMessage := msg.ReassembleTail(0)
 	goPrint("possible minor battle action", fullMessage)
-	msgType := MessageType(msg.Get(0))
+	msgType := MessageType(msg.Get(1))
 	switch msgType {
 	case Fail:
 		//
+	case Block:
+		//
+	case NoTarget:
+		//
+	case Miss:
+		//
+	case Damage, Heal:
+		//   |<type>|<position spec>|<hp spec>|<from details
+		// 0 |  1   |       2       |    3    |      4
+		subPayload := new(UpdatePlayerPayload)
+		p := NewPokemonPosition(msg.Get(2))
+		h := NewHPStatus(msg.Get(3))
+		subPayload.PlayerId = p.PlayerId
+		subPayload.ActivePokemon = &UpdatePlayerPokemon{Reason: "hpupdate", Position: p, HP: h}
+		payload := UpdateRoomStatePayload{RoomId: roomId, Player: subPayload}
+		goPrint("hp update room state payload", fmt.Sprintf("%+v", payload), fmt.Sprintf("%+v", subPayload), fmt.Sprintf("%+v", h))
+		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, payload}
+		// TODO: send a chat message
 	default:
-		goPrint("not a supported minor battle action")
+		goPrint("not a supported minor battle action", msg.ReassembleTail(0))
 	}
 }

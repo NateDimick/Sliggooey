@@ -137,7 +137,7 @@ export type PlayerActivePokemonPayload = {
     Reason: string,
     Position,
     Details,
-    HP: string
+    HP,
 }
 
 export type BattleRequest = {
@@ -206,16 +206,20 @@ export type BattleChoice = {
 }
 
 export type PokemonState = {
-    species: string,
-    nickname: string,
-    gender: string,
-    level: number,
-    majorStatus: string,
-    minorStatuses: string[],
-    moves: MoveInfo[],
-    playerId: string,
-    hpState: string,
-    shiny: boolean
+    species?: string,
+    nickname?: string,
+    gender?: string,
+    level?: number,
+    majorStatus?: string,
+    minorStatuses?: string[],
+    moves?: MoveInfo[],
+    statBoosts?: number[],
+    active?: boolean,
+    fainted?: boolean,
+    playerId?: string,
+    currentHp?: number,
+    maxHp?: number,
+    shiny?: boolean
 }
 
 export function newRoomState(): RoomState {
@@ -243,10 +247,8 @@ export function reconcileRoomState(update: RoomStatePayload, base: RoomState): R
         base.gameType = update.GameType
     }
     if (update.Request !== "" && update.Request !== null) {
-        tsPrint("Current request updated")
+        //tsPrint("Current request updated")
         base.request = JSON.parse(update.Request)
-    } else {
-        tsPrint(`current request not updated ${JSON.stringify(base.request)}`)
     }
     if (update.Tier) {
         base.tier = update.Tier
@@ -274,6 +276,8 @@ export function reconcileRoomState(update: RoomStatePayload, base: RoomState): R
                 inactive: []
             }
         }
+    } else {
+        tsPrint(`No Player or player pokemon update ${update}`)
     }
 
     return base
@@ -284,28 +288,62 @@ function reconcilePlayerState(update: PlayerPayload, base: BattleRoomParticipant
         base.teamsize = update.TeamSize
     }
     if (update.ActivePokemon) {
+        tsPrint(`Updating active pokemon ${JSON.stringify(update)}`)
         let newActivePokemon = update.ActivePokemon
         let newState: PokemonState = {
-            species: newActivePokemon.Details.Species,
-            level: newActivePokemon.Details.Level,
-            gender: newActivePokemon.Details.Gender,
-            shiny: newActivePokemon.Details.Shiny,
-            nickname: newActivePokemon.Position.NickName,
-            playerId: newActivePokemon.Position.PlayerId,
-            hpState: newActivePokemon.HP,
-            majorStatus: "",
+            species: newActivePokemon.Details?.Species,
+            level: newActivePokemon.Details?.Level,
+            gender: newActivePokemon.Details?.Gender,
+            shiny: newActivePokemon.Details?.Shiny,
+            nickname: newActivePokemon.Position?.NickName,
+            playerId: newActivePokemon.Position?.PlayerId,
+            currentHp: newActivePokemon.HP?.Current,
+            maxHp: newActivePokemon.HP?.Max,
+            majorStatus: newActivePokemon.HP?.Status,
             minorStatuses: [],
-            moves: []
+            moves: [],
+            statBoosts: [],
+            active: true,
+            fainted: false
         }
         while (newActivePokemon.Position.Position > base.active.length) {
             base.active.push(null)
         }
-        if (base.active[newActivePokemon.Position.Position - 1]) {
-            base.inactive = [...base.inactive, base.active[newActivePokemon.Position.Position - 1]]
+        if (base.active[newActivePokemon.Position.Position - 1] && (newActivePokemon.Reason === "switch" || newActivePokemon.Reason === "drag")) {
+            let switchingOut = base.active[newActivePokemon.Position.Position - 1]
+            switchingOut.active = false
+            base.inactive = [...base.inactive, switchingOut]  // put formerly active pokemon back in inactive list
+            base.inactive = base.inactive.filter((p: PokemonState) => {return !equalPokeState(p, newState)}) // remove new active pokemon from inactive list
+            base.active[newActivePokemon.Position.Position - 1] = newState // put newly active pokemon on the active list
+        } else if (newActivePokemon.Reason === "switch" && base.active[newActivePokemon.Position.Position - 1] === null) {
+            base.active[newActivePokemon.Position.Position - 1] = newState // put newly active pokemon on the active list
         }
-        base.active[newActivePokemon.Position.Position - 1] = newState
-        base.active = base.active
-        tsPrint(`updated active pokemon: ${JSON.stringify(base.active)} | ${JSON.stringify(base.inactive)}`)
+        if (newActivePokemon.Reason === "faint") {
+            newState.fainted = true
+            tsPrint(`${newState.nickname} fainted`)
+        } else if (newActivePokemon.Reason === "hpupdate") {
+            let active = base.active[newActivePokemon.Position.Position - 1]
+            active.currentHp = newState.currentHp
+            active.maxHp = newState.maxHp
+            active.majorStatus = newState.majorStatus
+            base.active[newActivePokemon.Position.Position - 1] = active
+            tsPrint(`${newState.nickname} hp changed`)
+        } else {
+            tsPrint(`Not a recognized update reason: ${newActivePokemon.Reason}`)
+        }
+        base.active = [...base.active]
+        tsPrint(`updated active pokemon: [${newActivePokemon.Reason}] ${JSON.stringify(base.active)} | ${JSON.stringify(base.inactive)}`)
+    } else {
+        tsPrint(`No player pokemon update ${JSON.stringify(update)}`)
     }
     return base
+}
+
+function equalPokeState(a: PokemonState, b: PokemonState): boolean {
+    return a.level === b.level 
+        && a.species === b.species 
+        && a.shiny === b.shiny 
+        && a.nickname === b.nickname 
+        && a.maxHp === b.maxHp 
+        && a.gender === b.gender
 }

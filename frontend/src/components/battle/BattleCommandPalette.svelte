@@ -10,7 +10,9 @@ const enum CommandPaletteState {
     SelectAction,
     SelectTarget,
     WaitForOpponent,
-    ForceSwitch
+    WaitForNextRequest,
+    ForceSwitch,
+    GameOver
 }
 
 export let roomName: string
@@ -22,14 +24,14 @@ let currentChoiceIndex: number = 0
 
 $: {
     currentRequest = $roomStates[roomName]?.request
-    tsPrint(`current request ${JSON.stringify(currentRequest)}`)
+    //tsPrint(`current request ${JSON.stringify(currentRequest)}`)  // if this component ever shits the bed, uncomment this line
     // fill current choice by the number of active pokemon in currentRequest
     if (currentRequest?.forceSwitch?.length) {
         currentChoiceState = CommandPaletteState.ForceSwitch
         currentChoice = Array(currentRequest?.forceSwitch.length).fill({})
         currentChoiceIndex = 0
     } else if (currentRequest?.wait) {
-        currentChoiceState = CommandPaletteState.WaitForOpponent
+        currentChoiceState = CommandPaletteState.WaitForNextRequest
     } else {
         currentChoiceState = CommandPaletteState.SelectAction
         currentChoice = Array(currentRequest?.active?.length).fill({})
