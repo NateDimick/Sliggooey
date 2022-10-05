@@ -57,13 +57,6 @@ func NewUser(nameStr string) *User {
 	return u
 }
 
-type ShowdownUser struct {
-	User       *User
-	Avatar     int
-	Settings   *UserSettings
-	Challenges *ChallengeStatus
-}
-
 type ShowdownCredentials struct {
 	UserName string
 	Password string
@@ -200,25 +193,6 @@ type UpdatePlayerPokemon struct {
 	// faint
 	// stat boosts
 	// statuses
-}
-
-/*
-{"blockChallenges":false,"blockPMs":false,"ignoreTickets":false,"hideBattlesFromTrainerCard":false,"blockInvites":false,"doNotDisturb":false,"blockFriendRequests":false,"allowFriendNotifications":false,"displayBattlesToFriends":false,"hideLogins":false,"hiddenNextBattle":false,"inviteOnlyNextBattle":false,"language":null}
-*/
-type UserSettings struct {
-	BlockChallenges            bool   `json:"blockChallenges"`
-	BlockPMs                   bool   `json:"blockPMs"`
-	IgnoreTickets              bool   `json:"ignoreTickets"`
-	HideBattlesFromTrainerCard bool   `json:"hideBattlesFromTrainerCard"`
-	BlockInvites               bool   `json:"blockInvites"`
-	DoNotDisturb               bool   `json:"doNotDisturb"`
-	BlockFriendRequests        bool   `json:"blockFriendRequests"`
-	AllowFriendNotifications   bool   `json:"allowFriendNotifications"`
-	DisplayBattlesToFriends    bool   `json:"displayBattlesToFriends"`
-	HideLogins                 bool   `json:"hideLogins"`
-	HiddenNextBattle           bool   `json:"hiddenNextBattle"`
-	InviteOnlyNextBattle       bool   `json:"inviteOnlyNextBattle"`
-	Language                   string `json:"language"`
 }
 
 type SplitString struct {

@@ -193,6 +193,27 @@ func (a *App) parseMinorBattleAction(roomId string, msg *SplitString) {
 		goPrint("hp update room state payload", fmt.Sprintf("%+v", payload), fmt.Sprintf("%+v", subPayload), fmt.Sprintf("%+v", h))
 		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, payload}
 		// TODO: send a chat message
+	case SetHp:
+		//
+	case StatusInflict, StatusCure:
+		//   |<type>|<position spec>|<status>
+		// 0 |  1   |       2       |   3
+		subPayload := new(UpdatePlayerPayload)
+		p := NewPokemonPosition(msg.Get(2))
+		h := new(HPStatus)
+		if msgType == StatusInflict {
+			h.Status = msg.Get(3)
+		}
+		subPayload.ActivePokemon = &UpdatePlayerPokemon{Reason: "majorstatusupdate", Position: p, HP: h}
+		payload := UpdateRoomStatePayload{RoomId: roomId, Player: subPayload}
+		goPrint("major status update", msgType, h.Status)
+		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, payload}
+	case TeamCure:
+		//
+	case Boost, Unboost:
+		//   |<type>|<position spec>|<stat spec>|<amount>
+		// 0 |  1   |       2       |     3     |   4
+
 	default:
 		goPrint("not a supported minor battle action", msg.ReassembleTail(0))
 	}

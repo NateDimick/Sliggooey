@@ -23,7 +23,7 @@ type ShowdownConnection struct {
 }
 
 type ShowdownState struct {
-	user        *ShowdownUser
+	user        *User
 	loggedIn    bool
 	challenges  *ChallengeStatus
 	settings    *AppSettings

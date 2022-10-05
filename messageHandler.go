@@ -39,19 +39,17 @@ func (a *App) formatList(list string) {
 	a.state.formatList = &formats
 }
 
-func (a *App) updateUserResultEvent(uname string, isGuest int, avatarId int, settings *UserSettings) {
+func (a *App) updateUserResultEvent(uname string, isGuest int, avatarId int, settings string) {
 	if isGuest == 1 && a.state.loggedIn == false {
 		goPrint("User logged in! notifying UI", uname, avatarId)
 		a.channels.frontendChan <- ShowdownEvent{LoginSuccess, LoginSuccessPayload{strings.TrimSpace(uname)}}
 	} else if isGuest == 0 {
 		return
 	}
-	user := new(ShowdownUser)
-	user.Avatar = avatarId
-	user.User = NewUser(uname)
-	user.User.IsUser = true
-	user.Settings = settings
+	user := NewUser(uname)
+	user.IsUser = true
 	a.state.user = user
+	// TODO send user settings json to the frontend to store as state
 }
 
 func (a *App) popupMessageEvent(message string) {
@@ -85,8 +83,8 @@ func (a *App) privateMessageEvent(from string, to string, message string) {
 	var pm PrivateMessagePayload
 	fromUser := NewUser(from)
 	toUser := NewUser(to)
-	goPrint("pm from", from, "to", to, message, "and I am", a.state.user.User.UserName)
-	if fromUser.UserName == a.state.user.User.UserName {
+	goPrint("pm from", from, "to", to, message, "and I am", a.state.user.UserName)
+	if fromUser.UserName == a.state.user.UserName {
 		pm = PrivateMessagePayload{toUser.UserName, fromUser.UserName, message, Self}
 	} else {
 		pm = PrivateMessagePayload{fromUser.UserName, toUser.UserName, message, Other}

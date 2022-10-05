@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"strconv"
 	"strings"
@@ -66,12 +65,7 @@ func (a *App) parseGlobalServerMessage(message string) {
 		goPrint("update user", message)
 		flag, _ := strconv.Atoi(chunkedMsg.Get(3))
 		avatar, _ := strconv.Atoi(chunkedMsg.Get(4))
-		settings := new(UserSettings)
-		err := json.Unmarshal([]byte(chunkedMsg.ReassembleTail(5)), settings)
-		if err != nil {
-			goPrint("could not parse user settings")
-			return
-		}
+		settings := chunkedMsg.ReassembleTail(5)
 		a.updateUserResultEvent(chunkedMsg.Get(2), flag, avatar, settings)
 	case UpdateChallenges:
 		//   |updatechallenges|<challenge json>
