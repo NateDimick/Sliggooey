@@ -1,9 +1,9 @@
 <script lang="ts">
-    import type { BattleRoomParticipant } from "../../util";
+import type { main as go } from "../../wailsjs/go/models";
 import ActivePokemon from "./ActivePokemon.svelte";
 import Bench from "./Bench.svelte";
 
-export let participant: BattleRoomParticipant
+export let participant: go.BattleRoomParticipant
 
 </script>
 

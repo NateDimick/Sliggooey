@@ -1,9 +1,9 @@
 <script lang="ts">
-    import type { PokemonState } from "../../util";
+import type { main as go } from "../../wailsjs/go/models";
 
 
 
-export let state: PokemonState
+export let state: go.PokemonState
 </script>
 
 <main>

@@ -164,32 +164,32 @@ type ChallengePayload struct {
 }
 
 type UpdateRoomStatePayload struct {
-	RoomId   string
-	Title    string
-	Gen      int
-	GameType string
-	Tier     string
-	Timer    *bool // bools default to false, but pointers default to nil
-	Rated    bool
-	Active   *bool
-	Player   *UpdatePlayerPayload
-	Request  string
+	RoomId   string              `json:"RoomId"`
+	Title    string              `json:"title"`
+	Gen      int                 `json:"gen"`
+	GameType string              `json:"gameType"`
+	Tier     string              `json:"tier"`
+	Timer    *bool               `json:"timer"` // bools default to false, but pointers default to nil
+	Rated    bool                `json:"rated"`
+	Active   *bool               `json:"active"`
+	Player   UpdatePlayerPayload `json:"player"`
+	Request  string              `json:"request"`
 }
 
 type UpdatePlayerPayload struct {
-	PlayerId      string
-	Name          string
-	Avatar        string
-	Rating        string
-	TeamSize      int
-	ActivePokemon *UpdatePlayerPokemon
+	PlayerId      string              `json:"playerId"`
+	Name          string              `json:"playerName"`
+	Avatar        string              `json:"avatarName"`
+	Rating        string              `json:"rating"`
+	TeamSize      int                 `json:"teamSize"`
+	ActivePokemon UpdatePlayerPokemon `json:"activePokemonUpdate"`
 }
 
 type UpdatePlayerPokemon struct {
-	Reason   MessageType
-	Position *PokemonPosition
-	Details  *PokemonDetails
-	HP       *HPStatus
+	Reason   MessageType     `json:"updateReason"`
+	Position PokemonPosition `json:"positionalDetails"`
+	Details  PokemonDetails  `json:"intrinsicDetails"`
+	HP       HPStatus        `json:"hpState"`
 	// faint
 	// stat boosts
 	// statuses
@@ -248,4 +248,43 @@ func (s *SplitString) ReassembleMid(from int, to int) string {
 	} else {
 		return ""
 	}
+}
+
+type RoomState struct {
+	Request      map[string]interface{}           `json:"request"`
+	Title        string                           `json:"title"`
+	Gen          int                              `json:"gen"`
+	Tier         string                           `json:"tier"`
+	GameType     string                           `json:"gameType"`
+	Timer        bool                             `json:"timer"`
+	Rated        bool                             `json:"rated"`
+	Active       bool                             `json:"active"`
+	Participants map[string]BattleRoomParticipant `json:"participants"`
+}
+
+type BattleRoomParticipant struct {
+	Name     string         `json:"name"`
+	Id       string         `json:"id"`
+	Rating   string         `json:"rating"`
+	TeamSize int            `json:"teamSize"`
+	Avatar   string         `json:"avatar"`
+	Active   []PokemonState `json:"active"`
+	Inactive []PokemonState `json:"inactive"`
+}
+
+type PokemonState struct {
+	Species       string         `json:"species"`
+	NickName      string         `json:"nickname"`
+	Gender        rune           `json:"gender"`
+	Level         int            `json:"level"`
+	MajorStatus   string         `json:"majorStatus"`
+	MinorStatuses []string       `json:"minorStatuses"`
+	Moves         []interface{}  `json:"moves"`
+	StatBoosts    map[string]int `json:"boosts"`
+	Active        bool           `json:"isActive"`
+	Fainted       bool           `json:"isFainted"`
+	PlayerId      string         `json:"trainerId"`
+	CurrentHp     int            `json:"currentHp"`
+	MaxHp         int            `json:"maxHp"`
+	Shiny         bool           `json:"shiny"`
 }

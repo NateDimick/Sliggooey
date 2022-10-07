@@ -36,14 +36,14 @@ func (a *App) parseBattleMessage(roomId string, msg *SplitString) {
 		//   |player|<id>|<name>|<avatar name>|<rating>
 		// 0 |  1   | 2  |  3   |      4      |   5
 		subPayload := UpdatePlayerPayload{PlayerId: msg.Get(2), Name: msg.Get(3), Avatar: msg.Get(4), Rating: msg.Get(5)}
-		payload := UpdateRoomStatePayload{RoomId: roomId, Player: &subPayload}
+		payload := UpdateRoomStatePayload{RoomId: roomId, Player: subPayload}
 		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, payload}
 	case TeamSize:
 		//   |teamsize|<id>|<size>
 		// 0 |   1    | 2  |  3
 		s, _ := strconv.Atoi(msg.Get(3))
 		subPayload := UpdatePlayerPayload{PlayerId: msg.Get(2), TeamSize: s}
-		payload := UpdateRoomStatePayload{RoomId: roomId, Player: &subPayload}
+		payload := UpdateRoomStatePayload{RoomId: roomId, Player: subPayload}
 		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, payload}
 	case Generation:
 		//   |gen|<number>
@@ -146,8 +146,8 @@ func (a *App) parseMajorBattleAction(roomId string, msg *SplitString) {
 		d := NewPokemonDetails(msg.Get(3))
 		h := NewHPStatus(msg.Get(4))
 		subPayload.PlayerId = p.PlayerId
-		subPayload.ActivePokemon = &UpdatePlayerPokemon{msgType, p, d, h}
-		payload := UpdateRoomStatePayload{RoomId: roomId, Player: subPayload}
+		subPayload.ActivePokemon = UpdatePlayerPokemon{msgType, p, d, h}
+		payload := UpdateRoomStatePayload{RoomId: roomId, Player: *subPayload}
 		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, payload}
 		// TODO send some sort of room message
 	case Swap:
@@ -160,8 +160,8 @@ func (a *App) parseMajorBattleAction(roomId string, msg *SplitString) {
 		subPayload := new(UpdatePlayerPayload)
 		p := NewPokemonPosition(msg.Get(2))
 		subPayload.PlayerId = p.PlayerId
-		subPayload.ActivePokemon = &UpdatePlayerPokemon{Reason: msgType, Position: p}
-		payload := UpdateRoomStatePayload{RoomId: roomId, Player: subPayload}
+		subPayload.ActivePokemon = UpdatePlayerPokemon{Reason: msgType, Position: p}
+		payload := UpdateRoomStatePayload{RoomId: roomId, Player: *subPayload}
 		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, payload}
 	default:
 		goPrint("not a supported major Battle action")
@@ -188,8 +188,8 @@ func (a *App) parseMinorBattleAction(roomId string, msg *SplitString) {
 		p := NewPokemonPosition(msg.Get(2))
 		h := NewHPStatus(msg.Get(3))
 		subPayload.PlayerId = p.PlayerId
-		subPayload.ActivePokemon = &UpdatePlayerPokemon{Reason: "hpupdate", Position: p, HP: h}
-		payload := UpdateRoomStatePayload{RoomId: roomId, Player: subPayload}
+		subPayload.ActivePokemon = UpdatePlayerPokemon{Reason: msgType, Position: p, HP: h}
+		payload := UpdateRoomStatePayload{RoomId: roomId, Player: *subPayload}
 		goPrint("hp update room state payload", fmt.Sprintf("%+v", payload), fmt.Sprintf("%+v", subPayload), fmt.Sprintf("%+v", h))
 		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, payload}
 		// TODO: send a chat message
@@ -204,8 +204,8 @@ func (a *App) parseMinorBattleAction(roomId string, msg *SplitString) {
 		if msgType == StatusInflict {
 			h.Status = msg.Get(3)
 		}
-		subPayload.ActivePokemon = &UpdatePlayerPokemon{Reason: "majorstatusupdate", Position: p, HP: h}
-		payload := UpdateRoomStatePayload{RoomId: roomId, Player: subPayload}
+		subPayload.ActivePokemon = UpdatePlayerPokemon{Reason: "majorstatusupdate", Position: p, HP: *h}
+		payload := UpdateRoomStatePayload{RoomId: roomId, Player: *subPayload}
 		goPrint("major status update", msgType, h.Status)
 		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, payload}
 	case TeamCure:

@@ -1,18 +1,18 @@
 <!-- for visualizing the battle simualtion -->
 <script lang="ts">
-    import BattleSceneCorner from "./BattleSceneCorner.svelte";
-    import { roomStates } from "../../store";
-    import type { RoomState } from "../../util";
+import BattleSceneCorner from "./BattleSceneCorner.svelte";
+import { roomStates } from "../../store";
+import type { main as go } from "../../wailsjs/go/models";
 
-    export let roomName: string
-    let state: RoomState
-    let updates: number = 0
+export let roomName: string
+let state: go.RoomState
+let updates: number = 0
 
-    $: {
-        state = $roomStates[roomName]
-        // tsPrint(`updated state in battle scene ${JSON.stringify(state)}`)  // if command pallete ever eats shit, uncomment this line
-        updates += 1
-    }
+$: {
+    state = $roomStates[roomName]
+    // tsPrint(`updated state in battle scene ${JSON.stringify(state)}`)  // if command pallete ever eats shit, uncomment this line
+    updates += 1
+}
 
 </script>
 

@@ -2,7 +2,7 @@
 <script lang="ts">
 import PaneTab from "./PaneTab.svelte";
 import { currentPaneStore, PaneInfo, panes, roomChats, roomStates } from "../store"
-import { IPCEventTypes, NewRoomPayload, newRoomState, PaneType, reconcileRoomState, RoomHtmlPayload, RoomMessagePayload, RoomStatePayload, tsPrint } from "../util";
+import { IPCEventTypes, NewRoomPayload, PaneType, RoomHtmlPayload, RoomMessagePayload, tsPrint } from "../util";
 import HomePane from "./HomePane.svelte";
 import ChatPane from "./ChatPane.svelte";
 import BattlePane from "./BattlePane.svelte";
@@ -10,6 +10,11 @@ import { EventsOn } from "../wailsjs/runtime/runtime";
 import BattleHubPane from "./BattleHubPane.svelte";
 import RoomsHubPane from "./RoomsHubPane.svelte";
 import RoomPane from "./RoomPane.svelte";
+import { main as go } from "../wailsjs/go/models"
+import { JunkyHackyFunctionDoNotUse, ReconcileRoomState } from "../wailsjs/go/main/App";
+import { Mutex } from 'async-mutex'
+
+const stateUpdateMutex = new Mutex()
 
 EventsOn(IPCEventTypes.RoomInit, (data: NewRoomPayload) => {
     let newPane: PaneInfo = {name: data.RoomId, removable: true, type: undefined}
@@ -26,7 +31,9 @@ EventsOn(IPCEventTypes.RoomInit, (data: NewRoomPayload) => {
         return rms
     })
     roomStates.update((rss) => {
-        rss[data.RoomId] = newRoomState()
+        let newState = new go.RoomState({title: "brand new battle room", participants: {}, request: null})
+        tsPrint(`new room state: ${printRoomState(newState)}`)
+        rss[data.RoomId] = newState
         return rss
     })
     panes.update((panes: PaneInfo[]) => {
@@ -72,18 +79,53 @@ EventsOn(IPCEventTypes.RoomMessage, (data: RoomMessagePayload | RoomHtmlPayload)
     }
 })
 
-EventsOn(IPCEventTypes.RoomState, (data: RoomStatePayload) => {
-    roomStates.update((rss) => {
-        if(rss[data.RoomId]) {
-            tsPrint(`Updating room state: ${data.RoomId}, ${data.Player?.ActivePokemon?.Reason}`)
-            rss[data.RoomId] = reconcileRoomState(data, rss[data.RoomId])
-        } else {
-            tsPrint(`Room state update ${data.RoomId} received but user is not in that room`)
-        }
-        rss = rss
-        return rss
-    })
+EventsOn(IPCEventTypes.RoomState, async (data) => {
+    //let updateData = go.UpdateRoomStatePayload.createFrom(data)
+    if($roomStates[data.RoomId]) {
+        tsPrint(`Updating room state: ${data.RoomId}`)
+        // must wrap state updating in a mutex to ensure only one update occurs at a time
+        await stateUpdateMutex.runExclusive(async () => {
+            let updatedState = await ReconcileRoomState(data, $roomStates[data.RoomId])
+            tsPrint(`State after update: ${data.RoomId}, ${printRoomState(updatedState)}`)
+            roomStates.update((rss) => {
+                rss[data.RoomId] = updatedState
+                rss = rss
+                return rss
+            })
+        }) 
+    } else {
+        tsPrint(`Room state update ${data.RoomId} received but user is not in that room`)
+    }
+    
 })
+
+function printRoomState(s: go.RoomState): string {
+    let x = {
+        request: s.request,
+        title: s.title,
+        gen: s.gen,
+        gametype: s.gameType,
+        tier: s.tier,
+        players: s.participants
+    }
+    return JSON.stringify(x)
+}
+
+function printRoomStateUpdate(u: go.UpdateRoomStatePayload): string {
+    let x = {
+        roomid: u.RoomId,
+        rated: u.rated,
+        request: u.request,
+        gen: u.gen,
+        gametype: u.gameType, 
+        tier: u.tier,
+        playerId: u.player.playerId,
+        avatar: u.player.avatarName,
+        pspecies: u.player.activePokemonUpdate.positionalDetails
+    }
+
+    return JSON.stringify(x)
+}
 </script>
 
 <main>

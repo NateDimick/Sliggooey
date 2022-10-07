@@ -1,21 +1,24 @@
 <script lang="ts">
-    import type { BattleRoomParticipant } from "../../util";
+import type { main as go } from "../../wailsjs/go/models";
 import BenchedPokemon from "./BenchedPokemon.svelte";
 import Trainer from "./Trainer.svelte";
 
-export let participant: BattleRoomParticipant
+export let participant: go.BattleRoomParticipant
 
 let numMysteryPokemon: number
 
 $: {
     let numKnown = participant.inactive.length
-    numMysteryPokemon = participant.teamsize - numKnown - 1
+    numMysteryPokemon = Math.max(participant.teamSize - numKnown - 1, 0)
 }
 
 </script>
 
 <main>
     <Trainer participant={participant}/>
+    {#each participant.active as p}
+        <BenchedPokemon state={p}/>
+    {/each}
     {#each participant.inactive as p}
         <BenchedPokemon state={p}/>
     {/each}

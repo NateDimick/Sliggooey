@@ -23,7 +23,7 @@ let currentChoiceState: CommandPaletteState = CommandPaletteState.WaitForCommand
 let currentChoiceIndex: number = 0
 
 $: {
-    currentRequest = $roomStates[roomName]?.request
+    currentRequest = $roomStates[roomName]?.request as BattleRequest
     //tsPrint(`current request ${JSON.stringify(currentRequest)}`)  // if this component ever shits the bed, uncomment this line
     // fill current choice by the number of active pokemon in currentRequest
     if (currentRequest?.forceSwitch?.length) {
@@ -36,6 +36,13 @@ $: {
         currentChoiceState = CommandPaletteState.SelectAction
         currentChoice = Array(currentRequest?.active?.length).fill({})
         currentChoiceIndex = 0
+    }
+}
+
+$: {
+    let gameIsActive = $roomStates[roomName]?.active
+    if (!gameIsActive) {
+        currentChoiceState = CommandPaletteState.GameOver
     }
 }
 

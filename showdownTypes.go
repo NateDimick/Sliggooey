@@ -297,21 +297,22 @@ type HPStatus struct {
 	Status  string // par, slp, fnt, (brn, frz, psn, tox)
 }
 
-func NewPokemonPosition(positionSpec string) *PokemonPosition {
+func NewPokemonPosition(positionSpec string) PokemonPosition {
 	p := new(PokemonPosition)
 	splitSpec := NewSplitString(positionSpec, ": ")
 	p.NickName = splitSpec.Get(1)
 	// assume formats will only allow up to 9 players (current max is 4)
 	if len(splitSpec.Get(0)) == 3 {
 		p.PlayerId = splitSpec.Get(0)[:2]          // p1, p2, p3, etc but breaks for p10 or higher
-		p.Position = int(splitSpec.Get(0)[2]) - 96 // 'a' is 97 in ascii/utf, we want a = 1
+		p.Position = int(splitSpec.Get(0)[2]) - 97 // 'a' is 97 in ascii/utf, we want a = 0
 	} else {
 		p.PlayerId = splitSpec.Get(0)
+		p.Position = -1 // indicates inactive pokemon
 	}
-	return p
+	return *p
 }
 
-func NewPokemonDetails(detailSpec string) *PokemonDetails {
+func NewPokemonDetails(detailSpec string) PokemonDetails {
 	d := new(PokemonDetails)
 	splitSpec := NewSplitString(detailSpec, ", ")
 	d.Species = splitSpec.Get(0)
@@ -329,10 +330,10 @@ func NewPokemonDetails(detailSpec string) *PokemonDetails {
 			d.Level = level
 		}
 	}
-	return d
+	return *d
 }
 
-func NewHPStatus(hpSpec string) *HPStatus {
+func NewHPStatus(hpSpec string) HPStatus {
 	h := new(HPStatus)
 	splitSpec := NewSplitString(hpSpec, " ")
 	splitHp := NewSplitString(splitSpec.Get(0), "/")
@@ -345,5 +346,5 @@ func NewHPStatus(hpSpec string) *HPStatus {
 	if splitSpec.len == 2 {
 		h.Status = splitSpec.Get(1)
 	}
-	return h
+	return *h
 }

@@ -1,12 +1,13 @@
 import { writable } from "svelte/store";
 import { PaneType, PmPayload, ViewType } from "./util";
+import type { main as go } from "./wailsjs/go/models"
 
 // usernames as keys, list of chats as values
 export const pmChats = writable(new Object())
 // roomIds and keys, list of chats as values
 export const roomChats = writable(new Object())
 // roomIds as keys, roomStates and values
-export const roomStates = writable(new Object())
+export const roomStates = writable(new Object() as {[key: string]: go.RoomState})
 // list of active battle room ids (even if the pane is closed)
 export const battles = writable([])
 // logged in user's username

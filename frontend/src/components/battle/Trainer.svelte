@@ -1,9 +1,9 @@
 <script lang="ts">
-    import type { BattleRoomParticipant } from "src/util";
+import type { main as go } from "../../wailsjs/go/models";
 
 
 
-    export let participant: BattleRoomParticipant
+export let participant: go.BattleRoomParticipant
 
 </script>
 

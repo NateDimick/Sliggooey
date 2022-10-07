@@ -86,16 +86,16 @@ func buildCommand(cmd ChatCommand, parts ...string) string {
 	return fmt.Sprintf("%s %s", cmd, strings.Join(parts, ", "))
 }
 
-func (a *App) JunkyHackyFunctionDoNotUse(b RoomMessagePayload, c UpdateRoomStatePayload) {
-	goPrint("this function does nothing")
+func (a *App) JunkyHackyFunctionDoNotUse(debug string) string {
+	return fmt.Sprintf("echo! things are okay?")
 }
 
-// The idea is to move all structures for room state to the back end. The front end just acts as storage and relay
-// the backend receives a room update. it notifies the frontend and supplies update instructions.
-// the frontend calls this method with what the backend provided, along with it's stored state, and calls this function
-// then the state is updated and the frontend stores the result of this method as the current state
-func (a *App) ReconcileRoomState(updatePayload UpdateRoomStatePayload, presentState interface{}, instruction string) interface{} {
-	goPrint("this is an idea do not use")
+//by reconciling room state in the backend, we can use go structs for in the frontend thanks to wails magic.
+//define a struct once, use in both front and back end. it saves work
+func (a *App) ReconcileRoomState(updatePayload UpdateRoomStatePayload, presentState RoomState) RoomState {
+	goPrint(fmt.Sprintf("reconciling room state: \n[base] %+v  \n[update] %+v", presentState, updatePayload))
 	// make a new file room state .go that has a function to call here
-	return nil
+	result := reconcileRoomStateInner(updatePayload, presentState)
+	goPrint("room state reconciled")
+	return result
 }

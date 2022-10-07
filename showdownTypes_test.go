@@ -16,9 +16,9 @@ func TestNewPokemonPosition(t *testing.T) {
 		input  string
 		output *PokemonPosition
 	}{
-		{"p1a: Dragonite", &PokemonPosition{"p1", 1, "Dragonite"}},
-		{"p2b: Garbodor", &PokemonPosition{"p2", 2, "Garbodor"}},
-		{"p3: Vanilluxe", &PokemonPosition{"p3", 0, "Vanilluxe"}},
+		{"p1a: Dragonite", &PokemonPosition{"p1", 0, "Dragonite"}},
+		{"p2b: Garbodor", &PokemonPosition{"p2", 1, "Garbodor"}},
+		{"p3: Vanilluxe", &PokemonPosition{"p3", -1, "Vanilluxe"}},
 	}
 
 	for _, tt := range tests {
