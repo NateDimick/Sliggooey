@@ -146,7 +146,7 @@ func (a *App) parseMajorBattleAction(roomId string, msg *SplitString) {
 		d := NewPokemonDetails(msg.Get(3))
 		h := NewHPStatus(msg.Get(4))
 		subPayload.PlayerId = p.PlayerId
-		subPayload.ActivePokemon = UpdatePlayerPokemon{msgType, p, d, h}
+		subPayload.ActivePokemon = UpdatePlayerPokemon{Reason: msgType, Position: p, Details: d, HP: h}
 		payload := UpdateRoomStatePayload{RoomId: roomId, Player: *subPayload}
 		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, payload}
 		// TODO send some sort of room message
@@ -219,21 +219,81 @@ func (a *App) parseMinorBattleAction(roomId string, msg *SplitString) {
 		payload := UpdateRoomStatePayload{RoomId: roomId, Player: *subPayload}
 		goPrint("major status update", msgType, h.Status)
 		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, payload}
-	case TeamCure:
+	case TeamCure, InvertBoost, ClearBoost, ClearNegBoost:
 		//   |<type>|<position spec>
 		// 0 |  1   |       2
 		// position spec is included to describe the user/cause of the team cure
+		// for other messages, it is the target of the stat boost change
 		subPayload := new(UpdatePlayerPayload)
 		p := NewPokemonPosition(msg.Get(2))
 		subPayload.ActivePokemon = UpdatePlayerPokemon{Reason: msgType, Position: p}
 		payload := UpdateRoomStatePayload{RoomId: roomId, Player: *subPayload}
-		goPrint("team cure issued for", payload.Player.PlayerId)
+		goPrint(msgType, "issued for", payload.Player.PlayerId)
 		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, payload}
-	case Boost, Unboost:
+	case Boost, Unboost, SetBoost:
 		//   |<type>|<position spec>|<stat spec>|<amount>
 		// 0 |  1   |       2       |     3     |   4
-
+		subPayload := new(UpdatePlayerPayload)
+		p := NewPokemonPosition(msg.Get(2))
+		amount, _ := strconv.Atoi(msg.Get(4))
+		b := StatMod{msg.Get(3), amount}
+		subPayload.ActivePokemon = UpdatePlayerPokemon{Reason: msgType, Position: p, Boost: b}
+		payload := UpdateRoomStatePayload{RoomId: roomId, Player: *subPayload}
+		goPrint(p, b.Stat, "boosted by", b.Amount)
+		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, payload}
+	case SwapBoost:
+		//   |<type>|<source position spec>|<target position spec>|<stat spec list>
+		// 0 |  1   |           2          |           3          |       4
+	case CopyBoost:
+		//   |<type>|<source position spec>|<target position spec>
+		// 0 |  1   |           2          |           3
+	case ClearPosBoost:
+		//   |<type>|<target position spec>|<cause position spec>|<desc>
+		// 0 |  1   |           2          |           3         |  4
+	case EffectStart, EffectEnd:
+		//   |<type>|<position spec>|<effect>
+		// 0 |  1   |       2       |   3
+		subPayload := new(UpdatePlayerPayload)
+		p := NewPokemonPosition(msg.Get(2))
+		e := msg.Get(3)
+		subPayload.ActivePokemon = UpdatePlayerPokemon{Reason: msgType, Position: p, Effect: e}
+		payload := UpdateRoomStatePayload{RoomId: roomId, Player: *subPayload}
+		goPrint("effect", e, msgType, "on pokemon", p)
+		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, payload}
+	case Item:
+		//   |<type>|<position spec>|<item>|<optional: [from]>
+		// 0 |  1   |       2       |  3   |        4
+	case ItemEnd:
+		//   |<type>|<position spec>|<item>|<optional: [from]>|<optional: [silent]>
+		// 0 |  1   |       2       |  3   |        4+
+		// the held item of a pokemon has been consumed or removed
+	case Ability:
+		//
+	case AbilityEnd:
+		//
+	case Transform:
+		//
+	case MegaEvolve:
+		//
+	case PrimalForm:
+		//
+	case Burst:
+		//
+	case SingleMoveEffect, SingleTurnEffect:
+		//
 	default:
 		goPrint("not a supported minor battle action", msg.ReassembleTail(0))
 	}
 }
+
+// field effect messages:
+// ClearAllBoost
+// Weather
+// FieldStart
+// FieldEnd
+// SideStart
+// SideEnd
+// SwapSideConditions
+
+// produce a chat message
+// everything else lol

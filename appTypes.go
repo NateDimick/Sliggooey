@@ -190,9 +190,9 @@ type UpdatePlayerPokemon struct {
 	Position PokemonPosition `json:"positionalDetails"`
 	Details  PokemonDetails  `json:"intrinsicDetails"`
 	HP       HPStatus        `json:"hpState"`
+	Boost    StatMod         `json:"boost"`
+	Effect   string          `json:"effect"`
 	// faint
-	// stat boosts
-	// statuses
 }
 
 type SplitString struct {

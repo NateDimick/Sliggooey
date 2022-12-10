@@ -2,6 +2,8 @@ package main
 
 import (
 	"encoding/json"
+
+	"golang.org/x/exp/slices"
 )
 
 func reconcileRoomStateInner(update UpdateRoomStatePayload, state RoomState) RoomState {
@@ -112,7 +114,52 @@ func reconcileFrontendPlayerState(update UpdatePlayerPayload, state BattleRoomPa
 				ip.MajorStatus = ""
 			}
 		case Boost, Unboost:
-			//
+			statKey := update.ActivePokemon.Boost.Stat
+			statChange := update.ActivePokemon.Boost.Amount
+			position := update.ActivePokemon.Position.Position
+			stats := state.Active[position].StatBoosts
+			currentBoost, boostPresent := stats[statKey]
+			if !boostPresent {
+				stats[statKey] = statChange
+			} else {
+				stats[statKey] = currentBoost + statChange
+			}
+			state.Active[position].StatBoosts = stats
+		case SetBoost:
+			statKey := update.ActivePokemon.Boost.Stat
+			statChange := update.ActivePokemon.Boost.Amount
+			position := update.ActivePokemon.Position.Position
+			state.Active[position].StatBoosts[statKey] = statChange
+		case InvertBoost:
+			position := update.ActivePokemon.Position.Position
+			stats := state.Active[position].StatBoosts
+			for stat, boost := range stats {
+				state.Active[position].StatBoosts[stat] = -boost
+			}
+		case ClearBoost:
+			position := update.ActivePokemon.Position.Position
+			stats := state.Active[position].StatBoosts
+			for stat := range stats {
+				state.Active[position].StatBoosts[stat] = 0
+			}
+		case ClearNegBoost:
+			position := update.ActivePokemon.Position.Position
+			stats := state.Active[position].StatBoosts
+			for stat, boost := range stats {
+				if boost < 0 {
+					state.Active[position].StatBoosts[stat] = 0
+				}
+			}
+		case EffectStart:
+			effect := update.ActivePokemon.Effect
+			position := update.ActivePokemon.Position.Position
+			state.Active[position].MinorStatuses = append(state.Active[position].MinorStatuses, effect)
+		case EffectEnd:
+			effect := update.ActivePokemon.Effect
+			position := update.ActivePokemon.Position.Position
+			effects := state.Active[position].MinorStatuses
+			effectInd := slices.Index(effects, effect)
+			state.Active[position].MinorStatuses = slices.Delete(effects, effectInd, effectInd+1)
 		}
 	}
 	return state

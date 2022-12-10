@@ -5,6 +5,7 @@ go 1.18
 require (
 	github.com/gorilla/websocket v1.5.0
 	github.com/wailsapp/wails/v2 v2.0.0
+	golang.org/x/exp v0.0.0-20221208152030-732eee02a75a
 )
 
 require (
@@ -30,6 +31,6 @@ require (
 	github.com/wailsapp/mimetype v1.4.1 // indirect
 	golang.org/x/crypto v0.0.0-20220926161630-eccd6366d1be // indirect
 	golang.org/x/net v0.0.0-20221002022538-bcab6841153b // indirect
-	golang.org/x/sys v0.0.0-20220928140112-f11e5e49a4ec // indirect
+	golang.org/x/sys v0.1.0 // indirect
 	golang.org/x/text v0.3.7 // indirect
 )

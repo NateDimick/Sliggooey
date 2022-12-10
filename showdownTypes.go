@@ -103,11 +103,12 @@ const (
 	ClearNegBoost MessageType = "-clearnegativeboost"
 	CopyBoost     MessageType = "-copyBoost"
 	// field conditions
-	Weather    MessageType = "-weather"
-	FieldStart MessageType = "-fieldstart"
-	FieldEnd   MessageType = "-fieldend"
-	SideStart  MessageType = "-sidestart"
-	SideEnd    MessageType = "-sideend"
+	Weather            MessageType = "-weather"
+	FieldStart         MessageType = "-fieldstart"
+	FieldEnd           MessageType = "-fieldend"
+	SideStart          MessageType = "-sidestart"
+	SideEnd            MessageType = "-sideend"
+	SwapSideConditions MessageType = "-swapsideconditions"
 	// damage efficacy
 	Critical  MessageType = "-crit"
 	Effective MessageType = "-supereffective"
@@ -118,6 +119,7 @@ const (
 	ItemEnd          MessageType = "-enditem"
 	Ability          MessageType = "-ability"
 	AbilityEnd       MessageType = "-endability"
+	Transform        MessageType = "-transform"
 	MegaEvolve       MessageType = "-mega"
 	PrimalForm       MessageType = "-primal"
 	Burst            MessageType = "-burst"
@@ -295,6 +297,12 @@ type HPStatus struct {
 	Current int
 	Max     int
 	Status  string // par, slp, fnt, (brn, frz, psn, tox)
+}
+
+// a single stat boost change, e.g. spd +1 or atk -1
+type StatMod struct {
+	Stat   string
+	Amount int
 }
 
 func NewPokemonPosition(positionSpec string) PokemonPosition {

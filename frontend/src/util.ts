@@ -124,6 +124,7 @@ export type ActivePokemon = {
     moves: MoveInfo[],
     canDynamax?: boolean,
     maxMoves?: MaxMoveInfo
+    // probably a tera type field here for gen 9?
 }
 
 export type MaxMoveInfo = {
@@ -155,5 +156,5 @@ export type BattleChoice = {
     Move?: number,  // corresponds to the move's slot, 1-4
     AltMove?: string,
     Target?: number, // default to 0 for single battle, negative to target ally
-    Gimmick?: string // max, mega, zmove
+    Gimmick?: string // max, mega, zmove, tera (? unsure of the actual string for tera ?)
 }
