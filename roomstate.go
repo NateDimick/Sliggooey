@@ -93,9 +93,24 @@ func reconcileFrontendPlayerState(update UpdatePlayerPayload, state BattleRoomPa
 			active.MaxHp = update.ActivePokemon.HP.Max
 			active.MajorStatus = update.ActivePokemon.HP.Status
 			state.Active[position] = active
+		case SetHp:
+			position := update.ActivePokemon.Position.Position
+			active := state.Active[position]
+			active.CurrentHp = update.ActivePokemon.HP.Current
+			state.Active[position] = active
 		case Faint:
 			position := update.ActivePokemon.Position.Position
 			state.Active[position].Fainted = true
+		case StatusInflict, StatusCure:
+			position := update.ActivePokemon.Position.Position
+			state.Active[position].MajorStatus = update.ActivePokemon.HP.Status
+		case TeamCure:
+			for _, ap := range state.Active {
+				ap.MajorStatus = ""
+			}
+			for _, ip := range state.Inactive {
+				ip.MajorStatus = ""
+			}
 		case Boost, Unboost:
 			//
 		}

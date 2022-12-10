@@ -194,7 +194,18 @@ func (a *App) parseMinorBattleAction(roomId string, msg *SplitString) {
 		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, payload}
 		// TODO: send a chat message
 	case SetHp:
-		//
+		//   |<type>|<position spec>|<HP number>
+		// 0 |  1   |       2       |     3
+		subPayload := new(UpdatePlayerPayload)
+		p := NewPokemonPosition(msg.Get(2))
+		h := *new(HPStatus)
+		hp, _ := strconv.Atoi(msg.Get(3))
+		h.Current = hp
+		subPayload.PlayerId = p.PlayerId
+		subPayload.ActivePokemon = UpdatePlayerPokemon{Reason: msgType, Position: p, HP: h}
+		payload := UpdateRoomStatePayload{RoomId: roomId, Player: *subPayload}
+		goPrint("hp set room state payload", fmt.Sprintf("%+v", payload))
+		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, payload}
 	case StatusInflict, StatusCure:
 		//   |<type>|<position spec>|<status>
 		// 0 |  1   |       2       |   3
@@ -204,12 +215,20 @@ func (a *App) parseMinorBattleAction(roomId string, msg *SplitString) {
 		if msgType == StatusInflict {
 			h.Status = msg.Get(3)
 		}
-		subPayload.ActivePokemon = UpdatePlayerPokemon{Reason: "majorstatusupdate", Position: p, HP: *h}
+		subPayload.ActivePokemon = UpdatePlayerPokemon{Reason: msgType, Position: p, HP: *h}
 		payload := UpdateRoomStatePayload{RoomId: roomId, Player: *subPayload}
 		goPrint("major status update", msgType, h.Status)
 		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, payload}
 	case TeamCure:
-		//
+		//   |<type>|<position spec>
+		// 0 |  1   |       2
+		// position spec is included to describe the user/cause of the team cure
+		subPayload := new(UpdatePlayerPayload)
+		p := NewPokemonPosition(msg.Get(2))
+		subPayload.ActivePokemon = UpdatePlayerPokemon{Reason: msgType, Position: p}
+		payload := UpdateRoomStatePayload{RoomId: roomId, Player: *subPayload}
+		goPrint("team cure issued for", payload.Player.PlayerId)
+		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, payload}
 	case Boost, Unboost:
 		//   |<type>|<position spec>|<stat spec>|<amount>
 		// 0 |  1   |       2       |     3     |   4
