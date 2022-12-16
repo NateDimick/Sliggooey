@@ -174,6 +174,7 @@ type UpdateRoomStatePayload struct {
 	Active   *bool               `json:"active"`
 	Player   UpdatePlayerPayload `json:"player"`
 	Request  string              `json:"request"`
+	Field    UpdateFieldPayload  `json:"field"`
 }
 
 type UpdatePlayerPayload struct {
@@ -189,10 +190,13 @@ type UpdatePlayerPokemon struct {
 	Reason   MessageType     `json:"updateReason"`
 	Position PokemonPosition `json:"positionalDetails"`
 	Details  PokemonDetails  `json:"intrinsicDetails"`
-	HP       HPStatus        `json:"hpState"`
-	Boost    StatMod         `json:"boost"`
-	Effect   string          `json:"effect"`
-	// faint
+	Delta    PokeDelta       `json:"delta"`
+}
+
+type UpdateFieldPayload struct {
+	Reason    MessageType `json:"updateReason"`
+	Condition string      `json:"condition"`
+	PlayerId  string      `json:"side"` // present if the condition only effects one player
 }
 
 type SplitString struct {
@@ -260,6 +264,7 @@ type RoomState struct {
 	Rated        bool                             `json:"rated"`
 	Active       bool                             `json:"active"`
 	Participants map[string]BattleRoomParticipant `json:"participants"`
+	Field        BattleFieldState                 `json:"field"`
 }
 
 type BattleRoomParticipant struct {
@@ -283,8 +288,22 @@ type PokemonState struct {
 	StatBoosts    map[string]int `json:"boosts"`
 	Active        bool           `json:"isActive"`
 	Fainted       bool           `json:"isFainted"`
+	Ability       string         `json:"ability"`
+	HeldItem      string         `json:"item"`
 	PlayerId      string         `json:"trainerId"`
 	CurrentHp     int            `json:"currentHp"`
 	MaxHp         int            `json:"maxHp"`
 	Shiny         bool           `json:"shiny"`
+}
+
+type BattleFieldState struct {
+	Conditions []BattleFieldCondition   `json:"conditions"`
+	Sides      [][]BattleFieldCondition `json:"sides"`
+}
+
+type BattleFieldCondition struct {
+	Condition string `json:"condition"` // name of the effect
+	Weather   bool   `json:"isWeather"` // flag if this condition is a weather effect
+	Turns     int    `json:"turns"`     // number of turns the effect has remaining
+	AltTurns  int    `json:"altTurns"`  // alternative number of turns the effect has remaining, if unknown (damp rock rain, terrain extender)
 }

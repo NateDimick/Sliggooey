@@ -145,8 +145,9 @@ func (a *App) parseMajorBattleAction(roomId string, msg *SplitString) {
 		p := NewPokemonPosition(msg.Get(2))
 		d := NewPokemonDetails(msg.Get(3))
 		h := NewHPStatus(msg.Get(4))
+		delta := PokeDelta{HP: h}
 		subPayload.PlayerId = p.PlayerId
-		subPayload.ActivePokemon = UpdatePlayerPokemon{Reason: msgType, Position: p, Details: d, HP: h}
+		subPayload.ActivePokemon = UpdatePlayerPokemon{Reason: msgType, Position: p, Details: d, Delta: delta}
 		payload := UpdateRoomStatePayload{RoomId: roomId, Player: *subPayload}
 		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, payload}
 		// TODO send some sort of room message
@@ -187,8 +188,9 @@ func (a *App) parseMinorBattleAction(roomId string, msg *SplitString) {
 		subPayload := new(UpdatePlayerPayload)
 		p := NewPokemonPosition(msg.Get(2))
 		h := NewHPStatus(msg.Get(3))
+		delta := PokeDelta{HP: h}
 		subPayload.PlayerId = p.PlayerId
-		subPayload.ActivePokemon = UpdatePlayerPokemon{Reason: msgType, Position: p, HP: h}
+		subPayload.ActivePokemon = UpdatePlayerPokemon{Reason: msgType, Position: p, Delta: delta}
 		payload := UpdateRoomStatePayload{RoomId: roomId, Player: *subPayload}
 		goPrint("hp update room state payload", fmt.Sprintf("%+v", payload), fmt.Sprintf("%+v", subPayload), fmt.Sprintf("%+v", h))
 		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, payload}
@@ -201,8 +203,9 @@ func (a *App) parseMinorBattleAction(roomId string, msg *SplitString) {
 		h := *new(HPStatus)
 		hp, _ := strconv.Atoi(msg.Get(3))
 		h.Current = hp
+		delta := PokeDelta{HP: h}
 		subPayload.PlayerId = p.PlayerId
-		subPayload.ActivePokemon = UpdatePlayerPokemon{Reason: msgType, Position: p, HP: h}
+		subPayload.ActivePokemon = UpdatePlayerPokemon{Reason: msgType, Position: p, Delta: delta}
 		payload := UpdateRoomStatePayload{RoomId: roomId, Player: *subPayload}
 		goPrint("hp set room state payload", fmt.Sprintf("%+v", payload))
 		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, payload}
@@ -211,15 +214,13 @@ func (a *App) parseMinorBattleAction(roomId string, msg *SplitString) {
 		// 0 |  1   |       2       |   3
 		subPayload := new(UpdatePlayerPayload)
 		p := NewPokemonPosition(msg.Get(2))
-		h := new(HPStatus)
-		if msgType == StatusInflict {
-			h.Status = msg.Get(3)
-		}
-		subPayload.ActivePokemon = UpdatePlayerPokemon{Reason: msgType, Position: p, HP: *h}
+		h := HPStatus{Status: msg.Get(3)}
+		delta := PokeDelta{HP: h}
+		subPayload.ActivePokemon = UpdatePlayerPokemon{Reason: msgType, Position: p, Delta: delta}
 		payload := UpdateRoomStatePayload{RoomId: roomId, Player: *subPayload}
 		goPrint("major status update", msgType, h.Status)
 		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, payload}
-	case TeamCure, InvertBoost, ClearBoost, ClearNegBoost:
+	case TeamCure, InvertBoost, ClearBoost, ClearNegBoost, AbilityEnd:
 		//   |<type>|<position spec>
 		// 0 |  1   |       2
 		// position spec is included to describe the user/cause of the team cure
@@ -237,7 +238,8 @@ func (a *App) parseMinorBattleAction(roomId string, msg *SplitString) {
 		p := NewPokemonPosition(msg.Get(2))
 		amount, _ := strconv.Atoi(msg.Get(4))
 		b := StatMod{msg.Get(3), amount}
-		subPayload.ActivePokemon = UpdatePlayerPokemon{Reason: msgType, Position: p, Boost: b}
+		delta := PokeDelta{Boost: b}
+		subPayload.ActivePokemon = UpdatePlayerPokemon{Reason: msgType, Position: p, Delta: delta}
 		payload := UpdateRoomStatePayload{RoomId: roomId, Player: *subPayload}
 		goPrint(p, b.Stat, "boosted by", b.Amount)
 		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, payload}
@@ -250,27 +252,42 @@ func (a *App) parseMinorBattleAction(roomId string, msg *SplitString) {
 	case ClearPosBoost:
 		//   |<type>|<target position spec>|<cause position spec>|<desc>
 		// 0 |  1   |           2          |           3         |  4
+		subPayload := new(UpdatePlayerPayload)
+		p := NewPokemonPosition(msg.Get(2))
+		subPayload.ActivePokemon = UpdatePlayerPokemon{Reason: msgType, Position: p}
+		payload := UpdateRoomStatePayload{RoomId: roomId, Player: *subPayload}
+		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, payload}
 	case EffectStart, EffectEnd:
 		//   |<type>|<position spec>|<effect>
 		// 0 |  1   |       2       |   3
 		subPayload := new(UpdatePlayerPayload)
 		p := NewPokemonPosition(msg.Get(2))
 		e := msg.Get(3)
-		subPayload.ActivePokemon = UpdatePlayerPokemon{Reason: msgType, Position: p, Effect: e}
+		delta := PokeDelta{Effect: e}
+		subPayload.ActivePokemon = UpdatePlayerPokemon{Reason: msgType, Position: p, Delta: delta}
 		payload := UpdateRoomStatePayload{RoomId: roomId, Player: *subPayload}
 		goPrint("effect", e, msgType, "on pokemon", p)
 		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, payload}
-	case Item:
-		//   |<type>|<position spec>|<item>|<optional: [from]>
+	case Item, ItemEnd:
+		//   |<type>|<position spec>|<item>|<optional: [from]>|<optional: [silent] (ItemEnd only)>
 		// 0 |  1   |       2       |  3   |        4
-	case ItemEnd:
-		//   |<type>|<position spec>|<item>|<optional: [from]>|<optional: [silent]>
-		// 0 |  1   |       2       |  3   |        4+
-		// the held item of a pokemon has been consumed or removed
+		subPayload := new(UpdatePlayerPayload)
+		p := NewPokemonPosition(msg.Get(2))
+		i := msg.Get(3)
+		delta := PokeDelta{Item: i}
+		subPayload.ActivePokemon = UpdatePlayerPokemon{Reason: msgType, Position: p, Delta: delta}
+		payload := UpdateRoomStatePayload{RoomId: roomId, Player: *subPayload}
+		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, payload}
 	case Ability:
-		//
-	case AbilityEnd:
-		//
+		//   |<type>|<position spec>|<ability>|<optional [from]>
+		// 0 |  1   |       2       |    3    |       4
+		subPayload := new(UpdatePlayerPayload)
+		p := NewPokemonPosition(msg.Get(2))
+		ab := msg.Get(3)
+		delta := PokeDelta{Ability: ab}
+		subPayload.ActivePokemon = UpdatePlayerPokemon{Reason: msgType, Position: p, Delta: delta}
+		payload := UpdateRoomStatePayload{RoomId: roomId, Player: *subPayload}
+		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, payload}
 	case Transform:
 		//
 	case MegaEvolve:

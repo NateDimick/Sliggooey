@@ -305,6 +305,15 @@ type StatMod struct {
 	Amount int
 }
 
+// additional changes that can be applied to a pokemon
+type PokeDelta struct {
+	HP      HPStatus // current/max hp, along with a major status effect (which includes faint)
+	Boost   StatMod  // stat key and the new value (value meaning is determined my payload reason)
+	Effect  string   // addition or removal of a specified effect
+	Item    string   // revelation or use of an item
+	Ability string   // revelation, change, or use of an ability
+}
+
 func NewPokemonPosition(positionSpec string) PokemonPosition {
 	p := new(PokemonPosition)
 	splitSpec := NewSplitString(positionSpec, ": ")

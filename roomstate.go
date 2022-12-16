@@ -91,21 +91,21 @@ func reconcileFrontendPlayerState(update UpdatePlayerPayload, state BattleRoomPa
 		case Damage, Heal:
 			position := update.ActivePokemon.Position.Position
 			active := state.Active[position]
-			active.CurrentHp = update.ActivePokemon.HP.Current
-			active.MaxHp = update.ActivePokemon.HP.Max
-			active.MajorStatus = update.ActivePokemon.HP.Status
+			active.CurrentHp = update.ActivePokemon.Delta.HP.Current
+			active.MaxHp = update.ActivePokemon.Delta.HP.Max
+			active.MajorStatus = update.ActivePokemon.Delta.HP.Status
 			state.Active[position] = active
 		case SetHp:
 			position := update.ActivePokemon.Position.Position
 			active := state.Active[position]
-			active.CurrentHp = update.ActivePokemon.HP.Current
+			active.CurrentHp = update.ActivePokemon.Delta.HP.Current
 			state.Active[position] = active
 		case Faint:
 			position := update.ActivePokemon.Position.Position
 			state.Active[position].Fainted = true
 		case StatusInflict, StatusCure:
 			position := update.ActivePokemon.Position.Position
-			state.Active[position].MajorStatus = update.ActivePokemon.HP.Status
+			state.Active[position].MajorStatus = update.ActivePokemon.Delta.HP.Status
 		case TeamCure:
 			for _, ap := range state.Active {
 				ap.MajorStatus = ""
@@ -114,8 +114,8 @@ func reconcileFrontendPlayerState(update UpdatePlayerPayload, state BattleRoomPa
 				ip.MajorStatus = ""
 			}
 		case Boost, Unboost:
-			statKey := update.ActivePokemon.Boost.Stat
-			statChange := update.ActivePokemon.Boost.Amount
+			statKey := update.ActivePokemon.Delta.Boost.Stat
+			statChange := update.ActivePokemon.Delta.Boost.Amount
 			position := update.ActivePokemon.Position.Position
 			stats := state.Active[position].StatBoosts
 			currentBoost, boostPresent := stats[statKey]
@@ -126,8 +126,8 @@ func reconcileFrontendPlayerState(update UpdatePlayerPayload, state BattleRoomPa
 			}
 			state.Active[position].StatBoosts = stats
 		case SetBoost:
-			statKey := update.ActivePokemon.Boost.Stat
-			statChange := update.ActivePokemon.Boost.Amount
+			statKey := update.ActivePokemon.Delta.Boost.Stat
+			statChange := update.ActivePokemon.Delta.Boost.Amount
 			position := update.ActivePokemon.Position.Position
 			state.Active[position].StatBoosts[statKey] = statChange
 		case InvertBoost:
@@ -142,6 +142,14 @@ func reconcileFrontendPlayerState(update UpdatePlayerPayload, state BattleRoomPa
 			for stat := range stats {
 				state.Active[position].StatBoosts[stat] = 0
 			}
+		case ClearPosBoost:
+			position := update.ActivePokemon.Position.Position
+			stats := state.Active[position].StatBoosts
+			for stat, boost := range stats {
+				if boost > 0 {
+					state.Active[position].StatBoosts[stat] = 0
+				}
+			}
 		case ClearNegBoost:
 			position := update.ActivePokemon.Position.Position
 			stats := state.Active[position].StatBoosts
@@ -151,15 +159,29 @@ func reconcileFrontendPlayerState(update UpdatePlayerPayload, state BattleRoomPa
 				}
 			}
 		case EffectStart:
-			effect := update.ActivePokemon.Effect
+			effect := update.ActivePokemon.Delta.Effect
 			position := update.ActivePokemon.Position.Position
 			state.Active[position].MinorStatuses = append(state.Active[position].MinorStatuses, effect)
 		case EffectEnd:
-			effect := update.ActivePokemon.Effect
+			effect := update.ActivePokemon.Delta.Effect
 			position := update.ActivePokemon.Position.Position
 			effects := state.Active[position].MinorStatuses
 			effectInd := slices.Index(effects, effect)
 			state.Active[position].MinorStatuses = slices.Delete(effects, effectInd, effectInd+1)
+		case Item:
+			position := update.ActivePokemon.Position.Position
+			item := update.ActivePokemon.Delta.Item
+			state.Active[position].HeldItem = item
+		case ItemEnd:
+			position := update.ActivePokemon.Position.Position
+			state.Active[position].HeldItem = ""
+		case Ability:
+			position := update.ActivePokemon.Position.Position
+			ability := update.ActivePokemon.Delta.Ability
+			state.Active[position].Ability = ability
+		case AbilityEnd:
+			position := update.ActivePokemon.Position.Position
+			state.Active[position].Ability = ""
 		}
 	}
 	return state
@@ -173,9 +195,9 @@ func pokeStateFromUpdate(p UpdatePlayerPokemon) PokemonState {
 	s.Shiny = p.Details.Shiny
 	s.NickName = p.Position.NickName
 	s.PlayerId = p.Position.PlayerId
-	s.CurrentHp = p.HP.Current
-	s.MaxHp = p.HP.Max
-	s.MajorStatus = p.HP.Status
+	s.CurrentHp = p.Delta.HP.Current
+	s.MaxHp = p.Delta.HP.Max
+	s.MajorStatus = p.Delta.HP.Status
 	s.Active = true
 	s.Fainted = false
 	s.StatBoosts = make(map[string]int)
