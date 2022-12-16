@@ -46,7 +46,7 @@ Sliggooey is a play on words of Sliggoo, the pokemon, and "GUI" (If you're not i
 
 This project is built in [Go 1.18](go.dev) with a [Svelte](svelte.dev)-Typescript front end with [Wails version 2](https://wails.io/)
 
-Contributions are welcome and appreciated. Make an issue, a PR or hit me up on Twitter if you have an idea for a feature to add (or just want to help this get to version 1.0).
+Contributions are welcome and appreciated. Make an issue, a PR or hit me up on Twitter if you have an idea for a feature to add (or just want to help this get to version 1.0). Not sure where to start? [Check out the todo doc.](docs/todo.md)
 
 See the Pokemon Showdown websocket protocol and api reference here: [Showdown Protocol](https://github.com/smogon/pokemon-showdown/blob/master/PROTOCOL.md)
 
