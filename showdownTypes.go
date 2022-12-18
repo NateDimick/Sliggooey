@@ -301,8 +301,9 @@ type HPStatus struct {
 
 // a single stat boost change, e.g. spd +1 or atk -1
 type StatMod struct {
-	Stat   string
-	Amount int
+	Stat      string // typically a 3-character abbreviation of a stat name, but could be a list for stat swaps: "atk,def,spe"
+	Amount    int
+	Reference PokemonPosition // a reference pokemon position for copying or swapping stat boosts
 }
 
 // additional changes that can be applied to a pokemon

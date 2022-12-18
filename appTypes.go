@@ -297,8 +297,8 @@ type PokemonState struct {
 }
 
 type BattleFieldState struct {
-	Conditions []BattleFieldCondition   `json:"conditions"`
-	Sides      [][]BattleFieldCondition `json:"sides"`
+	Conditions []BattleFieldCondition            `json:"conditions"`
+	Sides      map[string][]BattleFieldCondition `json:"sides"`
 }
 
 type BattleFieldCondition struct {

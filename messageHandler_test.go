@@ -3,7 +3,7 @@ package main
 import "testing"
 
 func TestFormatList(t *testing.T) {
-	// test that app.state.sormats is updated as expected
+	// test that app.state.Formats is updated as expected
 }
 
 func TestUpdateUser(t *testing.T) {

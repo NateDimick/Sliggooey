@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"strings"
 
 	"golang.org/x/exp/slices"
 )
@@ -41,7 +42,7 @@ func reconcileRoomStateInner(update UpdateRoomStatePayload, state RoomState) Roo
 			state.Participants = make(map[string]BattleRoomParticipant)
 		}
 		if _, hasKey := state.Participants[update.Player.PlayerId]; hasKey {
-			state.Participants[update.Player.PlayerId] = reconcileFrontendPlayerState(update.Player, state.Participants[update.Player.PlayerId])
+			state.Participants = reconcileFrontendPlayerState(update.Player, state.Participants)
 		} else {
 			newPlayer := new(BattleRoomParticipant)
 			newPlayer.Name = update.Player.Name
@@ -76,139 +77,172 @@ func reconcileRoomStateInner(update UpdateRoomStatePayload, state RoomState) Roo
 				}
 			}
 		case SideStart:
-			goPrint("cannot handle side condition events yet", update.Field.Condition, update.Field.PlayerId)
+			_, hasKey := state.Field.Sides[update.Field.PlayerId]
+			c := BattleFieldCondition{Condition: update.Field.Condition, Weather: false}
+			if hasKey {
+				state.Field.Sides[update.Field.PlayerId] = append(state.Field.Sides[update.Field.PlayerId], c)
+			} else {
+				state.Field.Sides[update.Field.PlayerId] = []BattleFieldCondition{c}
+			}
 		case SideEnd:
-			goPrint("cannot handle side condition events yet", update.Field.Condition, update.Field.PlayerId)
+			conditionIndex := slices.IndexFunc(state.Field.Sides[update.Field.PlayerId], func(bfc BattleFieldCondition) bool { return update.Field.Condition == bfc.Condition })
+			state.Field.Sides[update.Field.PlayerId] = slices.Delete(state.Field.Conditions, conditionIndex, conditionIndex+1)
 		}
 	}
 	return state
 }
 
-func reconcileFrontendPlayerState(update UpdatePlayerPayload, state BattleRoomParticipant) BattleRoomParticipant {
+func reconcileFrontendPlayerState(update UpdatePlayerPayload, state map[string]BattleRoomParticipant) map[string]BattleRoomParticipant {
+	playerState := state[update.PlayerId]
 	if update.TeamSize != 0 {
-		state.TeamSize = update.TeamSize
+		playerState.TeamSize = update.TeamSize
 	}
 	if update.ActivePokemon.Position.NickName != "" {
 		switch update.ActivePokemon.Reason {
 		case Switch, Drag:
 			position := update.ActivePokemon.Position.Position
-			for i := len(state.Active); i < position+1; i++ {
-				state.Active = append(state.Active, PokemonState{})
+			for i := len(playerState.Active); i < position+1; i++ {
+				playerState.Active = append(playerState.Active, PokemonState{})
 			}
-			activeSwitchingOut := state.Active[position]
+			activeSwitchingOut := playerState.Active[position]
 			activeSwitchingOut.Active = false
+			activeSwitchingOut.StatBoosts = make(map[string]int)
+			activeSwitchingOut.MinorStatuses = make([]string, 0)
 			switchingIn := pokeStateFromUpdate(update.ActivePokemon)
 			if activeSwitchingOut.Species == "" {
 				// this means the pokemon is switching into a new position
-				state.Active[position] = switchingIn
+				playerState.Active[position] = switchingIn
 			} else {
 				// find pokemon that matches switching out on inactive list
-				switchIndex := findPoke(switchingIn, state.Inactive)
+				switchIndex := findPoke(switchingIn, playerState.Inactive)
 				if switchIndex >= 0 {
 					// swap the two pokemon
-					switchingIn = state.Inactive[switchIndex]
+					switchingIn = playerState.Inactive[switchIndex]
 					switchingIn.Active = true
-					state.Inactive[switchIndex] = activeSwitchingOut
-					state.Active[position] = switchingIn
+					playerState.Inactive[switchIndex] = activeSwitchingOut
+					playerState.Active[position] = switchingIn
 				} else {
-					// if not on inactive list, then just place it there and create new state for switch in
-					state.Inactive = append(state.Inactive, activeSwitchingOut)
-					state.Active[position] = switchingIn
+					// if not on inactive list, then just place it there and create new playerState for switch in
+					playerState.Inactive = append(playerState.Inactive, activeSwitchingOut)
+					playerState.Active[position] = switchingIn
 				}
 			}
 		case Damage, Heal:
 			position := update.ActivePokemon.Position.Position
-			active := state.Active[position]
+			active := playerState.Active[position]
 			active.CurrentHp = update.ActivePokemon.Delta.HP.Current
 			active.MaxHp = update.ActivePokemon.Delta.HP.Max
 			active.MajorStatus = update.ActivePokemon.Delta.HP.Status
-			state.Active[position] = active
+			playerState.Active[position] = active
 		case SetHp:
 			position := update.ActivePokemon.Position.Position
-			active := state.Active[position]
+			active := playerState.Active[position]
 			active.CurrentHp = update.ActivePokemon.Delta.HP.Current
-			state.Active[position] = active
+			playerState.Active[position] = active
 		case Faint:
 			position := update.ActivePokemon.Position.Position
-			state.Active[position].Fainted = true
+			playerState.Active[position].Fainted = true
 		case StatusInflict, StatusCure:
 			position := update.ActivePokemon.Position.Position
-			state.Active[position].MajorStatus = update.ActivePokemon.Delta.HP.Status
+			playerState.Active[position].MajorStatus = update.ActivePokemon.Delta.HP.Status
 		case TeamCure:
-			for _, ap := range state.Active {
+			for _, ap := range playerState.Active {
 				ap.MajorStatus = ""
 			}
-			for _, ip := range state.Inactive {
+			for _, ip := range playerState.Inactive {
 				ip.MajorStatus = ""
 			}
 		case Boost, Unboost:
 			statKey := update.ActivePokemon.Delta.Boost.Stat
 			statChange := update.ActivePokemon.Delta.Boost.Amount
 			position := update.ActivePokemon.Position.Position
-			stats := state.Active[position].StatBoosts
+			stats := playerState.Active[position].StatBoosts
 			currentBoost, boostPresent := stats[statKey]
 			if !boostPresent {
 				stats[statKey] = statChange
 			} else {
 				stats[statKey] = currentBoost + statChange
 			}
-			state.Active[position].StatBoosts = stats
+			playerState.Active[position].StatBoosts = stats
 		case SetBoost:
 			statKey := update.ActivePokemon.Delta.Boost.Stat
 			statChange := update.ActivePokemon.Delta.Boost.Amount
 			position := update.ActivePokemon.Position.Position
-			state.Active[position].StatBoosts[statKey] = statChange
+			playerState.Active[position].StatBoosts[statKey] = statChange
 		case InvertBoost:
 			position := update.ActivePokemon.Position.Position
-			stats := state.Active[position].StatBoosts
+			stats := playerState.Active[position].StatBoosts
 			for stat, boost := range stats {
-				state.Active[position].StatBoosts[stat] = -boost
+				playerState.Active[position].StatBoosts[stat] = -boost
 			}
 		case ClearBoost:
 			position := update.ActivePokemon.Position.Position
-			state.Active[position].StatBoosts = make(map[string]int)
+			playerState.Active[position].StatBoosts = make(map[string]int)
 		case ClearPosBoost:
 			position := update.ActivePokemon.Position.Position
-			stats := state.Active[position].StatBoosts
+			stats := playerState.Active[position].StatBoosts
 			for stat, boost := range stats {
 				if boost > 0 {
-					state.Active[position].StatBoosts[stat] = 0
+					playerState.Active[position].StatBoosts[stat] = 0
 				}
 			}
 		case ClearNegBoost:
 			position := update.ActivePokemon.Position.Position
-			stats := state.Active[position].StatBoosts
+			stats := playerState.Active[position].StatBoosts
 			for stat, boost := range stats {
 				if boost < 0 {
-					state.Active[position].StatBoosts[stat] = 0
+					playerState.Active[position].StatBoosts[stat] = 0
 				}
 			}
+		case CopyBoost:
+			targetPosition := update.ActivePokemon.Delta.Boost.Reference.Position
+			targetOwnerId := update.ActivePokemon.Delta.Boost.Reference.PlayerId
+			targetOwner := state[targetOwnerId]
+			targetBoosts := targetOwner.Active[targetPosition].StatBoosts
+			position := update.ActivePokemon.Position.Position
+			playerState.Active[position].StatBoosts = targetBoosts
+		case SwapBoost:
+			statList := strings.Split(update.ActivePokemon.Delta.Boost.Stat, ",")
+			targetPosition := update.ActivePokemon.Delta.Boost.Reference.Position
+			targetOwnerId := update.ActivePokemon.Delta.Boost.Reference.PlayerId
+			targetOwner := state[targetOwnerId]
+			target := targetOwner.Active[targetPosition]
+			position := update.ActivePokemon.Position.Position
+			active := playerState.Active[position]
+			for _, stat := range statList {
+				tempBoost := target.StatBoosts[stat]
+				target.StatBoosts[stat] = active.StatBoosts[stat]
+				active.StatBoosts[stat] = tempBoost
+			}
+			state[targetOwnerId].Active[targetPosition] = target
+			playerState.Active[position] = active
 		case EffectStart:
 			effect := update.ActivePokemon.Delta.Effect
 			position := update.ActivePokemon.Position.Position
-			state.Active[position].MinorStatuses = append(state.Active[position].MinorStatuses, effect)
+			playerState.Active[position].MinorStatuses = append(playerState.Active[position].MinorStatuses, effect)
 		case EffectEnd:
 			effect := update.ActivePokemon.Delta.Effect
 			position := update.ActivePokemon.Position.Position
-			effects := state.Active[position].MinorStatuses
+			effects := playerState.Active[position].MinorStatuses
 			effectInd := slices.Index(effects, effect)
-			state.Active[position].MinorStatuses = slices.Delete(effects, effectInd, effectInd+1)
+			playerState.Active[position].MinorStatuses = slices.Delete(effects, effectInd, effectInd+1)
 		case Item:
 			position := update.ActivePokemon.Position.Position
 			item := update.ActivePokemon.Delta.Item
-			state.Active[position].HeldItem = item
+			playerState.Active[position].HeldItem = item
 		case ItemEnd:
 			position := update.ActivePokemon.Position.Position
-			state.Active[position].HeldItem = ""
+			playerState.Active[position].HeldItem = ""
 		case Ability:
 			position := update.ActivePokemon.Position.Position
 			ability := update.ActivePokemon.Delta.Ability
-			state.Active[position].Ability = ability
+			playerState.Active[position].Ability = ability
 		case AbilityEnd:
 			position := update.ActivePokemon.Position.Position
-			state.Active[position].Ability = ""
+			playerState.Active[position].Ability = ""
 		}
 	}
+	state[update.PlayerId] = playerState
 	return state
 }
 

@@ -238,7 +238,7 @@ func (a *App) parseMinorBattleAction(roomId string, msg *SplitString) {
 		subPayload := new(UpdatePlayerPayload)
 		p := NewPokemonPosition(msg.Get(2))
 		amount, _ := strconv.Atoi(msg.Get(4))
-		b := StatMod{msg.Get(3), amount}
+		b := StatMod{Stat: msg.Get(3), Amount: amount}
 		delta := PokeDelta{Boost: b}
 		subPayload.ActivePokemon = UpdatePlayerPokemon{Reason: msgType, Position: p, Delta: delta}
 		payload := UpdateRoomStatePayload{RoomId: roomId, Player: *subPayload}
@@ -247,9 +247,26 @@ func (a *App) parseMinorBattleAction(roomId string, msg *SplitString) {
 	case SwapBoost:
 		//   |<type>|<source position spec>|<target position spec>|<stat spec list>
 		// 0 |  1   |           2          |           3          |       4
+		subPayload := new(UpdatePlayerPayload)
+		p := NewPokemonPosition(msg.Get(2))
+		t := NewPokemonPosition(msg.Get(3))
+		s := msg.Get(4)
+		b := StatMod{Stat: s, Reference: t}
+		delta := PokeDelta{Boost: b}
+		subPayload.ActivePokemon = UpdatePlayerPokemon{Reason: msgType, Position: p, Delta: delta}
+		payload := UpdateRoomStatePayload{RoomId: roomId, Player: *subPayload}
+		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, payload}
 	case CopyBoost:
 		//   |<type>|<source position spec>|<target position spec>
 		// 0 |  1   |           2          |           3
+		subPayload := new(UpdatePlayerPayload)
+		p := NewPokemonPosition(msg.Get(2))
+		t := NewPokemonPosition(msg.Get(3))
+		b := StatMod{Reference: t}
+		delta := PokeDelta{Boost: b}
+		subPayload.ActivePokemon = UpdatePlayerPokemon{Reason: msgType, Position: p, Delta: delta}
+		payload := UpdateRoomStatePayload{RoomId: roomId, Player: *subPayload}
+		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, payload}
 	case ClearPosBoost:
 		//   |<type>|<target position spec>|<cause position spec>|<desc>
 		// 0 |  1   |           2          |           3         |  4
