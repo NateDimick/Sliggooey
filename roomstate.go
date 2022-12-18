@@ -53,6 +53,34 @@ func reconcileRoomStateInner(update UpdateRoomStatePayload, state RoomState) Roo
 			state.Participants[update.Player.PlayerId] = *newPlayer
 		}
 	}
+	if update.Field.Reason != "" {
+		switch update.Field.Reason {
+		case Weather:
+			weatherIndex := slices.IndexFunc(state.Field.Conditions, func(bfc BattleFieldCondition) bool { return bfc.Weather })
+			if update.Field.Condition == "none" {
+				state.Field.Conditions = slices.Delete(state.Field.Conditions, weatherIndex, weatherIndex+1)
+			} else if weatherIndex != -1 {
+				state.Field.Conditions[weatherIndex].Condition = update.Field.Condition
+			} else {
+				state.Field.Conditions = append(state.Field.Conditions, BattleFieldCondition{Condition: update.Field.Condition, Weather: true})
+			}
+		case FieldStart:
+			state.Field.Conditions = append(state.Field.Conditions, BattleFieldCondition{Condition: update.Field.Condition, Weather: false})
+		case FieldEnd:
+			conditionIndex := slices.IndexFunc(state.Field.Conditions, func(bfc BattleFieldCondition) bool { return update.Field.Condition == bfc.Condition })
+			state.Field.Conditions = slices.Delete(state.Field.Conditions, conditionIndex, conditionIndex+1)
+		case ClearAllBoost:
+			for _, player := range state.Participants {
+				for _, pokemon := range player.Active {
+					pokemon.StatBoosts = make(map[string]int)
+				}
+			}
+		case SideStart:
+			goPrint("cannot handle side condition events yet", update.Field.Condition, update.Field.PlayerId)
+		case SideEnd:
+			goPrint("cannot handle side condition events yet", update.Field.Condition, update.Field.PlayerId)
+		}
+	}
 	return state
 }
 
@@ -138,10 +166,7 @@ func reconcileFrontendPlayerState(update UpdatePlayerPayload, state BattleRoomPa
 			}
 		case ClearBoost:
 			position := update.ActivePokemon.Position.Position
-			stats := state.Active[position].StatBoosts
-			for stat := range stats {
-				state.Active[position].StatBoosts[stat] = 0
-			}
+			state.Active[position].StatBoosts = make(map[string]int)
 		case ClearPosBoost:
 			position := update.ActivePokemon.Position.Position
 			stats := state.Active[position].StatBoosts

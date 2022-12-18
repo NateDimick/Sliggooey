@@ -128,6 +128,7 @@ func (a *App) parseBattleMessage(roomId string, msg *SplitString) {
 	default:
 		a.parseMajorBattleAction(roomId, msg)
 		a.parseMinorBattleAction(roomId, msg)
+		a.parseFieldBattleMessage(roomId, msg)
 	}
 }
 
@@ -303,14 +304,31 @@ func (a *App) parseMinorBattleAction(roomId string, msg *SplitString) {
 	}
 }
 
-// field effect messages:
-// ClearAllBoost
-// Weather
-// FieldStart
-// FieldEnd
-// SideStart
-// SideEnd
-// SwapSideConditions
+func (a *App) parseFieldBattleMessage(roomId string, msg *SplitString) {
+	msgType := MessageType(msg.Get(1))
+	switch msgType {
+	case ClearAllBoost, SwapSideConditions:
+		//   |<type>
+		// 0 |  1
+		subPayload := UpdateFieldPayload{Reason: msgType}
+		payload := UpdateRoomStatePayload{RoomId: roomId, Field: subPayload}
+		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, payload}
+	case Weather, FieldStart, FieldEnd:
+		//   |<type>|<condition>
+		// 0 |  1   |     2
+		subPayload := UpdateFieldPayload{Reason: msgType, Condition: msg.Get(2)}
+		payload := UpdateRoomStatePayload{RoomId: roomId, Field: subPayload}
+		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, payload}
+	case SideStart, SideEnd:
+		//   |<type>|<side>|<condition>
+		// 0 |  1   |  2   |     3
+		goPrint("side start or side end message")
+		goPrint("side is provided in this format:", msg.Get(2))
+		subPayload := UpdateFieldPayload{Reason: msgType, PlayerId: msg.Get(2), Condition: msg.Get(3)}
+		payload := UpdateRoomStatePayload{RoomId: roomId, Field: subPayload}
+		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, payload}
+	}
+}
 
-// produce a chat message
+// produce a chat message only
 // everything else lol
