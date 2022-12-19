@@ -2,7 +2,7 @@
 <script lang="ts">
 import BattleSceneCorner from "./BattleSceneCorner.svelte";
 import { roomStates } from "../../store";
-import type { main as go } from "../../wailsjs/go/models";
+import type { backend as go } from "../../wailsjs/go/models";
 
 export let roomName: string
 let state: go.RoomState

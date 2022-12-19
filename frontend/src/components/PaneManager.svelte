@@ -10,8 +10,8 @@ import { EventsOn } from "../wailsjs/runtime/runtime";
 import BattleHubPane from "./BattleHubPane.svelte";
 import RoomsHubPane from "./RoomsHubPane.svelte";
 import RoomPane from "./RoomPane.svelte";
-import { main as go } from "../wailsjs/go/models"
-import { JunkyHackyFunctionDoNotUse, ReconcileRoomState } from "../wailsjs/go/main/App";
+import { backend as go } from "../wailsjs/go/models"
+import { ReconcileRoomState } from "../wailsjs/go/backend/App";
 import { Mutex } from 'async-mutex'
 
 const stateUpdateMutex = new Mutex()

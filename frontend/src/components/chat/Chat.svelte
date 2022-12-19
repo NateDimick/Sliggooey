@@ -3,7 +3,7 @@
 import { pmChats } from "../../store";
 
 import { PmSource, tsPrint } from "../../util";
-import { AcceptBattleChallengeFromUser, CancelBattleChallengeToUser, RejectBattleChallengeFromUser, SendBattleChallengeToUser, SendPM } from "../../wailsjs/go/main/App";
+import { AcceptBattleChallengeFromUser, CancelBattleChallengeToUser, RejectBattleChallengeFromUser, SendBattleChallengeToUser, SendPM } from "../../wailsjs/go/backend/App";
 import ChatCommandChin from "./ChatCommandChin.svelte";
 import ChatChallenge from "./ChatChallenge.svelte";
 

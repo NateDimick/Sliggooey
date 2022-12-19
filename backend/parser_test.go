@@ -1,4 +1,4 @@
-package main
+package backend
 
 // this file will be to test message parsing functionality
 // send showdown protocol strings to a.parseServerMessage

@@ -1,5 +1,5 @@
 <script lang="ts">
-import type { main as go } from "../../wailsjs/go/models";
+import type { backend as go } from "../../wailsjs/go/models";
 import BenchedPokemon from "./BenchedPokemon.svelte";
 import Trainer from "./Trainer.svelte";
 

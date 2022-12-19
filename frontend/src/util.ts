@@ -122,9 +122,10 @@ export type SidePokemon = {
 
 export type ActivePokemon = {
     moves: MoveInfo[],
-    canDynamax?: boolean,
+    canDynamax?: boolean, // gen 8 only
     maxMoves?: MaxMoveInfo
     // probably a tera type field here for gen 9?
+    // z moves, mega for backwards compatibility
 }
 
 export type MaxMoveInfo = {

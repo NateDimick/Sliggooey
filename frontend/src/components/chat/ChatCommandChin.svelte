@@ -3,7 +3,7 @@
 
 export let chatWith: string
 
-import { SendBattleChallengeToUser } from "../../wailsjs/go/main/App"
+import { SendBattleChallengeToUser } from "../../wailsjs/go/backend/App"
 
 function challengeToBattle() {
     SendBattleChallengeToUser(chatWith, "gen8randombattle", "null")

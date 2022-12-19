@@ -2,7 +2,7 @@
 <script lang="ts">
     import { PaneType, tsPrint } from "../util"
     import { currentPaneStore, PaneInfo, panes, roomChats } from "../store"
-    import { LeaveRoom } from "../wailsjs/go/main/App"
+    import { LeaveRoom } from "../wailsjs/go/backend/App"
 
     export let info: PaneInfo
 

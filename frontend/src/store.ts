@@ -1,6 +1,6 @@
 import { writable } from "svelte/store";
 import { PaneType, PmPayload, ViewType } from "./util";
-import type { main as go } from "./wailsjs/go/models"
+import type { backend as go } from "./wailsjs/go/models"
 
 // usernames as keys, list of chats as values
 export const pmChats = writable(new Object())

@@ -1,7 +1,8 @@
-package main
+package backend
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/gorilla/websocket"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
@@ -41,7 +42,7 @@ func NewApp() *App {
 	return new(App)
 }
 
-func (a *App) startup(ctx context.Context) {
+func (a *App) Startup(ctx context.Context) {
 	a.ctx = ctx
 	a.conn = new(ShowdownConnection)
 	a.state = new(ShowdownState)
@@ -98,4 +99,14 @@ func (a *App) errorResolver() {
 			a.conn.reconnect()
 		}
 	}
+}
+
+func goPrint(a ...any) {
+	// convenience method to distinguish backend logs from frontend logs
+	s := make([]any, 1)
+	s[0] = "[GO]"
+	for _, e := range a {
+		s = append(s, e)
+	}
+	fmt.Println(s...)
 }

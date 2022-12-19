@@ -1,7 +1,7 @@
 <!-- for inputting battle choices -->
 <script lang="ts">
 import { BattleChoice, BattleRequest, tsPrint } from "../../util";
-import { MakeBattleChoice } from "../../wailsjs/go/main/App";
+import { MakeBattleChoice } from "../../wailsjs/go/backend/App";
 import { roomStates } from "../../store"
 
 const enum CommandPaletteState {

@@ -3,6 +3,7 @@ package main
 import (
 	"embed"
 	"fmt"
+	"sliggooey/backend"
 
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/options"
@@ -23,7 +24,7 @@ func goPrint(a ...any) {
 
 func main() {
 	// Create an instance of the app structure
-	app := NewApp()
+	app := backend.NewApp()
 
 	// Create application with options
 	err := wails.Run(&options.App{
@@ -33,7 +34,7 @@ func main() {
 		Width:     1080,
 		Height:    720,
 		Assets:    assets,
-		OnStartup: app.startup,
+		OnStartup: app.Startup,
 		Bind: []interface{}{
 			app,
 		},

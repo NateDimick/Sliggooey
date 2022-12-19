@@ -1,4 +1,4 @@
-package main
+package backend
 
 // for parsing command messages
 func (a *App) parseServerCommand(from string, to string, cmdMsg string) {
