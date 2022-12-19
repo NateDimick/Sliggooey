@@ -101,6 +101,7 @@ func (a *App) errorResolver() {
 	}
 }
 
+// copied same function from main.go. in future, should replace with logging package and remove both instances
 func goPrint(a ...any) {
 	// convenience method to distinguish backend logs from frontend logs
 	s := make([]any, 1)

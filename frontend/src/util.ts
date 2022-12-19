@@ -111,6 +111,7 @@ export type SidePokemon = {
     active: boolean,
     item: string,
     baseAbility: string,
+    commanding: boolean, // omg they added this exclusively for tatsugiri
     ability: string,
     pokeball: string,
     moves: string[],
@@ -123,6 +124,7 @@ export type SidePokemon = {
 export type ActivePokemon = {
     moves: MoveInfo[],
     canDynamax?: boolean, // gen 8 only
+    canTerastallize?: string, // gen 9 only, string is the type the pokemon can terastallize into
     maxMoves?: MaxMoveInfo
     // probably a tera type field here for gen 9?
     // z moves, mega for backwards compatibility

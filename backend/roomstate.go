@@ -55,6 +55,9 @@ func reconcileRoomStateInner(update UpdateRoomStatePayload, state RoomState) Roo
 		}
 	}
 	if update.Field.Reason != "" {
+		if state.Field.Sides == nil {
+			state.Field.Sides = make(map[string][]BattleFieldCondition)
+		}
 		switch update.Field.Reason {
 		case Weather:
 			weatherIndex := slices.IndexFunc(state.Field.Conditions, func(bfc BattleFieldCondition) bool { return bfc.Weather })

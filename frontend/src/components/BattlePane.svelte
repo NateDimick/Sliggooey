@@ -8,8 +8,7 @@ export let info: PaneInfo
 
 </script>
 
-<main>
-    <h1>This is a battle pane</h1>
+<main class="col-container">
     <div class="left-col">
         <h2>Imagine something cool being here, like a damage calculator</h2>
     </div>
@@ -21,3 +20,16 @@ export let info: PaneInfo
         <BattleChat roomName={info.name}/>
     </div>
 </main>
+
+<style>
+    .col-container {
+        display: flex;
+        justify-content: center;
+    }
+    .left-col, .right-col {
+        width: 25%;
+    }
+    .center-col {
+        width: 49%;
+    }
+</style>

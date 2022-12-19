@@ -13,3 +13,10 @@ export let participant: go.BattleRoomParticipant
         <ActivePokemon state={p}/>
     {/each}
 </main>
+
+<style>
+    main {
+        width: 49%;
+        text-align: center;
+    }
+</style>

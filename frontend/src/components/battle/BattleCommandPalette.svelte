@@ -159,3 +159,9 @@ function forfeit() {
         <button on:click={cancelChoice}>Redo Move</button>
     {/if}
 </main>
+
+<style>
+    main {
+        bottom: 0;
+    }
+</style>

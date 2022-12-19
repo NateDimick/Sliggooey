@@ -14,8 +14,8 @@ $: {
 
 </script>
 
+<Trainer participant={participant}/>
 <main>
-    <Trainer participant={participant}/>
     {#each participant.active as p}
         <BenchedPokemon state={p}/>
     {/each}
@@ -26,3 +26,9 @@ $: {
         <BenchedPokemon state={null}/>
     {/each}
 </main>
+
+<style>
+    main {
+        display: flex;
+    }
+</style>

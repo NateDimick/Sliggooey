@@ -18,8 +18,16 @@ $: {
 
 <main>
     <h1>{state.gen} {state.title} {state.gameType} {updates}</h1>
-    {#each Object.keys(state?.participants) as p}
-        <h1>{p}</h1>
-        <BattleSceneCorner participant={state.participants[p]}/>
-    {/each}
+    <div class="battle-field">
+        {#each Object.keys(state?.participants) as p}
+            <h1>{p}</h1>
+            <BattleSceneCorner participant={state.participants[p]}/>
+        {/each}
+    </div>
 </main>
+
+<style>
+    .battle-field {
+        display: flex;
+    }
+</style>

@@ -154,3 +154,10 @@ function printRoomStateUpdate(u: go.UpdateRoomStatePayload): string {
         {/each}
     </div>
 </main>
+
+<style>
+    #tabs {
+        display: flex;
+        justify-content: center;
+    }
+</style>
