@@ -31,8 +31,8 @@ func main() {
 		Title:     "gooey",
 		MaxWidth:  2160,
 		MaxHeight: 1440,
-		Width:     1080,
-		Height:    720,
+		Width:     1400,
+		Height:    890,
 		Assets:    assets,
 		OnStartup: app.Startup,
 		Bind: []interface{}{

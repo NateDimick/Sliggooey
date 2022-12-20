@@ -93,8 +93,7 @@ func (a *App) JunkyHackyFunctionDoNotUse(debug string) string {
 //by reconciling room state in the backend, we can use go structs for in the frontend thanks to wails magic.
 //define a struct once, use in both front and back end. it saves work
 func (a *App) ReconcileRoomState(updatePayload UpdateRoomStatePayload, presentState RoomState) RoomState {
-	goPrint(fmt.Sprintf("reconciling room state: \n[base] %+v  \n[update] %+v", presentState, updatePayload))
-	// make a new file room state .go that has a function to call here
+	//goPrint(fmt.Sprintf("reconciling room state: \n[base] %+v  \n[update] %+v", presentState, updatePayload))
 	result := reconcileRoomStateInner(updatePayload, presentState)
 	goPrint("room state reconciled")
 	return result

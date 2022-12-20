@@ -17,10 +17,9 @@ $: {
 </script>
 
 <main>
-    <h1>{state.gen} {state.title} {state.gameType} {updates}</h1>
+    <h1>gen {state.gen} {state.title} {state.gameType} {updates}</h1>
     <div class="battle-field">
         {#each Object.keys(state?.participants) as p}
-            <h1>{p}</h1>
             <BattleSceneCorner participant={state.participants[p]}/>
         {/each}
     </div>

@@ -8,6 +8,7 @@ export let participant: go.BattleRoomParticipant
 </script>
 
 <main>
+    <h2>{participant.id}</h2>
     <Bench participant={participant}/>
     {#each participant?.active as p}
         <ActivePokemon state={p}/>

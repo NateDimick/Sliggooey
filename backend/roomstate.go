@@ -2,12 +2,20 @@ package backend
 
 import (
 	"encoding/json"
+	"fmt"
 	"strings"
 
 	"golang.org/x/exp/slices"
 )
 
 func reconcileRoomStateInner(update UpdateRoomStatePayload, state RoomState) RoomState {
+	reason := update.Player.ActivePokemon.Reason
+	if string(reason) == "" {
+		reason = update.Field.Reason
+	}
+	goPrint("reconciling room state for reason: ", reason)
+	goPrint("[ UPDATE", reason, "]", fmt.Sprintf("%+v", updateWithoutRequest(update)))
+	goPrint("[ BASE", reason, "]", fmt.Sprintf("%+v", roomStateWithoutRequest(state)))
 	if update.Title != "" {
 		state.Title = update.Title
 	}
@@ -92,6 +100,7 @@ func reconcileRoomStateInner(update UpdateRoomStatePayload, state RoomState) Roo
 			state.Field.Sides[update.Field.PlayerId] = slices.Delete(state.Field.Conditions, conditionIndex, conditionIndex+1)
 		}
 	}
+	goPrint("[ RESULT", reason, "]", fmt.Sprintf("%+v", roomStateWithoutRequest(state)))
 	return state
 }
 
@@ -157,14 +166,19 @@ func reconcileFrontendPlayerState(update UpdatePlayerPayload, state map[string]B
 			}
 		case Boost, Unboost:
 			statKey := update.ActivePokemon.Delta.Boost.Stat
+			boostSign := 1
+			if update.ActivePokemon.Reason == Unboost {
+				boostSign = -1
+			}
 			statChange := update.ActivePokemon.Delta.Boost.Amount
 			position := update.ActivePokemon.Position.Position
 			stats := playerState.Active[position].StatBoosts
 			currentBoost, boostPresent := stats[statKey]
+			goPrint("boosting", playerState.Id, position, statKey, statChange, currentBoost)
 			if !boostPresent {
-				stats[statKey] = statChange
+				stats[statKey] = (statChange * boostSign)
 			} else {
-				stats[statKey] = currentBoost + statChange
+				stats[statKey] = currentBoost + (statChange * boostSign)
 			}
 			playerState.Active[position].StatBoosts = stats
 		case SetBoost:
@@ -288,4 +302,14 @@ func findPoke(p PokemonState, s []PokemonState) int {
 		}
 	}
 	return -1
+}
+
+func roomStateWithoutRequest(r RoomState) RoomState {
+	r.Request = nil
+	return r
+}
+
+func updateWithoutRequest(u UpdateRoomStatePayload) UpdateRoomStatePayload {
+	u.Request = ""
+	return u
 }

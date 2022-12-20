@@ -217,6 +217,7 @@ func (a *App) parseMinorBattleAction(roomId string, msg *SplitString) {
 		p := NewPokemonPosition(msg.Get(2))
 		h := HPStatus{Status: msg.Get(3)}
 		delta := PokeDelta{HP: h}
+		subPayload.PlayerId = p.PlayerId
 		subPayload.ActivePokemon = UpdatePlayerPokemon{Reason: msgType, Position: p, Delta: delta}
 		payload := UpdateRoomStatePayload{RoomId: roomId, Player: *subPayload}
 		goPrint("major status update", msgType, h.Status)
@@ -228,6 +229,7 @@ func (a *App) parseMinorBattleAction(roomId string, msg *SplitString) {
 		// for other messages, it is the target of the stat boost change
 		subPayload := new(UpdatePlayerPayload)
 		p := NewPokemonPosition(msg.Get(2))
+		subPayload.PlayerId = p.PlayerId
 		subPayload.ActivePokemon = UpdatePlayerPokemon{Reason: msgType, Position: p}
 		payload := UpdateRoomStatePayload{RoomId: roomId, Player: *subPayload}
 		goPrint(msgType, "issued for", payload.Player.PlayerId)
@@ -240,6 +242,7 @@ func (a *App) parseMinorBattleAction(roomId string, msg *SplitString) {
 		amount, _ := strconv.Atoi(msg.Get(4))
 		b := StatMod{Stat: msg.Get(3), Amount: amount}
 		delta := PokeDelta{Boost: b}
+		subPayload.PlayerId = p.PlayerId
 		subPayload.ActivePokemon = UpdatePlayerPokemon{Reason: msgType, Position: p, Delta: delta}
 		payload := UpdateRoomStatePayload{RoomId: roomId, Player: *subPayload}
 		goPrint(p, b.Stat, "boosted by", b.Amount)
@@ -253,6 +256,7 @@ func (a *App) parseMinorBattleAction(roomId string, msg *SplitString) {
 		s := msg.Get(4)
 		b := StatMod{Stat: s, Reference: t}
 		delta := PokeDelta{Boost: b}
+		subPayload.PlayerId = p.PlayerId
 		subPayload.ActivePokemon = UpdatePlayerPokemon{Reason: msgType, Position: p, Delta: delta}
 		payload := UpdateRoomStatePayload{RoomId: roomId, Player: *subPayload}
 		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, payload}
@@ -264,6 +268,7 @@ func (a *App) parseMinorBattleAction(roomId string, msg *SplitString) {
 		t := NewPokemonPosition(msg.Get(3))
 		b := StatMod{Reference: t}
 		delta := PokeDelta{Boost: b}
+		subPayload.PlayerId = p.PlayerId
 		subPayload.ActivePokemon = UpdatePlayerPokemon{Reason: msgType, Position: p, Delta: delta}
 		payload := UpdateRoomStatePayload{RoomId: roomId, Player: *subPayload}
 		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, payload}
@@ -272,6 +277,7 @@ func (a *App) parseMinorBattleAction(roomId string, msg *SplitString) {
 		// 0 |  1   |           2          |           3         |  4
 		subPayload := new(UpdatePlayerPayload)
 		p := NewPokemonPosition(msg.Get(2))
+		subPayload.PlayerId = p.PlayerId
 		subPayload.ActivePokemon = UpdatePlayerPokemon{Reason: msgType, Position: p}
 		payload := UpdateRoomStatePayload{RoomId: roomId, Player: *subPayload}
 		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, payload}
@@ -282,6 +288,7 @@ func (a *App) parseMinorBattleAction(roomId string, msg *SplitString) {
 		p := NewPokemonPosition(msg.Get(2))
 		e := msg.Get(3)
 		delta := PokeDelta{Effect: e}
+		subPayload.PlayerId = p.PlayerId
 		subPayload.ActivePokemon = UpdatePlayerPokemon{Reason: msgType, Position: p, Delta: delta}
 		payload := UpdateRoomStatePayload{RoomId: roomId, Player: *subPayload}
 		goPrint("effect", e, msgType, "on pokemon", p)
@@ -293,6 +300,7 @@ func (a *App) parseMinorBattleAction(roomId string, msg *SplitString) {
 		p := NewPokemonPosition(msg.Get(2))
 		i := msg.Get(3)
 		delta := PokeDelta{Item: i}
+		subPayload.PlayerId = p.PlayerId
 		subPayload.ActivePokemon = UpdatePlayerPokemon{Reason: msgType, Position: p, Delta: delta}
 		payload := UpdateRoomStatePayload{RoomId: roomId, Player: *subPayload}
 		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, payload}
@@ -303,6 +311,7 @@ func (a *App) parseMinorBattleAction(roomId string, msg *SplitString) {
 		p := NewPokemonPosition(msg.Get(2))
 		ab := msg.Get(3)
 		delta := PokeDelta{Ability: ab}
+		subPayload.PlayerId = p.PlayerId
 		subPayload.ActivePokemon = UpdatePlayerPokemon{Reason: msgType, Position: p, Delta: delta}
 		payload := UpdateRoomStatePayload{RoomId: roomId, Player: *subPayload}
 		a.channels.frontendChan <- ShowdownEvent{RoomStateTopic, payload}

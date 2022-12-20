@@ -138,15 +138,18 @@ function forfeit() {
     {#if currentChoiceState === CommandPaletteState.WaitForCommand}
         <p>Getting Ready...</p>
     {:else if currentChoiceState === CommandPaletteState.SelectAction && currentRequest !== null}
-        {#each currentRequest?.active[currentChoiceIndex]?.moves as move, index}
-            <button on:click={setMove(index + 1)}>{move.move} {move.pp}/{move.maxpp}</button>
-        {/each}
+        <div>
+            {#each currentRequest?.active[currentChoiceIndex]?.moves as move, index}
+                <button disabled={move.disabled} on:click={setMove(index + 1)}>{move.move} {move.pp}/{move.maxpp}</button>
+            {/each}
+        </div>
         <!-- to do: change name that appears if game mod eis gen 8 and dynamax is allowed and dynamax is selected-->
         <input type="checkbox" name="gimmick" id="gimmick" on:click={toggleGimmick}>
-        {#each currentRequest?.side?.pokemon as p, index}
-        <!-- todo do not allow switches to active or fainted pokemon -->
-            <button on:click={setSwitchPokemon(index + 1)}>{p.ident}</button>
-        {/each}
+        <div>
+            {#each currentRequest?.side?.pokemon as p, index}
+                <button disabled={p.active || p.condition === "0 fnt"} on:click={setSwitchPokemon(index + 1)}>{p.ident}</button>
+            {/each}
+        </div>
     {:else if currentChoiceState === CommandPaletteState.ForceSwitch && currentRequest !== null}
         {#each currentRequest?.side?.pokemon as p, index}
         <!-- todo do not allow switches to active or fainted pokemon -->

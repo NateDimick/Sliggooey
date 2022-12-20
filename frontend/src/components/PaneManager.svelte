@@ -13,6 +13,7 @@ import RoomPane from "./RoomPane.svelte";
 import { backend as go } from "../wailsjs/go/models"
 import { ReconcileRoomState } from "../wailsjs/go/backend/App";
 import { Mutex } from 'async-mutex'
+import { diff } from 'deep-object-diff'
 
 const stateUpdateMutex = new Mutex()
 
@@ -82,11 +83,12 @@ EventsOn(IPCEventTypes.RoomMessage, (data: RoomMessagePayload | RoomHtmlPayload)
 EventsOn(IPCEventTypes.RoomState, async (data) => {
     //let updateData = go.UpdateRoomStatePayload.createFrom(data)
     if($roomStates[data.RoomId]) {
-        tsPrint(`Updating room state: ${data.RoomId}`)
+        tsPrint(`Updating room state: ${data.RoomId} -- ${JSON.stringify(data)}`)
         // must wrap state updating in a mutex to ensure only one update occurs at a time
         await stateUpdateMutex.runExclusive(async () => {
             let updatedState = await ReconcileRoomState(data, $roomStates[data.RoomId])
-            tsPrint(`State after update: ${data.RoomId}, ${printRoomState(updatedState)}`)
+            //tsPrint(`State after update: ${data.RoomId}, ${printRoomState(updatedState)}`)
+            //tsPrint(`delta between state and update: ${JSON.stringify(diff($roomStates.RoomId, updatedState))}`)
             roomStates.update((rss) => {
                 rss[data.RoomId] = updatedState
                 rss = rss

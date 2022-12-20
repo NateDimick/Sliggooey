@@ -38,19 +38,22 @@ type ShowdownChannels struct {
 	errorChan         chan AppError
 }
 
+// create app with channels
 func NewApp() *App {
-	return new(App)
+	a := new(App)
+	a.channels = new(ShowdownChannels)
+	a.channels.frontendChan = make(chan ShowdownEvent)
+	a.channels.serverMessageChan = make(chan string)
+	a.channels.errorChan = make(chan AppError)
+	return a
 }
 
+// start app by connecting and running worker routines
 func (a *App) Startup(ctx context.Context) {
 	a.ctx = ctx
 	a.conn = new(ShowdownConnection)
 	a.state = new(ShowdownState)
 	a.state.loggedIn = false
-	a.channels = new(ShowdownChannels)
-	a.channels.frontendChan = make(chan ShowdownEvent)
-	a.channels.serverMessageChan = make(chan string)
-	a.channels.errorChan = make(chan AppError)
 
 	go a.errorResolver()
 	go a.frontEndEventEmitter()
