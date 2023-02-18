@@ -50,11 +50,14 @@ Contributions are welcome and appreciated. Make an issue, a PR or hit me up on T
 
 See the Pokemon Showdown websocket protocol and api reference here: [Showdown Protocol](https://github.com/smogon/pokemon-showdown/blob/master/PROTOCOL.md)
 
-* To run in development mode, `wails dev` (**do this for first time setup too** - it will populate frontend/dist, frontend/wailsjs, and create the build/directory)
+This Project uses [Taskfile](https://taskfile.dev) for automation. It can be installed with `go install github.com/go-task/task/v3/cmd/task@latest`
+
+* To run in development mode, `task dev` (**do this for first time setup too** - it will populate frontend/dist, frontend/wailsjs, and create the build/directory)
     1. just the front end can be run alone with `npm run dev` from the `frontend` directory
     2. While in `wails dev`, the front end is also accessible from `localhost:34115` in your browser
-* To build Go code for front end use, `wails generate module`
-* To build an executable, `wails build`
+* To build Go code for front end use, `task gen`
+* To build an executable, `task build`
+* The full kit of tasks can be listed with `task` or just read the `Taskfile.yml`
 
 ### Development Goals
 

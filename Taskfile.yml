@@ -1,0 +1,62 @@
+version: '3'
+
+tasks:
+  default:
+    desc: list out tasks
+    cmds:
+      - task -l
+  build:
+    desc: compile Gooey app binary
+    cmds:
+      - wails build
+    sources:
+      - ./**.go
+    generates:
+      - build/bin/sliggooey
+
+  gen:
+    desc: generate the frontend wailsjs module
+    cmds:
+      - wails generate module
+    sources:
+      - ./**.go
+    generates:
+      - frontend/src/wailsjs/go/*
+      - frontend/src/wailsjs/runtime/*
+
+  dev:
+    desc: run app in dev mode
+    cmds:
+      - wails dev
+
+  run:
+    desc: run compiled app
+    deps: [build]
+    cmds:
+      - ./build/bin/sliggooey
+
+  test:
+    desc: run unit tests
+    cmds:
+      - go test ./... -v -coverprofile build/cover.out
+    sources:
+      - ./**.go
+    generates:
+      - build/cover.out
+
+  test-coverage:
+    desc: test and view coverage
+    deps: [test]
+    cmds:
+      - go tool cover -html build/cover.out
+
+  svelte:
+    desc: compiles frontend
+    dir: frontend
+    cmds:
+      - npm run build
+    sources:
+      - ./**/*.svelte
+      - ./**/*.ts
+    generates:
+      - dist/*

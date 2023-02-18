@@ -20,9 +20,10 @@ Milestone 0: Can play current gen random battle, initiated through a challenge (
 Potential Open source Contributor who is perusing this project, this list of items is perfect for you to start contributing if you feel compelled to!
 
 * Websocket work
-  * Replace Gorilla websocket with nyhoor websocket (RIP Gorilla toolkit)
+  * decide if there is a need to replace Gorilla websocket with [nhooyr websocket](https://github.com/nhooyr/websocket) (RIP Gorilla toolkit)
   * handle disconnects and reconnects gracefully
 * general backend work
+  * update to to more recent go version
   * Reduce code duplication in Message parsers
   * proper logging (replace goprint)
   * recovery on major goroutines (websocket listener, frontend event passer, error handler)
@@ -30,10 +31,12 @@ Potential Open source Contributor who is perusing this project, this list of ite
   * organize code (perhaps sub modules)
 * general frontend work
   * styling
-  * hit enter button to submit text fields 9chat, login)
+  * hit enter button to submit text fields (chat, login)
   * chat self
   * more unit testing!
   * refactor util.ts - it's getting too large
+  * handle errors for invalid choices (will be difficult to test as long as the ui prevents invalid choices from being made)
+  * figure out how to eliminate relative pathing in frontend imports and instead just import from `src/store` or `wailsjs/...`
 * general work
   * application build versioning
   * remember user login info

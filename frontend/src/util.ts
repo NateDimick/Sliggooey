@@ -112,6 +112,7 @@ export type SidePokemon = {
     item: string,
     baseAbility: string,
     commanding: boolean, // omg they added this exclusively for tatsugiri
+    reviving: boolean, // new in gen 9 as well, for revival blessing? why?
     ability: string,
     pokeball: string,
     moves: string[],

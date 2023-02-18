@@ -1,0 +1,262 @@
+{
+    "request": {
+        "active": [
+            {
+                "canTerastallize": "Ghost",
+                "moves": [
+                    {
+                        "disabled": false,
+                        "id": "psychic",
+                        "maxpp": 16,
+                        "move": "Psychic",
+                        "pp": 16,
+                        "target": "normal"
+                    },
+                    {
+                        "disabled": false,
+                        "id": "shadowball",
+                        "maxpp": 24,
+                        "move": "Shadow Ball",
+                        "pp": 24,
+                        "target": "normal"
+                    },
+                    {
+                        "disabled": false,
+                        "id": "thunderbolt",
+                        "maxpp": 24,
+                        "move": "Thunderbolt",
+                        "pp": 24,
+                        "target": "normal"
+                    },
+                    {
+                        "disabled": false,
+                        "id": "nastyplot",
+                        "maxpp": 32,
+                        "move": "Nasty Plot",
+                        "pp": 32,
+                        "target": "self"
+                    }
+                ]
+            }
+        ],
+        "rqid": 3,
+        "side": {
+            "id": "p2",
+            "name": "Player 2",
+            "pokemon": [
+                {
+                    "ability": "shadowtag",
+                    "active": true,
+                    "baseAbility": "shadowtag",
+                    "commanding": false,
+                    "condition": "249/249",
+                    "details": "Gothitelle, L82, M",
+                    "ident": "p2: Gothitelle",
+                    "item": "leftovers",
+                    "moves": [
+                        "psychic",
+                        "shadowball",
+                        "thunderbolt",
+                        "nastyplot"
+                    ],
+                    "pokeball": "pokeball",
+                    "reviving": false,
+                    "stats": {
+                        "atk": 95,
+                        "def": 203,
+                        "spa": 203,
+                        "spd": 228,
+                        "spe": 154
+                    }
+                },
+                {
+                    "ability": "airlock",
+                    "active": false,
+                    "baseAbility": "airlock",
+                    "commanding": false,
+                    "condition": "270/270",
+                    "details": "Rayquaza, L72",
+                    "ident": "p2: Rayquaza",
+                    "item": "heavydutyboots",
+                    "moves": [
+                        "dragonascent",
+                        "extremespeed",
+                        "dragondance",
+                        "earthquake"
+                    ],
+                    "pokeball": "pokeball",
+                    "reviving": false,
+                    "stats": {
+                        "atk": 258,
+                        "def": 172,
+                        "spa": 258,
+                        "spd": 172,
+                        "spe": 179
+                    }
+                },
+                {
+                    "ability": "technician",
+                    "active": false,
+                    "baseAbility": "technician",
+                    "commanding": false,
+                    "condition": "249/249",
+                    "details": "Scizor, L82, M",
+                    "ident": "p2: Scizor",
+                    "item": "lifeorb",
+                    "moves": [
+                        "bulletpunch",
+                        "closecombat",
+                        "pounce",
+                        "swordsdance"
+                    ],
+                    "pokeball": "pokeball",
+                    "reviving": false,
+                    "stats": {
+                        "atk": 260,
+                        "def": 211,
+                        "spa": 137,
+                        "spd": 178,
+                        "spe": 154
+                    }
+                },
+                {
+                    "ability": "icescales",
+                    "active": false,
+                    "baseAbility": "icescales",
+                    "commanding": false,
+                    "condition": "261/261",
+                    "details": "Frosmoth, L86, F",
+                    "ident": "p2: Frosmoth",
+                    "item": "heavydutyboots",
+                    "moves": [
+                        "icebeam",
+                        "quiverdance",
+                        "bugbuzz",
+                        "gigadrain"
+                    ],
+                    "pokeball": "pokeball",
+                    "reviving": false,
+                    "stats": {
+                        "atk": 116,
+                        "def": 152,
+                        "spa": 264,
+                        "spd": 204,
+                        "spe": 161
+                    }
+                },
+                {
+                    "ability": "corrosion",
+                    "active": false,
+                    "baseAbility": "corrosion",
+                    "commanding": false,
+                    "condition": "246/246",
+                    "details": "Salazzle, L82, F",
+                    "ident": "p2: Salazzle",
+                    "item": "leftovers",
+                    "moves": [
+                        "flamethrower",
+                        "protect",
+                        "substitute",
+                        "toxic"
+                    ],
+                    "pokeball": "pokeball",
+                    "reviving": false,
+                    "stats": {
+                        "atk": 109,
+                        "def": 146,
+                        "spa": 229,
+                        "spd": 146,
+                        "spe": 239
+                    }
+                },
+                {
+                    "ability": "aftermath",
+                    "active": false,
+                    "baseAbility": "aftermath",
+                    "commanding": false,
+                    "condition": "325/325",
+                    "details": "Skuntank, L88, M",
+                    "ident": "p2: Skuntank",
+                    "item": "lifeorb",
+                    "moves": [
+                        "gunkshot",
+                        "crunch",
+                        "taunt",
+                        "suckerpunch"
+                    ],
+                    "pokeball": "pokeball",
+                    "reviving": false,
+                    "stats": {
+                        "atk": 214,
+                        "def": 168,
+                        "spa": 175,
+                        "spd": 158,
+                        "spe": 198
+                    }
+                }
+            ]
+        }
+    },
+    "title": "Player 1 vs. Player 2",
+    "gen": 9,
+    "gametype": "singles",
+    "tier": "[Gen 9] Random Battle",
+    "players": {
+        "p1": {
+            "name": "Player 1",
+            "id": "p1",
+            "rating": "",
+            "teamSize": 6,
+            "avatar": "hilda",
+            "active": [
+                {
+                    "species": "Heatran",
+                    "nickname": "Heatran",
+                    "gender": 77,
+                    "level": 80,
+                    "majorStatus": "",
+                    "minorStatuses": [],
+                    "moves": [],
+                    "boosts": {},
+                    "isActive": true,
+                    "isFainted": false,
+                    "ability": "",
+                    "item": "",
+                    "trainerId": "p1",
+                    "currentHp": 100,
+                    "maxHp": 100,
+                    "shiny": false
+                }
+            ],
+            "inactive": []
+        },
+        "p2": {
+            "name": "Player 2",
+            "id": "p2",
+            "rating": "",
+            "teamSize": 6,
+            "avatar": "169",
+            "active": [
+                {
+                    "species": "Gothitelle",
+                    "nickname": "Gothitelle",
+                    "gender": 77,
+                    "level": 82,
+                    "majorStatus": "",
+                    "minorStatuses": [],
+                    "moves": [],
+                    "boosts": {},
+                    "isActive": true,
+                    "isFainted": false,
+                    "ability": "",
+                    "item": "",
+                    "trainerId": "p2",
+                    "currentHp": 249,
+                    "maxHp": 249,
+                    "shiny": false
+                }
+            ],
+            "inactive": []
+        }
+    }
+}

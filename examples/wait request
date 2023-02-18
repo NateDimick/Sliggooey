@@ -1,0 +1,148 @@
+{
+    "wait": true,
+    "side": {
+        "name": "Player 2",
+        "id": "p2",
+        "pokemon": [
+            {
+                "ident": "p2: Vileplume",
+                "details": "Vileplume, L84, M",
+                "condition": "215/263",
+                "active": true,
+                "stats": {
+                    "atk": 139,
+                    "def": 191,
+                    "spa": 233,
+                    "spd": 199,
+                    "spe": 132
+                },
+                "moves": [
+                    "strengthsap",
+                    "gigadrain",
+                    "sludgebomb",
+                    "aromatherapy"
+                ],
+                "baseAbility": "effectspore",
+                "item": "blacksludge",
+                "pokeball": "pokeball",
+                "ability": "effectspore"
+            },
+            {
+                "ident": "p2: Tyranitar",
+                "details": "Tyranitar, L78, F",
+                "condition": "284/284",
+                "active": false,
+                "stats": {
+                    "atk": 254,
+                    "def": 217,
+                    "spa": 193,
+                    "spd": 201,
+                    "spe": 140
+                },
+                "moves": [
+                    "earthquake",
+                    "firepunch",
+                    "crunch",
+                    "stoneedge"
+                ],
+                "baseAbility": "sandstream",
+                "item": "choicescarf",
+                "pokeball": "pokeball",
+                "ability": "sandstream"
+            },
+            {
+                "ident": "p2: Cradily",
+                "details": "Cradily, L86, F",
+                "condition": "288/288",
+                "active": false,
+                "stats": {
+                    "atk": 189,
+                    "def": 216,
+                    "spa": 189,
+                    "spd": 233,
+                    "spe": 123
+                },
+                "moves": [
+                    "recover",
+                    "powerwhip",
+                    "stoneedge",
+                    "swordsdance"
+                ],
+                "baseAbility": "stormdrain",
+                "item": "leftovers",
+                "pokeball": "pokeball",
+                "ability": "stormdrain"
+            },
+            {
+                "ident": "p2: Dragalge",
+                "details": "Dragalge, L86, M",
+                "condition": "252/252",
+                "active": false,
+                "stats": {
+                    "atk": 134,
+                    "def": 204,
+                    "spa": 216,
+                    "spd": 261,
+                    "spe": 125
+                },
+                "moves": [
+                    "dracometeor",
+                    "focusblast",
+                    "toxicspikes",
+                    "sludgewave"
+                ],
+                "baseAbility": "adaptability",
+                "item": "blacksludge",
+                "pokeball": "pokeball",
+                "ability": "adaptability"
+            },
+            {
+                "ident": "p2: Regigigas",
+                "details": "Regigigas, L82",
+                "condition": "0 fnt",
+                "active": false,
+                "stats": {
+                    "atk": 310,
+                    "def": 228,
+                    "spa": 178,
+                    "spd": 228,
+                    "spe": 211
+                },
+                "moves": [
+                    "substitute",
+                    "bodyslam",
+                    "protect",
+                    "toxic"
+                ],
+                "baseAbility": "slowstart",
+                "item": "leftovers",
+                "pokeball": "pokeball",
+                "ability": "slowstart"
+            },
+            {
+                "ident": "p2: Jirachi",
+                "details": "Jirachi, L79",
+                "condition": "288/288",
+                "active": false,
+                "stats": {
+                    "atk": 204,
+                    "def": 204,
+                    "spa": 204,
+                    "spd": 204,
+                    "spe": 204
+                },
+                "moves": [
+                    "stealthrock",
+                    "ironhead",
+                    "uturn",
+                    "firepunch"
+                ],
+                "baseAbility": "serenegrace",
+                "item": "leftovers",
+                "pokeball": "pokeball",
+                "ability": "serenegrace"
+            }
+        ]
+    },
+    "rqid": 25
+}

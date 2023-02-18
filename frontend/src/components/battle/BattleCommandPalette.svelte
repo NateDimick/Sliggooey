@@ -147,7 +147,7 @@ function forfeit() {
         <input type="checkbox" name="gimmick" id="gimmick" on:click={toggleGimmick}>
         <div>
             {#each currentRequest?.side?.pokemon as p, index}
-                <button disabled={p.active || p.condition === "0 fnt"} on:click={setSwitchPokemon(index + 1)}>{p.ident}</button>
+                <button disabled={p.active || p.condition === "0 fnt" || p.reviving} on:click={setSwitchPokemon(index + 1)}>{p.ident}</button>
             {/each}
         </div>
     {:else if currentChoiceState === CommandPaletteState.ForceSwitch && currentRequest !== null}
