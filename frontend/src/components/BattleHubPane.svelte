@@ -5,6 +5,7 @@ import { battles } from "../store"
 import CurrentGames from "./battlehub/CurrentGames.svelte";
 import CurrentChallenges from "./battlehub/CurrentChallenges.svelte";
 import BattleSearch from "./battlehub/BattleSearch.svelte";
+    import PokedexLoader from "./battlehub/PokedexLoader.svelte";
 
 EventsOn(IPCEventTypes.Games, (data: string) => {
     tsPrint(`Incoming current games info: ${data}`)
@@ -19,6 +20,7 @@ EventsOn(IPCEventTypes.Games, (data: string) => {
 </script>
 
 <main>
+    <PokedexLoader/>
     <h1>The Battle Hub</h1>
     <div class="left-col">
         <CurrentGames/>

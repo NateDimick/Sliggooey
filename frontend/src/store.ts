@@ -2,6 +2,8 @@ import { writable } from "svelte/store";
 import { PaneType, PmPayload, ViewType } from "./util";
 import type { backend as go } from "./wailsjs/go/models"
 
+// store the pokedex here
+export const pokedex = writable(new Object())
 // usernames as keys, list of chats as values
 export const pmChats = writable(new Object())
 // roomIds and keys, list of chats as values

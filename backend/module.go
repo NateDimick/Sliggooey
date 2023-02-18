@@ -2,6 +2,8 @@ package backend
 
 import (
 	"fmt"
+	"io"
+	"net/http"
 	"strings"
 )
 
@@ -97,4 +99,21 @@ func (a *App) ReconcileRoomState(updatePayload UpdateRoomStatePayload, presentSt
 	result := reconcileRoomStateInner(updatePayload, presentState)
 	goPrint("room state reconciled")
 	return result
+}
+
+// get the pokedex json, unparsed, from showdown
+func (a *App) GetPokedex() string {
+	resp, err := http.Get("https://play.pokemonshowdown.com/data/pokedex.json")
+	if err != nil {
+		goPrint(err)
+		return ""
+	}
+	defer resp.Body.Close()
+	dex, err := io.ReadAll(resp.Body)
+	if err != nil {
+		goPrint(err)
+		return ""
+	}
+	goPrint("got pokedex JSON")
+	return string(dex)
 }

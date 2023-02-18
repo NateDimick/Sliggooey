@@ -10,7 +10,7 @@ tasks:
     cmds:
       - wails build
     sources:
-      - ./**.go
+      - ./**/*.go
     generates:
       - build/bin/sliggooey
 
@@ -19,7 +19,7 @@ tasks:
     cmds:
       - wails generate module
     sources:
-      - ./**.go
+      - ./**/*.go
     generates:
       - frontend/src/wailsjs/go/*
       - frontend/src/wailsjs/runtime/*
@@ -40,7 +40,7 @@ tasks:
     cmds:
       - go test ./... -v -coverprofile build/cover.out
     sources:
-      - ./**.go
+      - ./**/*.go
     generates:
       - build/cover.out
 
