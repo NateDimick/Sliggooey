@@ -104,13 +104,8 @@ func (a *App) errorResolver() {
 	}
 }
 
-// copied same function from main.go. in future, should replace with logging package and remove both instances
+// logs a message but with fmt.Println syntax
+// in the future, more zap features should be used (pass in extra fields)
 func goPrint(a ...any) {
-	// convenience method to distinguish backend logs from frontend logs
-	s := make([]any, 1)
-	s[0] = "[GO]"
-	for _, e := range a {
-		s = append(s, e)
-	}
-	fmt.Println(s...)
+	BackendLogger.Info(fmt.Sprintln(a...))
 }

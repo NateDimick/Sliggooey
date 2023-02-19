@@ -3,3 +3,4 @@ frontend/dist/
 frontend/src/wailsjs/
 build/
 .task/
+*.log

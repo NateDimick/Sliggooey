@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+
+	"go.uber.org/zap"
 )
 
 // Parses a full payload from the server, which may include multiple messages
@@ -22,6 +24,7 @@ func (a *App) parseServerPayload(payload string) {
 	}
 	for i := msgStartIndex; i < len(payloadLines); i++ {
 		if len(payloadLines[i]) > 0 {
+			WireLogger.Info(payloadLines[i], zap.String("roomId", roomId))
 			if roomId != "" {
 				a.parseRoomServerMessage(roomId, payloadLines[i])
 			} else {

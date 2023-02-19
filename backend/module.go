@@ -10,6 +10,10 @@ import (
 )
 
 // exposed functions for the frontend to use
+func (a *App) Log(message string) {
+	FrontendLogger.Info(message)
+}
+
 func (a *App) SDLogin(uname, pword string) {
 	a.state.credentials = &ShowdownCredentials{uname, pword}
 	a.login()

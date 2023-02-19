@@ -1,7 +1,7 @@
-import { LogPrint } from "./wailsjs/runtime/runtime";
+import { Log } from "./wailsjs/go/backend/App";
 
 export function tsPrint(message: string) {
-    LogPrint("[TS] " + message)
+    Log(message)
 }
 
 // pane types within the client view
