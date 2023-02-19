@@ -14,7 +14,12 @@ sprite.onerror = () => {
 function speciesForUrl(species: string): string {
     let s = species.toLowerCase()
     s = s.replaceAll(/[^a-z\-]{1}/g, "")
-    // need to remove the second hyphen and the second hypen ONLY
+    // need to remove the second hyphen and the second hypen ONLY - see dudunsparce-three-segment, alcremie flavors, etc
+    let parts = s.split("-")
+    if (parts.length > 2) {
+        let remainingParts = [parts[0], parts[1] + parts[2], ...parts.slice(3)]
+        s = remainingParts.join("-")
+    }
     return s
 }
 
@@ -48,12 +53,23 @@ $: {
 
 <main>
     <p>{state.nickname} Lv{state.level} {state.currentHp}/{state.maxHp}</p>
+    <p>Ability: {state.ability} | Item: {state.item}</p>
     <p>{state.majorStatus}</p>
-    {#each state.minorStatuses as ms}
-        <p>{ms}</p>
-    {/each}
-    {#each Object.keys(state.boosts) as boost}
-        <p>{boost} {state.boosts[boost]}</p>
-    {/each}
+    <div>
+        {#each state.minorStatuses as ms}
+            <p>{ms}</p>
+        {/each}
+        {#each Object.keys(state.boosts) as boost}
+            <p>{boost} {state.boosts[boost]}</p>
+        {/each}
+    </div>
     <img src={sprite.src} alt="{state.nickname}">
 </main>
+
+<style>
+    div {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+</style>

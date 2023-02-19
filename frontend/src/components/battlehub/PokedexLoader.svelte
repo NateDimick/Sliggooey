@@ -11,8 +11,8 @@ async function loadPokedex() {
         tsPrint(`got dex from showdown: ${JSON.stringify(dex.bulbasaur)}`)
         pokedex.set(dex)
         tsPrint("pokedex loading complete")
-        resp = await GetSpecialSpriteNumbers()
-        specialIconIds.set(resp)
+        let resp2 = await GetSpecialSpriteNumbers()
+        specialIconIds.set(resp2)
         tsPrint("special pokedex icon id loading complete")
     }
 }

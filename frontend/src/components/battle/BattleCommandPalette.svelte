@@ -153,7 +153,7 @@ function forfeit() {
     {:else if currentChoiceState === CommandPaletteState.ForceSwitch && currentRequest !== null}
         {#each currentRequest?.side?.pokemon as p, index}
         <!-- todo do not allow switches to active or fainted pokemon -->
-            <button on:click={setSwitchPokemon(index + 1)}>{p.ident}</button>
+            <button disabled={p.active || p.condition === "0 fnt" || p.reviving} on:click={setSwitchPokemon(index + 1)}>{p.ident}</button>
         {/each}
     {:else if currentChoiceState === CommandPaletteState.SelectTarget}
         <p></p>

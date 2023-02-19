@@ -11,7 +11,6 @@ $: {
     let numKnown = participant.inactive.length
     numMysteryPokemon = Math.max(participant.teamSize - numKnown - 1, 0)
 }
-
 </script>
 
 <Trainer participant={participant}/>

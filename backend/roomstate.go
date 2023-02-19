@@ -242,7 +242,11 @@ func reconcileFrontendPlayerState(update UpdatePlayerPayload, state map[string]B
 			position := update.ActivePokemon.Position.Position
 			effects := playerState.Active[position].MinorStatuses
 			effectInd := slices.Index(effects, effect)
-			playerState.Active[position].MinorStatuses = slices.Delete(effects, effectInd, effectInd+1)
+			if effectInd >= 0 {
+				// there's a bug (?) with shed tail and the pokemon that switches in not having substitute in their list of effects
+				// probably effects baton pass too
+				playerState.Active[position].MinorStatuses = slices.Delete(effects, effectInd, effectInd+1)
+			}
 		case Item:
 			position := update.ActivePokemon.Position.Position
 			item := update.ActivePokemon.Delta.Item

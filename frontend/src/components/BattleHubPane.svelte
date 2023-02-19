@@ -10,7 +10,7 @@ import BattleSearch from "./battlehub/BattleSearch.svelte";
 EventsOn(IPCEventTypes.Games, (data: string) => {
     tsPrint(`Incoming current games info: ${data}`)
     let games: GamesPayload = JSON.parse(data)
-    if (games.games !== undefined) {
+    if (games.games !== null) {
         battles.set(Object.entries(games.games))
         tsPrint(`${JSON.stringify($battles)}`)
     }

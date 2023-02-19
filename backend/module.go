@@ -128,6 +128,7 @@ func (a *App) GetSpecialSpriteNumbers() map[string]int {
 		return specialIndex
 	}
 	// okay hear me out - going to parse the source ts file for the BattlePokemonIconIndexes map, and manually parse and extract the values
+	// I don't think this is illegal, but it might be amoral
 	defer resp.Body.Close()
 	scanner := bufio.NewScanner(resp.Body)
 
