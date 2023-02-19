@@ -4,6 +4,8 @@ import type { backend as go } from "./wailsjs/go/models"
 
 // store the pokedex here
 export const pokedex = writable(new Object())
+// store what are effectively pokedex numbers for special formes like megas, regional formes, etc
+export const specialIconIds = writable(new Object() as {[key: string]: number})
 // usernames as keys, list of chats as values
 export const pmChats = writable(new Object())
 // roomIds and keys, list of chats as values

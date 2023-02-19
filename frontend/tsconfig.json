@@ -13,12 +13,7 @@
   "include": [
     "src/**/*.d.ts",
     "src/**/*.ts",
-    "src/**/*.js",
-    "src/**/*.svelte",
-    "src/wailsjs/**/*.ts"
-  ],
-  "exclude": [
-    "src/wailsjs/**/*.js"
+    "src/**/*.svelte"
   ],
   "references": [
     {

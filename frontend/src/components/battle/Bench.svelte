@@ -30,5 +30,7 @@ $: {
 <style>
     main {
         display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
     }
 </style>

@@ -14,7 +14,8 @@ let avatarNumber: number = Number(participant.avatar)
 if (isNaN(avatarNumber)) {
     trainerImgUrl = `https://play.pokemonshowdown.com/sprites/trainers/${participant.avatar}.png`
 } else {
-    let trainerX = (avatarNumber % spritesPerRow - 1) * spriteBorderEdgeLen
+    avatarNumber -= 1 // trainers are not 0-based indexed
+    let trainerX = (avatarNumber % spritesPerRow) * spriteBorderEdgeLen
     let trainerY = Math.floor(avatarNumber / spritesPerRow) * spriteBorderEdgeLen
     trainerStyleStr = `object-position: -${trainerX}px -${trainerY}px`
     trainerImgUrl = trainerSheet

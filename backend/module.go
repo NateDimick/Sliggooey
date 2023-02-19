@@ -1,9 +1,11 @@
 package backend
 
 import (
+	"bufio"
 	"fmt"
 	"io"
 	"net/http"
+	"strconv"
 	"strings"
 )
 
@@ -116,4 +118,52 @@ func (a *App) GetPokedex() string {
 	}
 	goPrint("got pokedex JSON")
 	return string(dex)
+}
+
+func (a *App) GetSpecialSpriteNumbers() map[string]int {
+	specialIndex := make(map[string]int)
+	resp, err := http.Get("https://play.pokemonshowdown.com/src/battle-dex-data.ts")
+	if err != nil {
+		goPrint(err)
+		return specialIndex
+	}
+	// okay hear me out - going to parse the source ts file for the BattlePokemonIconIndexes map, and manually parse and extract the values
+	defer resp.Body.Close()
+	scanner := bufio.NewScanner(resp.Body)
+
+	// read up to map definition
+	for scanner.Scan() {
+		if strings.Contains(scanner.Text(), "BattlePokemonIconIndexes") {
+			break
+		}
+	}
+	// parse the definitions
+	for scanner.Scan() {
+		entry := scanner.Text()
+		goPrint("reading line ", entry)
+		if strings.ContainsRune(entry, '}') {
+			// end of the map, end of parsing
+			break
+		}
+		parts := strings.Split(entry, ":")
+		if len(parts) < 2 {
+			continue
+		}
+		key := strings.TrimSpace(parts[0])
+		index := 0
+		sum := strings.ReplaceAll(parts[1], ",", "")
+		for _, n := range strings.Split(sum, "+") {
+			num, err := strconv.Atoi(strings.TrimSpace(n))
+			if err != nil {
+				goPrint("could not parse number", n, "in line", entry)
+				continue
+			}
+
+			index += num
+		}
+
+		specialIndex[key] = index
+	}
+	goPrint("extracted special icon indices from battle dex code")
+	return specialIndex
 }

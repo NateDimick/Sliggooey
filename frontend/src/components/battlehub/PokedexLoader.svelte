@@ -1,7 +1,7 @@
 <script lang="ts">
 import { tsPrint } from "../../util";
-import { pokedex } from "../../store"
-import { GetPokedex } from "../../wailsjs/go/backend/App";
+import { pokedex, specialIconIds } from "../../store"
+import { GetPokedex, GetSpecialSpriteNumbers } from "../../wailsjs/go/backend/App";
 
 async function loadPokedex() {
     if (Object.keys($pokedex).length === 0) {
@@ -11,6 +11,9 @@ async function loadPokedex() {
         tsPrint(`got dex from showdown: ${JSON.stringify(dex.bulbasaur)}`)
         pokedex.set(dex)
         tsPrint("pokedex loading complete")
+        resp = await GetSpecialSpriteNumbers()
+        specialIconIds.set(resp)
+        tsPrint("special pokedex icon id loading complete")
     }
 }
 

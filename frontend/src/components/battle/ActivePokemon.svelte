@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { tsPrint } from "../../../src/util";
 import type { backend as go } from "../../wailsjs/go/models";
 
 export let state: go.PokemonState
@@ -15,6 +14,7 @@ sprite.onerror = () => {
 function speciesForUrl(species: string): string {
     let s = species.toLowerCase()
     s = s.replaceAll(/[^a-z\-]{1}/g, "")
+    // need to remove the second hyphen and the second hypen ONLY
     return s
 }
 
