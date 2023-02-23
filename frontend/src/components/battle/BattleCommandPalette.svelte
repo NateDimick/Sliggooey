@@ -113,8 +113,13 @@ function skipChoice() {
 function toggleGimmick() {
     if(currentChoice[currentChoiceIndex] === undefined) {
         // do thing
+        // Mega Evolve = "mega"
+        // z move = "zmove"
+        // dynamax = "max"
+        // terastallize = "terastallize"
     } else {
         currentChoice[currentChoiceIndex] = undefined
+        // undo any changes to move list made by z move or dynamax
     }
 }
 
@@ -173,7 +178,6 @@ function forfeit() {
         </div>
     {:else if currentChoiceState === CommandPaletteState.ForceSwitch && currentRequest !== null}
         {#each currentRequest?.side?.pokemon as p, index}
-        <!-- todo do not allow switches to active or fainted pokemon -->
             <button disabled={p.active || p.condition === "0 fnt" || p.reviving} on:click={setSwitchPokemon(index + 1)}>{p.ident}</button>
         {/each}
     {:else if currentChoiceState === CommandPaletteState.SelectTarget}

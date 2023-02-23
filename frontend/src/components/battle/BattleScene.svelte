@@ -14,7 +14,7 @@ $: {
     updates += 1
 }
 
-function fieldConditions() {
+function getConditions() {
     if (state?.field?.conditions) {
         return state.field.conditions
     } else {
@@ -26,13 +26,13 @@ function fieldConditions() {
 
 <main>
     <h1>gen {state.gen} {state.title} {state.gameType} {updates}</h1>
-    {#each fieldConditions() as condition}
+    {#each getConditions() as condition}
+        <!-- Perhaps this should be split out in to it's own component later when dealing with graphics/etc -->
         <p>{condition.condition} {condition.turns} or {condition.altTurns}</p>
     {/each}
     <div class="battle-field">
         {#each Object.keys(state?.participants) as p}
-            <BattleSceneCorner participant={state.participants[p]}/>  
-            <!-- fieldConditions={state?.field?.sides[p]}/> -->
+            <BattleSceneCorner participant={state.participants[p]} fieldConditions={state?.field?.sides[p]}/>
         {/each}
     </div>
 </main>
