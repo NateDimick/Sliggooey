@@ -124,11 +124,13 @@ export type SidePokemon = {
 
 export type ActivePokemon = {
     moves: MoveInfo[],
-    canDynamax?: boolean, // gen 8 only
-    canTerastallize?: string, // gen 9 only, string is the type the pokemon can terastallize into
-    maxMoves?: MaxMoveInfo
+    canMegaEvo?: boolean,    // gen 6 and 7 only, would have guessed "canMega" or "canMegaEvolve" first but noOooOoOoOOOoO
+    canZMove?: MoveInfo[],   // gen 7 only, and only the name and target are provided. As many entries as moves. non-compatible moves are null
+    canDynamax?: boolean,    // gen 8 only.
+    maxMoves?: MaxMoveInfo,
+    canTerastallize?: string // gen 9 only, string is the type the pokemon can terastallize into
     // probably a tera type field here for gen 9?
-    // z moves, mega for backwards compatibility
+    // z moves for backwards compatibility
 }
 
 export type MaxMoveInfo = {
@@ -145,12 +147,13 @@ export type MoveInfo = {
 }
 
 export enum TargetType {
-    Normal = "normal",
+    Normal = "normal", // pretty sure normal = adjacent foe or ally. requires selection
     Self = "self",
-    Ally = "adjacentAlly",
+    Ally = "adjacentAlly", // requires selection in triple + battles
     Allies = "allySide",
-    AdjacentFoe = "adjacentFoe",
+    AdjacentFoe = "adjacentFoe", // requires selection in double + battles
     Foes = "foeSide",
+    AllAdjacentFoes ="allAdjacentFoes",
     All = "all",
     Random = "randomNormal"
 }

@@ -1,6 +1,6 @@
 <!-- for inputting battle choices -->
 <script lang="ts">
-import { BattleChoice, BattleRequest, tsPrint } from "../../util";
+import { ActivePokemon, BattleChoice, BattleRequest, tsPrint } from "../../util";
 import { MakeBattleChoice } from "../../wailsjs/go/backend/App";
 import { roomStates } from "../../store"
 
@@ -111,7 +111,26 @@ function skipChoice() {
 }
 
 function toggleGimmick() {
+    if(currentChoice[currentChoiceIndex] === undefined) {
+        // do thing
+    } else {
+        currentChoice[currentChoiceIndex] = undefined
+    }
+}
 
+function canGimmick(activePokemon: ActivePokemon): boolean {
+    return activePokemon.canMegaEvo || activePokemon.canDynamax || activePokemon.canTerastallize !== undefined
+}
+
+function buildGimmickLabel(activePokemon: ActivePokemon): string {
+    if (activePokemon.canMegaEvo) {
+        return "Mega Evolve"
+    } else if (activePokemon.canDynamax) {
+        return "Dynamax" // gigantamax?
+    } else if (activePokemon.canTerastallize) {
+        return `Tera ${activePokemon.canTerastallize}`
+    }
+    return ""
 }
 
 function startTimer() {
@@ -143,8 +162,10 @@ function forfeit() {
                 <button disabled={move.disabled} on:click={setMove(index + 1)}>{move.move} {move.pp}/{move.maxpp}</button>
             {/each}
         </div>
-        <!-- to do: change name that appears if game mod eis gen 8 and dynamax is allowed and dynamax is selected-->
-        <input type="checkbox" name="gimmick" id="gimmick" on:click={toggleGimmick}>
+        {#if canGimmick(currentRequest?.active[currentChoiceIndex])}
+            <input type="checkbox" name="gimmick" id="gimmick" on:change={toggleGimmick}>
+            <label for="gimmick">{buildGimmickLabel(currentRequest?.active[currentChoiceIndex])}</label>
+        {/if}
         <div>
             {#each currentRequest?.side?.pokemon as p, index}
                 <button disabled={p.active || p.condition === "0 fnt" || p.reviving} on:click={setSwitchPokemon(index + 1)}>{p.ident}</button>

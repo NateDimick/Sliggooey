@@ -1,6 +1,6 @@
 # ToDo
 
-last modified: 12/13/2022
+last modified: 2/22/2023
 
 this is Now slightly more organized list of actionable items that need to get done eventually, but in the near time horizon
 
@@ -8,8 +8,13 @@ this is Now slightly more organized list of actionable items that need to get do
 
 Milestone 0: Can play current gen random battle, initiated through a challenge (either direction)
 
-* finish handling battle messages, outside of team preview and a few other specific messages
-* finish handling room messages
+* Complete Battle Simulator UI functionality (not appearance, just functionality)
+  * send messages to battle room chat for every event
+  * display field/side state
+  * gimmick switch (mega/dmax/tera)
+  * consolidate state info from request into room state (pokemon items, abilities on player side)
+  * bench sprites for pokemon like Arceus-Ghost
+* finish handling room messages (may not need to happen until after milestone 0)
   * notify - back and front
   * chatTs - ?
   * : - ?
@@ -56,6 +61,7 @@ Milestone 1: Can play any random battle format
     * Battle Search
 
 * Backend-Focused Work
+  * support battle search
 
 ## Blocking Milestone 2
 
@@ -67,6 +73,9 @@ Milestone 2: Feature parity with Pokemon Showdown client
   * Can Save Teams to local disk in either pokepaste or json format
 * Team Loader
   * Can load a team from either pokepaste or json format
+  * paste team in an immediately render the result on the page (look kinda like pokepaste)
+  * edit paste and see updates
+  * Save team locally
 * Team Packer
   * Can convert loaded team to packed format for the wss protocol
 * Battle Input for non-singles formats

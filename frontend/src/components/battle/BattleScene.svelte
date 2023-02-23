@@ -10,17 +10,29 @@ let updates: number = 0
 
 $: {
     state = $roomStates[roomName]
-    // tsPrint(`updated state in battle scene ${JSON.stringify(state)}`)  // if command pallete ever eats shit, uncomment this line
+    // tsPrint(`updated state in battle scene ${JSON.stringify(state)}`)  // if command pallette ever eats shit, uncomment this line
     updates += 1
+}
+
+function fieldConditions() {
+    if (state?.field?.conditions) {
+        return state.field.conditions
+    } else {
+        return []
+    }
 }
 
 </script>
 
 <main>
     <h1>gen {state.gen} {state.title} {state.gameType} {updates}</h1>
+    {#each fieldConditions() as condition}
+        <p>{condition.condition} {condition.turns} or {condition.altTurns}</p>
+    {/each}
     <div class="battle-field">
         {#each Object.keys(state?.participants) as p}
-            <BattleSceneCorner participant={state.participants[p]}/>
+            <BattleSceneCorner participant={state.participants[p]}/>  
+            <!-- fieldConditions={state?.field?.sides[p]}/> -->
         {/each}
     </div>
 </main>

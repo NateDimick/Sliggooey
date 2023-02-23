@@ -1,0 +1,194 @@
+{
+    "active": [
+        {
+            "moves": [
+                {
+                    "move": "Earthquake",
+                    "id": "earthquake",
+                    "pp": 16,
+                    "maxpp": 16,
+                    "target": "allAdjacent",
+                    "disabled": false
+                },
+                {
+                    "move": "Rock Tomb",
+                    "id": "rocktomb",
+                    "pp": 22,
+                    "maxpp": 24,
+                    "target": "normal",
+                    "disabled": false
+                },
+                {
+                    "move": "Poison Jab",
+                    "id": "poisonjab",
+                    "pp": 32,
+                    "maxpp": 32,
+                    "target": "normal",
+                    "disabled": false
+                },
+                {
+                    "move": "Rapid Spin",
+                    "id": "rapidspin",
+                    "pp": 64,
+                    "maxpp": 64,
+                    "target": "normal",
+                    "disabled": false
+                }
+            ],
+            "canZMove": [
+                {
+                    "move": "Tectonic Rage",
+                    "target": "normal"
+                },
+                null,
+                null,
+                null
+            ]
+        }
+    ],
+    "side": {
+        "name": "Twinkle and Stink",
+        "id": "p2",
+        "pokemon": [
+            {
+                "ident": "p2: Drilbur",
+                "details": "Drilbur, L5, M",
+                "condition": "8/23",
+                "active": true,
+                "stats": {
+                    "atk": 18,
+                    "def": 10,
+                    "spa": 8,
+                    "spd": 11,
+                    "spe": 17
+                },
+                "moves": [
+                    "earthquake",
+                    "rocktomb",
+                    "poisonjab",
+                    "rapidspin"
+                ],
+                "baseAbility": "moldbreaker",
+                "item": "groundiumz",
+                "pokeball": "pokeball",
+                "ability": "moldbreaker"
+            },
+            {
+                "ident": "p2: Ferroseed",
+                "details": "Ferroseed, L5, F",
+                "condition": "22/22",
+                "active": false,
+                "stats": {
+                    "atk": 12,
+                    "def": 18,
+                    "spa": 7,
+                    "spd": 18,
+                    "spe": 8
+                },
+                "moves": [
+                    "bulletseed",
+                    "knockoff",
+                    "thunderwave",
+                    "stealthrock"
+                ],
+                "baseAbility": "ironbarbs",
+                "item": "eviolite",
+                "pokeball": "pokeball",
+                "ability": "ironbarbs"
+            },
+            {
+                "ident": "p2: Pumpkaboo",
+                "details": "Pumpkaboo-Super, L5, F",
+                "condition": "25/25",
+                "active": false,
+                "stats": {
+                    "atk": 11,
+                    "def": 14,
+                    "spa": 11,
+                    "spd": 16,
+                    "spe": 11
+                },
+                "moves": [
+                    "gigadrain",
+                    "synthesis",
+                    "willowisp",
+                    "fireblast"
+                ],
+                "baseAbility": "frisk",
+                "item": "eviolite",
+                "pokeball": "pokeball",
+                "ability": "frisk"
+            },
+            {
+                "ident": "p2: Houndour",
+                "details": "Houndour, L5, M",
+                "condition": "0 fnt",
+                "active": false,
+                "stats": {
+                    "atk": 12,
+                    "def": 10,
+                    "spa": 17,
+                    "spd": 10,
+                    "spe": 17
+                },
+                "moves": [
+                    "fireblast",
+                    "darkpulse",
+                    "pursuit",
+                    "destinybond"
+                ],
+                "baseAbility": "flashfire",
+                "item": "choicescarf",
+                "pokeball": "pokeball",
+                "ability": "flashfire"
+            },
+            {
+                "ident": "p2: Wynaut",
+                "details": "Wynaut, L5, F",
+                "condition": "28/28",
+                "active": false,
+                "stats": {
+                    "atk": 7,
+                    "def": 14,
+                    "spa": 8,
+                    "spd": 13,
+                    "spe": 9
+                },
+                "moves": [
+                    "counter",
+                    "mirrorcoat",
+                    "encore",
+                    "tickle"
+                ],
+                "baseAbility": "shadowtag",
+                "item": "berryjuice",
+                "pokeball": "pokeball",
+                "ability": "shadowtag"
+            },
+            {
+                "ident": "p2: Gastly",
+                "details": "Gastly, L5, M",
+                "condition": "19/19",
+                "active": false,
+                "stats": {
+                    "atk": 9,
+                    "def": 9,
+                    "spa": 19,
+                    "spd": 11,
+                    "spe": 18
+                },
+                "moves": [
+                    "substitute",
+                    "shadowball",
+                    "sludgebomb",
+                    "hiddenpowerground60"
+                ],
+                "baseAbility": "levitate",
+                "item": "lifeorb",
+                "pokeball": "pokeball",
+                "ability": "levitate"
+            }
+        ]
+    },
+    "rqid": 19
+}

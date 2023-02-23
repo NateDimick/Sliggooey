@@ -1,0 +1,186 @@
+{
+    "active": [
+        {
+            "moves": [
+                {
+                    "move": "Moonblast",
+                    "id": "moonblast",
+                    "pp": 24,
+                    "maxpp": 24,
+                    "target": "normal",
+                    "disabled": false
+                },
+                {
+                    "move": "Diamond Storm",
+                    "id": "diamondstorm",
+                    "pp": 8,
+                    "maxpp": 8,
+                    "target": "allAdjacentFoes",
+                    "disabled": false
+                },
+                {
+                    "move": "Earth Power",
+                    "id": "earthpower",
+                    "pp": 16,
+                    "maxpp": 16,
+                    "target": "normal",
+                    "disabled": false
+                },
+                {
+                    "move": "Calm Mind",
+                    "id": "calmmind",
+                    "pp": 32,
+                    "maxpp": 32,
+                    "target": "self",
+                    "disabled": false
+                }
+            ],
+            "canMegaEvo": true
+        }
+    ],
+    "side": {
+        "name": "Player 2",
+        "id": "p2",
+        "pokemon": [
+            {
+                "ident": "p2: Diancie",
+                "details": "Diancie, L80",
+                "condition": "172/211",
+                "active": true,
+                "stats": {
+                    "atk": 206,
+                    "def": 286,
+                    "spa": 206,
+                    "spd": 286,
+                    "spe": 126
+                },
+                "moves": [
+                    "moonblast",
+                    "diamondstorm",
+                    "earthpower",
+                    "calmmind"
+                ],
+                "baseAbility": "clearbody",
+                "item": "diancite",
+                "pokeball": "pokeball",
+                "ability": "clearbody"
+            },
+            {
+                "ident": "p2: Garchomp",
+                "details": "Garchomp, L80, F",
+                "condition": "304/304",
+                "active": false,
+                "stats": {
+                    "atk": 254,
+                    "def": 198,
+                    "spa": 174,
+                    "spd": 182,
+                    "spe": 209
+                },
+                "moves": [
+                    "swordsdance",
+                    "dragonclaw",
+                    "firefang",
+                    "earthquake"
+                ],
+                "baseAbility": "roughskin",
+                "item": "leftovers",
+                "pokeball": "pokeball",
+                "ability": "roughskin"
+            },
+            {
+                "ident": "p2: Vivillon",
+                "details": "Vivillon-Icy Snow, L86, F",
+                "condition": "277/277",
+                "active": false,
+                "stats": {
+                    "atk": 94,
+                    "def": 135,
+                    "spa": 204,
+                    "spd": 135,
+                    "spe": 202
+                },
+                "moves": [
+                    "energyball",
+                    "sleeppowder",
+                    "quiverdance",
+                    "hurricane"
+                ],
+                "baseAbility": "compoundeyes",
+                "item": "leftovers",
+                "pokeball": "pokeball",
+                "ability": "compoundeyes"
+            },
+            {
+                "ident": "p2: Ursaring",
+                "details": "Ursaring, L88, M",
+                "condition": "302/302",
+                "active": false,
+                "stats": {
+                    "atk": 279,
+                    "def": 182,
+                    "spa": 182,
+                    "spd": 182,
+                    "spe": 147
+                },
+                "moves": [
+                    "protect",
+                    "crunch",
+                    "facade",
+                    "closecombat"
+                ],
+                "baseAbility": "guts",
+                "item": "flameorb",
+                "pokeball": "pokeball",
+                "ability": "guts"
+            },
+            {
+                "ident": "p2: Gallade",
+                "details": "Gallade, L88, M",
+                "condition": "263/263",
+                "active": false,
+                "stats": {
+                    "atk": 270,
+                    "def": 165,
+                    "spa": 165,
+                    "spd": 253,
+                    "spe": 191
+                },
+                "moves": [
+                    "zenheadbutt",
+                    "icepunch",
+                    "drainpunch",
+                    "shadowsneak"
+                ],
+                "baseAbility": "justified",
+                "item": "choiceband",
+                "pokeball": "pokeball",
+                "ability": "justified"
+            },
+            {
+                "ident": "p2: Arceus",
+                "details": "Arceus-Ghost, L76",
+                "condition": "307/307",
+                "active": false,
+                "stats": {
+                    "atk": 226,
+                    "def": 226,
+                    "spa": 226,
+                    "spd": 226,
+                    "spe": 226
+                },
+                "moves": [
+                    "extremespeed",
+                    "shadowclaw",
+                    "recover",
+                    "defog"
+                ],
+                "baseAbility": "multitype",
+                "item": "spookyplate",
+                "pokeball": "pokeball",
+                "ability": "multitype"
+            }
+        ]
+    },
+    "rqid": 5
+}

@@ -4,6 +4,7 @@ import ActivePokemon from "./ActivePokemon.svelte";
 import Bench from "./Bench.svelte";
 
 export let participant: go.BattleRoomParticipant
+export let fieldConditions: go.BattleFieldCondition[] = []
 
 </script>
 
@@ -12,6 +13,9 @@ export let participant: go.BattleRoomParticipant
     <Bench participant={participant}/>
     {#each participant?.active as p}
         <ActivePokemon state={p}/>
+    {/each}
+    {#each fieldConditions as condition}
+        <p>{condition.condition}</p>
     {/each}
 </main>
 
