@@ -5,12 +5,14 @@ tasks:
     desc: list out tasks
     cmds:
       - task -l
+
   build:
     desc: compile Gooey app binary
     cmds:
       - wails build
     sources:
       - ./**/*.go
+      - go.mod
     generates:
       - build/bin/sliggooey
 

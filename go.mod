@@ -1,10 +1,10 @@
 module sliggooey
 
-go 1.18
+go 1.20
 
 require (
 	github.com/gorilla/websocket v1.5.0
-	github.com/wailsapp/wails/v2 v2.0.0
+	github.com/wailsapp/wails/v2 v2.3.1
 	go.uber.org/zap v1.24.0
 	golang.org/x/exp v0.0.0-20221208152030-732eee02a75a
 )
@@ -25,6 +25,7 @@ require (
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/rivo/uniseg v0.4.2 // indirect
+	github.com/samber/lo v1.27.1 // indirect
 	github.com/tkrajina/go-reflector v0.5.6 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasttemplate v1.2.1 // indirect
